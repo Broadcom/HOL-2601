@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # DEFAULT HOL FIREWALL RULESET
-# version 1-July 2025
+# version 02-July 2025
 
 # clear any existing rules
 iptables --flush
