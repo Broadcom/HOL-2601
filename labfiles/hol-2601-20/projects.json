@@ -1,0 +1,289 @@
+{
+    "groups": [
+        {
+            "name": "Dev Team A",
+            "visibility": "public",
+            "description": "Development Team A",
+            "projects": [
+                {
+                    "name": "Med Tech App",
+                    "description": "Medical Technology Application",
+                    "visibility": "public",
+                    "members": [
+                        { "username": "hol.user", "access_level": "developer" }
+                    ],
+                    "branches": [
+                        { 
+                            "name": "main", 
+                            "sourceBranch": "main", 
+                            "protected": false,
+                            "commits": [
+                                { 
+                                    "message": "Initial commit", 
+                                    "author": "hol.user",
+                                    "actions": [
+                                        { "action": "update", "file_path": "README.md", "content": "README.md" }
+                                    ]
+                                 }
+                            ]
+                        },
+                        { 
+                            "name": "staging", 
+                            "sourceBranch": "main", 
+                            "protected": false,
+                            "commits": [
+                                { 
+                                    "message": "Initial commit", 
+                                    "author": "hol.user",
+                                    "actions": [
+                                        { "action": "update", "file_path": "README.md", "content": "README.md" }
+                                    ]
+                                 }
+                            ]
+                        },
+                        { 
+                            "name": "prod", 
+                            "sourceBranch": "main", 
+                            "protected": false,
+                            "commits": [
+                                { 
+                                    "message": "Initial commit", 
+                                    "author": "hol.user",
+                                    "actions": [
+                                        { "action": "update", "file_path": "README.md", "content": "README.md" }
+                                    ]
+                                 }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Sci Tech App",
+                    "description": "Scientific Technology Application",
+                    "visibility": "public",
+                    "members": [
+                        { "username": "hol.user", "access_level": "developer" }
+                    ],
+                    "branches": [
+                        { 
+                            "name": "main", 
+                            "sourceBranch": "main", 
+                            "protected": false,
+                            "commits": [
+                                { 
+                                    "message": "Initial commit", 
+                                    "author": "hol.user",
+                                    "actions": [
+                                        { "action": "update", "file_path": "README.md", "content": "README.md" }
+                                    ]
+                                 }
+                            ]
+                        },
+                        { 
+                            "name": "staging", 
+                            "sourceBranch": "main", 
+                            "protected": false,
+                            "commits": [
+                                { 
+                                    "message": "Initial commit", 
+                                    "author": "hol.user",
+                                    "actions": [
+                                        { "action": "update", "file_path": "README.md", "content": "README.md" }
+                                    ]
+                                 }
+                            ]
+                        },
+                        { 
+                            "name": "prod", 
+                            "sourceBranch": "main", 
+                            "protected": false,
+                            "commits": [
+                                { 
+                                    "message": "Initial commit", 
+                                    "author": "hol.user",
+                                    "actions": [
+                                        { "action": "update", "file_path": "README.md", "content": "README.md" }
+                                    ]
+                                 }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Dev Team B",
+            "visibility": "public",
+            "description": "Development Team B",
+            "projects": [
+                {
+                    "name": "Fin Tech App",
+                    "description": "Financial Technology Application",
+                    "visibility": "public",
+                    "members": [
+                        { "username": "hol.user", "access_level": "developer" }
+                    ],
+                    "branches": [
+                        { 
+                            "name": "main", 
+                            "sourceBranch": "main", 
+                            "protected": false,
+                            "commits": [
+                                { 
+                                    "message": "Initial commit", 
+                                    "author": "hol.user",
+                                    "actions": [
+                                        { "action": "update", "file_path": "README.md", "content": "README.md" }
+                                    ]
+                                 }
+                            ]
+                        },
+                        { 
+                            "name": "staging", 
+                            "sourceBranch": "main", 
+                            "protected": false,
+                            "commits": [
+                                { 
+                                    "message": "Initial commit", 
+                                    "author": "hol.user",
+                                    "actions": [
+                                        { "action": "update", "file_path": "README.md", "content": "README.md" }
+                                    ]
+                                 }
+                            ]
+                        },
+                        { 
+                            "name": "prod", 
+                            "sourceBranch": "main", 
+                            "protected": false,
+                            "commits": [
+                                { 
+                                    "message": "Initial commit", 
+                                    "author": "hol.user",
+                                    "actions": [
+                                        { "action": "update", "file_path": "README.md", "content": "README.md" }
+                                    ]
+                                 }
+                            ]
+                        }
+                    ]   
+                }
+            ]
+        },
+        {
+            "name": "DevOps Team",
+            "visibility": "internal",
+            "description": "DevOps Team for Infrastructure and CI/CD",
+            "projects": [
+                {
+                    "name": "Production",
+                    "description": "Production Environment",
+                    "visibility": "public",
+                    "members": [
+                        { "username": "hol.admin", "access_level": "developer" }
+                    ],
+                    "branches": [
+                        { 
+                            "name": "main", 
+                            "sourceBranch": "main", 
+                            "protected": false,
+                            "commits": [
+                                { 
+                                    "message": "Initial commit", 
+                                    "author": "hol.admin",
+                                    "actions": [
+                                        { "action": "update", "file_path": "README.md", "content": "README.md" }
+                                    ]
+                                 }
+                            ]
+                        },
+                        { 
+                            "name": "staging", 
+                            "sourceBranch": "main", 
+                            "protected": false,
+                            "commits": [
+                                { 
+                                    "message": "Initial commit", 
+                                    "author": "hol.admin",
+                                    "actions": [
+                                        { "action": "update", "file_path": "README.md", "content": "README.md" }
+                                    ]
+                                 }
+                            ]
+                        },
+                        { 
+                            "name": "prod", 
+                            "sourceBranch": "main", 
+                            "protected": false,
+                            "commits": [
+                                { 
+                                    "message": "Initial commit", 
+                                    "author": "hol.admin",
+                                    "actions": [
+                                        { "action": "update", "file_path": "README.md", "content": "README.md" }
+                                    ]
+                                 }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Cloud Admin Team",
+            "visibility": "public",
+            "description": "Cloud Templates for VCF Automation",
+            "projects": [
+                {
+                    "name": "All Apps",
+                    "description": "VCF-A All Apps Templates",
+                    "visibility": "public",
+                    "members": [
+                        { "username": "hol.admin", "access_level": "developer" }
+                    ],
+                    "branches": [
+                        { 
+                            "name": "main", 
+                            "sourceBranch": "main", 
+                            "protected": true,
+                            "commits": [
+                                { 
+                                    "message": "Initial commit", 
+                                    "author": "hol.admin",
+                                    "actions": [
+                                        { "action": "update", "file_path": "README.md", "content": "README.md" }
+                                    ]
+                                 }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "VM Apps",
+                    "description": "VCF-A VM App Templates",
+                    "visibility": "public",
+                    "members": [
+                        { "username": "hol.admin", "access_level": "developer" }
+                    ],
+                    "branches": [
+                        { 
+                            "name": "main", 
+                            "sourceBranch": "main", 
+                            "protected": true,
+                            "commits": [
+                                { 
+                                    "message": "Initial commit", 
+                                    "author": "hol.admin",
+                                    "actions": [
+                                        { "action": "update", "file_path": "README.md", "content": "README.md" }
+                                    ]
+                                 }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+
+    ]
+}
