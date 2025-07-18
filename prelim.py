@@ -242,7 +242,7 @@ if not lsf.labcheck:
 
 src="/vpodrepo/2026-labs/2601/labfiles"
 dst="holuser@console:/home/holuser/labfiles"
-pwd = lsf.password()
+pwd = lsf.password
 
 if lsf.LMC:
     lsf.write_output(f"TASK: Copying '{src}' to '{dst}'.", logfile=lsf.logfile)
