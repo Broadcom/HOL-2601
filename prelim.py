@@ -241,13 +241,17 @@ if not lsf.labcheck:
 ########################################################
 
 src="/vpodrepo/2026-labs/2601/labfiles"
-dst="holuser@console:/home/holuser/labfiles"
+dst="/home/holuser/"
 pwd = lsf.password
 
+
 if lsf.LMC:
+    
     lsf.write_output(f"TASK: Copying '{src}' to '{dst}'.", logfile=lsf.logfile)
+  
     try:
-        lsf.scp(src, dst, pwd, recurse='True')
+        lsf.ssh(f'rm -rf {dst}/labfiles', 'holuser@console', pwd)
+        lsf.scp(src, f"holuser@console:{dst}", pwd, recurse='True')
     except Exception as e:
         lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
         print(f'INFO: {e}')
@@ -255,3 +259,6 @@ if lsf.LMC:
 lsf.write_output(f'{sys.argv[0]} finished.', logfile=lsf.logfile) 
 exit(0)
 
+########################################################
+#  2501 - Restart DOcker Services
+########################################################
