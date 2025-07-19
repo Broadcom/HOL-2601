@@ -221,7 +221,7 @@ if not lsf.labcheck:
 #             lsf.write_output(f'2501: Committing Repos to Gitlab.', logfile=lsf.logfile)
 #             print(f'2501: Committing Repos to Gitlab.')
 #             command = "powershell -NoProfile -ExecutionPolicy Bypass -File c:\gitlab\sync.ps1"
-#             lsf.runwincmd(command,'mainconsole','Administrator', 'VMware123!')
+#             lsf.runwincmd(command,'mainconsole','Administrator', '******')
 #         else:
 #             lsf.labfail(f'2501: Failed to commit Repos to Gitlab')
 #             print(f'2501: Failed to commit Repos to Gitlab')
