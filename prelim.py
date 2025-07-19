@@ -247,10 +247,17 @@ pwd = lsf.password
 
 if lsf.LMC:
     
+    lsf.write_output(f"TASK: Removing existing labfiles folder...", logfile=lsf.logfile)
+    try:
+        lsf.ssh(f'rm -rf {dst}/labfiles', 'holuser@console', pwd)
+    except Exception as e:
+        lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
+        print(f'INFO: {e}')
+
     lsf.write_output(f"TASK: Copying '{src}' to '{dst}'.", logfile=lsf.logfile)
   
     try:
-        lsf.ssh(f'rm -rf {dst}/labfiles', 'holuser@console', pwd)
+
         lsf.scp(src, f"holuser@console:{dst}", pwd, recurse='True')
     except Exception as e:
         lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
