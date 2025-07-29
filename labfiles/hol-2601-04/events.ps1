@@ -14,7 +14,7 @@ Connect-VIServer -Server $vc -Credential $credential -Force
 }
 
 ########################################################################
-FUNCTIONS BEFORE THIS LINE
+## FUNCTIONS BEFORE THIS LINE
 ########################################################################
 
 $password = Get-Content "/home/holuser/Desktop/PASSWORD.txt" -TotalCount 1
