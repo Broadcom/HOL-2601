@@ -263,9 +263,18 @@ if lsf.LMC:
         lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
         print(f'INFO: {e}')
 
-lsf.write_output(f'{sys.argv[0]} finished.', logfile=lsf.logfile) 
-exit(0)
 
 ########################################################
-#  2501 - Restart DOcker Services
+#  2501 - Restart Docker Services
 ########################################################
+if lsf.LMC: 
+    if not lsf.labcheck:
+        lsf.write_output(f"TASK: Recreating Docker Containers", logfile=lsf.logfile)
+        try:
+            lsf.ssh(f'docker compose -f /opt/services.yaml up -d --build --force-recreate --wait', 'holuser@docker', pwd)
+        except Exception as e:
+            lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
+            print(f'INFO: {e}')
+
+lsf.write_output(f'{sys.argv[0]} finished.', logfile=lsf.logfile) 
+exit(0)
