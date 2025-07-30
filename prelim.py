@@ -263,6 +263,17 @@ if lsf.LMC:
         lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
         print(f'INFO: {e}')
 
+########################################################
+#  260x - Shutdown Docker Services
+########################################################
+if lsf.LMC: 
+    if not lsf.labcheck:
+        lsf.write_output(f"TASK: Recreating Docker Containers", logfile=lsf.logfile)
+        try:
+            lsf.ssh(f'docker compose -f /opt/services.yaml down', 'holuser@docker', pwd)
+        except Exception as e:
+            lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
+            print(f'INFO: {e}')
 
 ########################################################
 #  260x - Restart Docker Services
