@@ -244,7 +244,6 @@ src="/vpodrepo/2026-labs/2601/labfiles"
 dst="/home/holuser/"
 pwd = lsf.password
 
-
 if lsf.LMC:
     
     lsf.write_output(f"TASK: Removing existing labfiles folder...", logfile=lsf.logfile)
@@ -274,34 +273,6 @@ if lsf.LMC:
         except Exception as e:
             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
             print(f'INFO: {e}')
-
-########################################################
-#  26xx - Restart Docker Services
-########################################################
-if lsf.LMC: 
-    if not lsf.labcheck:
-        lsf.write_output(f"TASK: Recreating Docker Containers", logfile=lsf.logfile)
-        try:
-            lsf.ssh(f'docker compose -f /opt/services.yaml up -d --build --force-recreate --wait', 'holuser@docker', pwd)
-        except Exception as e:
-            lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
-            print(f'INFO: {e}')
-
-########################################################
-#  26xx - Check Gitlab Status
-########################################################
-gitFqdn = "gitlab.site-a.vcf.lab"
-sslVerify = False
-
-if lsf.LMC:
-    lsf.write_output(f"TASK: Checking Gitlab Status...", logfile=lsf.logfile)
-    while True:
-        if hol.isGitlabReady(gitFqdn, sslVerify) and hol.isGitlabLive(gitFqdn, sslVerify) and hol.isGitlabHealthy(gitFqdn, sslVerify):
-            lsf.write_output(f'INFO: Gitlab {gitFqdn} is in a Ready state!', logfile=lsf.logfile)
-            break
-        else:
-            lsf.write_output(f'INFO: Gitlab {gitFqdn} is not Ready!', logfile=lsf.logfile)
-            lsf.labstartup_sleep(30)
 
 ########################################################
 #  26xx - Copy GitLab Projects files to WMC
