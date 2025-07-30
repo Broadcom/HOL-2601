@@ -264,11 +264,11 @@ if lsf.LMC:
         print(f'INFO: {e}')
 
 ########################################################
-#  260x - Shutdown Docker Services
+#  26xx - Shutdown Docker Services
 ########################################################
 if lsf.LMC: 
     if not lsf.labcheck:
-        lsf.write_output(f"TASK: Recreating Docker Containers", logfile=lsf.logfile)
+        lsf.write_output(f"TASK: Shutting Down Docker Containers", logfile=lsf.logfile)
         try:
             lsf.ssh(f'docker compose -f /opt/services.yaml down', 'holuser@docker', pwd)
         except Exception as e:
@@ -276,7 +276,7 @@ if lsf.LMC:
             print(f'INFO: {e}')
 
 ########################################################
-#  260x - Restart Docker Services
+#  26xx - Restart Docker Services
 ########################################################
 if lsf.LMC: 
     if not lsf.labcheck:
@@ -286,6 +286,102 @@ if lsf.LMC:
         except Exception as e:
             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
             print(f'INFO: {e}')
+
+########################################################
+#  26xx - CHeck Gitlab Status
+########################################################
+gitFqdn = "gitlab.site-a.vcf.lab"
+sslVerify = False
+
+if lsf.LMC:
+    while True:
+        if hol.isGitlabReady(gitFqdn, sslVerify) and hol.isGitlabLive(gitFqdn, sslVerify) and hol.isGitlabHealthy(gitFqdn, sslVerify):
+            lsf.write_output(f'INFO: Gitlab {gitFqdn} is in a Ready state!', logfile=lsf.logfile)
+            break
+        else:
+            lsf.write_output(f'INFO: Gitlab {gitFqdn} is not Ready!', logfile=lsf.logfile)
+            lsf.labstartup_sleep(30)
+
+########################################################
+#  26xx - Copy GitLab Projects files to WMC
+########################################################
+# gitFqdn = "gitlab.vcf.sddc.lab"
+# gitlabRepoSource = "/vpodrepo/2025-labs/2501/gitlab"
+# gitlabRepoDestination = f"{lsf.mc}"
+# sslVerify = False
+
+# while True:
+#     if hol.isGitlabReady(gitFqdn, sslVerify) and hol.isGitlabLive(gitFqdn, sslVerify) and hol.isGitlabHealthy(gitFqdn, sslVerify):
+#         lsf.write_output(f'2501: Gitlab {gitFqdn} is in a Ready state!', logfile=lsf.logfile)
+#         print(f'2501: Gitlab {gitFqdn} is in a Ready state!')
+#         break
+#     else:
+#         print(f'2501: Gitlab {gitFqdn} is not Ready!')
+#         lsf.write_output(f'2501: Gitlab {gitFqdn} is not Ready!', logfile=lsf.logfile)
+#         lsf.labstartup_sleep(30)
+
+# if lsf.WMC and os.path.exists(gitlabRepoDestination) and os.path.exists(gitlabRepoSource):
+#     try:
+        
+#         hol.createFolder(f'{lsf.mc}', 'gitlab')
+        
+#         lsf.write_output(f'2501: Copying repo files from {gitlabRepoSource} to {gitlabRepoDestination} folder.', logfile=lsf.logfile)
+#         print(f'2501: Copying repo files from {gitlabRepoSource} to {gitlabRepoDestination} folder.')
+#         os.system(f'cp -rfu {gitlabRepoSource} {gitlabRepoDestination}')
+#         lsf.write_output(f'2501: Copying repo files complete.', logfile=lsf.logfile)
+#         print(f'2501: Copying repo files complete.')
+#     except Exception as e:
+#         lsf.labfail(f'2501: {e}')
+#         print(f'2501: {e}')
+#         exit(1)
+
+########################################################
+#  26xx - GitLab Clean Up Script
+########################################################
+
+# if lsf.WMC:
+#     try:
+#         if os.path.isfile(f'{labfilesDestination}/gitlab/cleanup.ps1'):
+#             lsf.write_output(f'2501: Running Gitlab cleanup.ps1 on WMC.', logfile=lsf.logfile)
+#             print(f'2501: Running Gitlab cleanup.ps1 on WMC.')
+#             command = "powershell -NoProfile -ExecutionPolicy Bypass -File c:\gitlab\cleanup.ps1"
+#             lsf.runwincmd(command,'mainconsole','Administrator', 'VMware123!')
+#         else:
+#             lsf.labfail(f'2501: File: c:\gitlab\cleanup.ps1 not found')
+#             print(f'2501: File: c:\gitlab\cleanup.ps1 not found')
+#             exit(1)
+
+#     except Exception as e:
+#         lsf.labfail(f'2501: {e}')
+#         print(f'2501: {e}')
+#         exit(1)
+
+########################################################
+#  26xx - Commit Gitlab Projects files to Gitlab
+########################################################
+
+# if lsf.LMC:
+#     try:
+#         if os.path.isfile(f'{labfilesDestination}/gitlab/sync.ps1'):
+#             lsf.write_output(f'2501: Committing Repos to Gitlab.', logfile=lsf.logfile)
+#             print(f'2501: Committing Repos to Gitlab.')
+#             command = "powershell -NoProfile -ExecutionPolicy Bypass -File c:\gitlab\sync.ps1"
+#             lsf.runwincmd(command,'mainconsole','Administrator', 'VMware123!')
+#         else:
+#             lsf.labfail(f'2501: Failed to commit Repos to Gitlab')
+#             print(f'2501: Failed to commit Repos to Gitlab')
+#             exit(1)
+
+#     except Exception as e:
+#         lsf.labfail(f'2501: {e}')
+#         print(f'2501: {e}')
+#         exit(1)
+# else:
+#     lsf.labfail(f'2501: Error committing repository files to Gitlab.')
+#     print(f'2501: Error committing repository files to Gitlab.')
+#     exit(1)
+
+
 
 lsf.write_output(f'{sys.argv[0]} finished.', logfile=lsf.logfile) 
 exit(0)
