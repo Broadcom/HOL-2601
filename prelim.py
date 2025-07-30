@@ -237,7 +237,7 @@ if not lsf.labcheck:
 #     exit(1)
 
 ########################################################
-#  2501 - Copy LabFiles from vPod Repo
+#  260x - Copy LabFiles from vPod Repo
 ########################################################
 
 src="/vpodrepo/2026-labs/2601/labfiles"
@@ -265,7 +265,7 @@ if lsf.LMC:
 
 
 ########################################################
-#  2501 - Restart Docker Services
+#  260x - Restart Docker Services
 ########################################################
 if lsf.LMC: 
     if not lsf.labcheck:
