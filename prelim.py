@@ -288,12 +288,13 @@ if lsf.LMC:
             print(f'INFO: {e}')
 
 ########################################################
-#  26xx - CHeck Gitlab Status
+#  26xx - Check Gitlab Status
 ########################################################
 gitFqdn = "gitlab.site-a.vcf.lab"
 sslVerify = False
 
 if lsf.LMC:
+    lsf.write_output(f"TASK: Checking Gitlab Status...", logfile=lsf.logfile)
     while True:
         if hol.isGitlabReady(gitFqdn, sslVerify) and hol.isGitlabLive(gitFqdn, sslVerify) and hol.isGitlabHealthy(gitFqdn, sslVerify):
             lsf.write_output(f'INFO: Gitlab {gitFqdn} is in a Ready state!', logfile=lsf.logfile)
