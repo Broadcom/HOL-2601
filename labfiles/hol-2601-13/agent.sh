@@ -19,22 +19,25 @@ fi
 
 # Create wheel group if it doesn't exist
 if ! getent group wheel > /dev/null; then
-  echo "🔧 Creating 'wheel' group..."
+  echo "Creating 'wheel' group..."
   groupadd wheel
 else
   echo "'wheel' group already exists."
 fi
 
 # Add user to wheel group
-echo "🔧 Adding user '$USER' to 'wheel' group..."
+echo "Adding user '$USER' to 'wheel' group..."
 usermod -aG wheel "$USER"
 
 # Configure sudoers (safe via sudoers.d)
 SUDOERS_FILE="/etc/sudoers.d/wheel-nopasswd"
 
-if [ -f ]
-echo "🔧 Creating sudoers entry at $SUDOERS_FILE..."
-echo "%wheel ALL=(ALL) NOPASSWD: ALL" > "$SUDOERS_FILE"
-chmod 440 "$SUDOERS_FILE"
+if [ -f "$SUDOERS_FILE" ]; then
+  echo "Sudoers file already exists for wheel..."
+else
+  echo "Creating sudoers entry at $SUDOERS_FILE..."
+  echo "%wheel ALL=(ALL) NOPASSWD: ALL" > "$SUDOERS_FILE"
+  chmod 440 "$SUDOERS_FILE"
+fi
 
 echo "User '$USER' can now use sudo without password via 'wheel' group."
