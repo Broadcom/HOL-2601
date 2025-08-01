@@ -153,19 +153,19 @@ if lsf.LMC:
 ########################################################
 #  26xx - Check Gitlab Status
 ########################################################
-gitFqdn = "gitlab.site-a.vcf.lab"
-sslVerify = False
+# gitFqdn = "gitlab.site-a.vcf.lab"
+# sslVerify = False
 
-if lsf.LMC:
-    lsf.write_output(f"TASK: Checking Gitlab Status...", logfile=lsf.logfile)
-    while True:
-        if hol.isGitlabReady(gitFqdn, sslVerify) and hol.isGitlabLive(gitFqdn, sslVerify) and hol.isGitlabHealthy(gitFqdn, sslVerify):
-            lsf.write_output(f'INFO: Gitlab {gitFqdn} is in a Ready state!', logfile=lsf.logfile)
-            lsf.ssh(f'docker restart gitlab --wait', 'holuser@docker', pwd)
-            break
-        else:
-            lsf.write_output(f'INFO: Gitlab {gitFqdn} is not Ready!', logfile=lsf.logfile)
-            lsf.labstartup_sleep(30)
+# if lsf.LMC:
+#     lsf.write_output(f"TASK: Checking Gitlab Status...", logfile=lsf.logfile)
+#     while True:
+#         if hol.isGitlabReady(gitFqdn, sslVerify) and hol.isGitlabLive(gitFqdn, sslVerify) and hol.isGitlabHealthy(gitFqdn, sslVerify):
+#             lsf.write_output(f'INFO: Gitlab {gitFqdn} is in a Ready state!', logfile=lsf.logfile)
+#             lsf.ssh(f'docker restart gitlab --wait', 'holuser@docker', pwd)
+#             break
+#         else:
+#             lsf.write_output(f'INFO: Gitlab {gitFqdn} is not Ready!', logfile=lsf.logfile)
+#             lsf.labstartup_sleep(30)
 
 
 
