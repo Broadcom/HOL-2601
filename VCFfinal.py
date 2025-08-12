@@ -162,7 +162,6 @@ if lsf.LMC:
     while True:
         if hol.isGitlabReady(gitFqdn, sslVerify) and hol.isGitlabLive(gitFqdn, sslVerify) and hol.isGitlabHealthy(gitFqdn, sslVerify):
             lsf.write_output(f'INFO: Gitlab {gitFqdn} is in a Ready state!', logfile=lsf.logfile)
-            lsf.ssh(f'docker restart gitlab --wait', 'holuser@docker', pwd)
             break
         else:
             lsf.write_output(f'INFO: Gitlab {gitFqdn} is not Ready!', logfile=lsf.logfile)
