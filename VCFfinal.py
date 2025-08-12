@@ -135,7 +135,7 @@ if 'vravms' in lsf.config['VCFFINAL'].keys():
 ########################################################
 #  26xx - Restart Docker Services
 ########################################################
-# pwd = lsf.password
+pwd = lsf.password
 
 # services = ["gitlab","poste.io","ldap", "registry", "flask"]
 
@@ -155,6 +155,7 @@ if 'vravms' in lsf.config['VCFFINAL'].keys():
 ########################################################
 gitFqdn = "gitlab.site-a.vcf.lab"
 sslVerify = False
+pwd = lsf.password
 
 if lsf.LMC:
     lsf.write_output(f"TASK: Checking Gitlab Status...", logfile=lsf.logfile)

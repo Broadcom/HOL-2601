@@ -265,6 +265,7 @@ if lsf.LMC:
 ########################################################
 #  26xx - Shutdown Docker Services
 ########################################################
+# pwd = lsf.password
 # if lsf.LMC: 
 #     if not lsf.labcheck:
 #         lsf.write_output(f"TASK: Shutting Down Docker Containers", logfile=lsf.logfile)
