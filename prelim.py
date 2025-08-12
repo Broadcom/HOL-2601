@@ -265,14 +265,14 @@ if lsf.LMC:
 ########################################################
 #  26xx - Shutdown Docker Services
 ########################################################
-if lsf.LMC: 
-    if not lsf.labcheck:
-        lsf.write_output(f"TASK: Shutting Down Docker Containers", logfile=lsf.logfile)
-        try:
-            lsf.ssh(f'docker compose -f /opt/services.yaml down', 'holuser@docker', pwd)
-        except Exception as e:
-            lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
-            print(f'INFO: {e}')
+# if lsf.LMC: 
+#     if not lsf.labcheck:
+#         lsf.write_output(f"TASK: Shutting Down Docker Containers", logfile=lsf.logfile)
+#         try:
+#             lsf.ssh(f'docker compose -f /opt/services.yaml down', 'holuser@docker', pwd)
+#         except Exception as e:
+#             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
+#             print(f'INFO: {e}')
 
 
 ########################################################
@@ -284,7 +284,7 @@ if lsf.LMC:
     if not lsf.labcheck:
         lsf.write_output(f"TASK: Restarting Docker Containers", logfile=lsf.logfile)
         try:
-            lsf.ssh(f'docker compose -f /opt/services.yaml up -d --build --force-recreate --wait', 'holuser@docker', pwd)
+            lsf.ssh(f'docker compose -f /opt/services.yaml up -d --build --wait', 'holuser@docker', pwd)
         except Exception as e:
             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
             print(f'INFO: {e}')
