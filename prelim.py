@@ -265,30 +265,30 @@ if lsf.LMC:
 ########################################################
 #  26xx - Shutdown Docker Services
 ########################################################
-# pwd = lsf.password
-# if lsf.LMC: 
-#     if not lsf.labcheck:
-#         lsf.write_output(f"TASK: Shutting Down Docker Containers", logfile=lsf.logfile)
-#         try:
-#             lsf.ssh(f'docker compose -f /opt/services.yaml down', 'holuser@docker', pwd)
-#         except Exception as e:
-#             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
-#             print(f'INFO: {e}')
+pwd = lsf.password
+if lsf.LMC: 
+    if not lsf.labcheck:
+        lsf.write_output(f"TASK: Shutting Down Docker Containers", logfile=lsf.logfile)
+        try:
+            lsf.ssh(f'docker compose -f /opt/services.yaml down', 'holuser@docker', pwd)
+        except Exception as e:
+            lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
+            print(f'INFO: {e}')
 
 
-# ########################################################
-# #  26xx - Recreate Docker Services
-# ########################################################
-# pwd = lsf.password
+########################################################
+#  26xx - Recreate Docker Services
+########################################################
+pwd = lsf.password
 
-# if lsf.LMC: 
-#     if not lsf.labcheck:
-#         lsf.write_output(f"TASK: Restarting Docker Containers", logfile=lsf.logfile)
-#         try:
-#             lsf.ssh(f'docker compose -f /opt/services.yaml up -d --build --wait', 'holuser@docker', pwd)
-#         except Exception as e:
-#             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
-#             print(f'INFO: {e}')
+if lsf.LMC: 
+    if not lsf.labcheck:
+        lsf.write_output(f"TASK: Restarting Docker Containers", logfile=lsf.logfile)
+        try:
+            lsf.ssh(f'docker compose -f /opt/services.yaml up -d --build --wait', 'holuser@docker', pwd)
+        except Exception as e:
+            lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
+            print(f'INFO: {e}')
             
 ########################################################
 #  26xx - Copy GitLab Projects files to WMC
