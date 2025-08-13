@@ -237,7 +237,7 @@ if not lsf.labcheck:
 #     exit(1)
 
 ########################################################
-#  260x - Copy LabFiles from vPod Repo
+#  26xx - Copy LabFiles from vPod Repo
 ########################################################
 
 src="/vpodrepo/2026-labs/2601/labfiles"
@@ -245,7 +245,7 @@ dst="/home/holuser/"
 pwd = lsf.password
 
 if lsf.LMC:
-    
+    lsf.write_vpodprogress('Updating labfiles folder', 'GOOD-2', color=color)
     lsf.write_output(f"TASK: Removing existing labfiles folder...", logfile=lsf.logfile)
     try:
         lsf.ssh(f'rm -rf {dst}/labfiles', 'holuser@console', pwd)
@@ -265,15 +265,16 @@ if lsf.LMC:
 ########################################################
 #  26xx - Shutdown Docker Services
 ########################################################
-pwd = lsf.password
-if lsf.LMC: 
-    if not lsf.labcheck:
-        lsf.write_output(f"TASK: Shutting Down Docker Containers", logfile=lsf.logfile)
-        try:
-            lsf.ssh(f'docker compose -f /opt/services.yaml down', 'holuser@docker', pwd)
-        except Exception as e:
-            lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
-            print(f'INFO: {e}')
+# pwd = lsf.password
+
+# if lsf.LMC: 
+#     if not lsf.labcheck:
+#         lsf.write_output(f"TASK: Shutting Down Docker Containers", logfile=lsf.logfile)
+#         try:
+#             lsf.ssh(f'docker compose -f /opt/services.yaml down', 'holuser@docker', pwd)
+#         except Exception as e:
+#             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
+#             print(f'INFO: {e}')
 
 
 ########################################################
@@ -283,9 +284,10 @@ pwd = lsf.password
 
 if lsf.LMC: 
     if not lsf.labcheck:
-        lsf.write_output(f"TASK: Restarting Docker Containers", logfile=lsf.logfile)
+        lsf.write_vpodprogress('Rebuilding Docker Containers', 'GOOD-2', color=color)
+        lsf.write_output(f"TASK: Rebuilding Docker Containers", logfile=lsf.logfile)
         try:
-            lsf.ssh(f'docker compose -f /opt/services.yaml up -d --build --wait', 'holuser@docker', pwd)
+            lsf.ssh(f'docker compose -f /opt/services.yaml up -d --build --force-recreate --wait', 'holuser@docker', pwd)
         except Exception as e:
             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
             print(f'INFO: {e}')
