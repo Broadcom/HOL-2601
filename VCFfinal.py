@@ -141,7 +141,7 @@ if lsf.LMC:
         lsf.write_vpodprogress('Rebuilding Docker Containers', 'GOOD-2', color=color)
         lsf.write_output(f"TASK: Rebuilding Docker Containers", logfile=lsf.logfile)
         try:
-            lsf.ssh(f'docker compose -f /opt/services.yaml restart --wait', 'holuser@docker', pwd)
+            lsf.ssh(f'docker compose -f /opt/services.yaml restart', 'holuser@docker', pwd)
         except Exception as e:
             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
             print(f'INFO: {e}')
