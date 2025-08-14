@@ -132,23 +132,20 @@ if 'vravms' in lsf.config['VCFFINAL'].keys():
 
 
 ########################################################
-#  26xx - Restart Docker Services
+#  26xx - Restart Docker Services via Compose
 ########################################################
 pwd = lsf.password
 
-services = ["gitlab","poste.io","ldap", "registry", "flask", "repo"]
-
 if lsf.LMC: 
     if not lsf.labcheck:
-        for service in services:
-            lsf.write_output(f"TASK: Restarting Docker Container - {service}", logfile=lsf.logfile)
-            lsf.write_vpodprogress(f'Restarting Docker Container - {service}', 'GOOD-8', color=color)
-            try:
-                lsf.ssh(f'docker restart {service}', 'holuser@docker', pwd)
-
-            except Exception as e:
-                lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
-                print(f'INFO: {e}')
+        lsf.write_vpodprogress('Rebuilding Docker Containers', 'GOOD-2', color=color)
+        lsf.write_output(f"TASK: Rebuilding Docker Containers", logfile=lsf.logfile)
+        try:
+            lsf.ssh(f'docker compose -f /opt/services.yaml restart --wait', 'holuser@docker', pwd)
+        except Exception as e:
+            lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
+            print(f'INFO: {e}')
+            
 
 ########################################################
 #  26xx - Check Gitlab Status
