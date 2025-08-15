@@ -1,6 +1,7 @@
 import requests
 import urllib3
 import lsfunctions as lsf
+import socket
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -149,3 +150,10 @@ def isGitlabLive(inFqdn, verify):
     except requests.exceptions.RequestException as e:
         print(f"ERROR: REQUEST - {e}")
         lsf.write_output(f'ERROR: Request Error - {e}', logfile=lsf.logfile)
+
+def isReachable(hostname, port=443, timeout=5):
+    try:
+        with socket.create_connection((hostname, port), timeout):
+            return True
+    except (socket.timeout, socket.error):
+        return False
