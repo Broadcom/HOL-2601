@@ -1,0 +1,60 @@
+formatVersion: 1
+inputs:
+  namespace:
+    type: string
+    enum:
+      - ns-apps-project-pbdj2
+  appname:
+    type: string
+    default: nginx-web-server
+resources:
+  SupervisorNamespace:
+    type: CCI.Supervisor.Namespace
+    properties:
+      name: ${input.namespace}
+      existing: true
+  nginxLoadBalancer:
+    type: CCI.Supervisor.Resource
+    properties:
+      context: ${resource.SupervisorNamespace.id}
+      manifest:
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: app-lb-${input.appname}
+        spec:
+          selector:
+            app: ${input.appname}
+          ports:
+            - name: http
+              protocol: TCP
+              port: 80
+              targetPort: 80
+          type: LoadBalancer
+  nginxWebServer:
+    type: CCI.Supervisor.Resource
+    properties:
+      context: ${resource.SupervisorNamespace.id}
+      manifest:
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: deployment-${input.appname}
+          labels:
+            app: ${input.appname}
+        spec:
+          selector:
+            matchLabels:
+              app: ${input.appname}
+          template:
+            metadata:
+              labels:
+                app: ${input.appname}
+            spec:
+              containers:
+                - image: registry.site-a.vcf.lab/nginx
+                  name: nginx
+                  ports:
+                    - containerPort: 80
+                      name: http
+                      protocol: TCP
