@@ -262,7 +262,6 @@ if lsf.LMC:
         lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
         print(f'INFO: {e}')
 
-           
 ########################################################
 #  26xx - Copy GitLab Projects files to WMC
 ########################################################
