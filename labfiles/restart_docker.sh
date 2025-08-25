@@ -24,13 +24,14 @@ if [ -z "$password" ]; then
     exit 1
 fi
 
-echo -e "Stopping containers on ${C}${remote_user}@${remote_host}${NC} using ${C}${remote_command}${NC}"
 remote_command="docker compose -f /opt/services.yaml down"
+echo -e "Stopping containers on ${C}${remote_user}@${remote_host}${NC} using ${C}${remote_command}${NC}"
 
 sshpass -p "${password}" ssh ${ssh_options} ${remote_user}@${remote_host} ${remote_command}
 
-echo -e "Starting containers on ${C}${remote_user}@${remote_host}${NC} using ${C}${remote_command}${NC}"
+
 remote_command="docker compose -f /opt/services.yaml up -d --build --wait"
+echo -e "Starting containers on ${C}${remote_user}@${remote_host}${NC} using ${C}${remote_command}${NC}"
 
 sshpass -p "${password}" ssh ${ssh_options} ${remote_user}@${remote_host} ${remote_command}
 
