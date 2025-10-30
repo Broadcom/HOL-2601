@@ -181,9 +181,20 @@ if 'vraurls' in lsf.config['VCFFINAL'].keys():
         #  lsf.test_url(url[0], pattern=url[1], not_ready='not yet', verbose=True)
         ctr = 0
         while not lsf.test_url(url[0], pattern=url[1], timeout=2, verbose=False):
-            lsf.write_output(f'Sleeping and will try again...')
-            lsf.labstartup_sleep(30)
             ctr += 1
+            # Run the watchvcfa script to make sure the seaweedfs-master-0 pod is not stale
+            if ctr == 1:
+                lsf.write_output(f'Automation URLS failed to come up in 10m, trying watchvcfa script...')
+                lsf.run_command("/home/holuser/hol/Tools/watchvcfa.sh")
+            # If the URL is still unreachable after 30m, even with remediation attempt, then fail the pod
+            if ctr == 30:
+                lsf.labfail('fail: Automation URLS not accessible after 30m, should be reached in under 8m')
+                exit(1)
+                # Try to prevent excessive logging while waiting for VLP to stop vApp
+                lsf.labstartup_sleep(120)
+            # Wait for 1m before retrying
+            lsf.write_output(f'Sleeping and will try again... {ctr} / 30')
+            lsf.labstartup_sleep(60)    
 
 for si in lsf.sis:
     connect.Disconnect(si)
