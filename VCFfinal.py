@@ -166,14 +166,18 @@ if lsf.LMC:
 #             lsf.write_output(f'INFO: Gitlab {gitFqdn} is not Ready!', logfile=lsf.logfile)
 #             lsf.labstartup_sleep(30)
 
-
-
 ##### Final URL Checking
 vraurls = []
 if 'vraurls' in lsf.config['VCFFINAL'].keys():
     vraurls = lsf.config.get('VCFFINAL', 'vraurls').split('\n')
     lsf.write_vpodprogress('Aria Automation URL Checks', 'GOOD-8', color=color)
     lsf.write_output('Aria Automation URL Checks...')
+    # Check VCF Automation ssh for password expiration and fix if expired
+    lsf.write_output('Fixing expired automation pw if necessary... operation takes approximately 1m 23s')
+    lsf.run_command("/home/holuser/hol/Tools/vcfapwcheck.sh")
+    # Run the watchvcfa script to make sure the seaweedfs-master-0 pod is not stale
+    lsf.run_command("/home/holuser/hol/Tools/watchvcfa.sh")
+
     for entry in vraurls:
         url = entry.split(',')
         lsf.write_output(f'Testing {url[0]} for pattern {url[1]}')
@@ -181,9 +185,16 @@ if 'vraurls' in lsf.config['VCFFINAL'].keys():
         #  lsf.test_url(url[0], pattern=url[1], not_ready='not yet', verbose=True)
         ctr = 0
         while not lsf.test_url(url[0], pattern=url[1], timeout=2, verbose=False):
-            lsf.write_output(f'Sleeping and will try again...')
-            lsf.labstartup_sleep(30)
             ctr += 1
+            # If the URL is still unreachable after 30m, even with remediation attempt, then fail the pod
+            if ctr == 30:
+                lsf.labfail('fail: Automation URLS not accessible after 30m, should be reached in under 8m')
+                exit(1)
+                # Try to prevent excessive logging while waiting for VLP to stop vApp
+                lsf.labstartup_sleep(120)
+            # Wait for 1m before retrying
+            lsf.write_output(f'Sleeping and will try again... {ctr} / 30')
+            lsf.labstartup_sleep(60)    
 
 for si in lsf.sis:
     connect.Disconnect(si)
