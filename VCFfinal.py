@@ -156,7 +156,7 @@ if lsf.LMC:
         lsf.write_vpodprogress('Running VKS PVC Fix', 'GOOD-2', color=color)
         lsf.write_output(f"TASK: Running VKS PVC Fix", logfile=lsf.logfile)
         try:
-            lsf.ssh(f'bash /home/holuser/labfiles/pvc_fix.sh', 'holuser@docker', pwd)
+            lsf.ssh(f'bash /home/holuser/labfiles/pvc_fix.sh', 'holuser@console', pwd)
         except Exception as e:
             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
             print(f'INFO: {e}')
