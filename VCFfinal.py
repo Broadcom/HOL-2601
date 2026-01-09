@@ -146,6 +146,20 @@ if lsf.LMC:
             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
             print(f'INFO: {e}')
             
+########################################################
+#  26xx - PVC Fixes for VKS
+########################################################
+pwd = lsf.password
+
+if lsf.LMC: 
+    if not lsf.labcheck:
+        lsf.write_vpodprogress('Running VKS PVC Fix', 'GOOD-2', color=color)
+        lsf.write_output(f"TASK: Running VKS PVC Fix", logfile=lsf.logfile)
+        try:
+            lsf.ssh(f'bash /home/holuser/labfiles/pvc_fix.sh', 'holuser@docker', pwd)
+        except Exception as e:
+            lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
+            print(f'INFO: {e}')
 
 ########################################################
 #  26xx - Check Gitlab Status
