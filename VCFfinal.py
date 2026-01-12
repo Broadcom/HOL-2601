@@ -138,8 +138,8 @@ pwd = lsf.password
 
 if lsf.LMC: 
     if not lsf.labcheck:
-        lsf.write_vpodprogress('Rebuilding Docker Containers', 'GOOD-2', color=color)
-        lsf.write_output(f"TASK: Rebuilding Docker Containers", logfile=lsf.logfile)
+        lsf.write_vpodprogress('Rebuilding Docker Containers with --force-recreate', 'GOOD-2', color=color)
+        lsf.write_output(f"TASK: Rebuilding Docker Containers with --force-recreate", logfile=lsf.logfile)
         try:
             lsf.ssh(f'docker compose -f /opt/services.yaml up -d --build --wait --force-recreate', 'holuser@docker', pwd)
         except Exception as e:
