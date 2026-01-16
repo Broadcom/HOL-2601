@@ -29,7 +29,6 @@ echo -e "Stopping containers on ${C}${remote_user}@${remote_host}${NC} using ${C
 
 sshpass -p "${password}" ssh ${ssh_options} ${remote_user}@${remote_host} ${remote_command}
 
-
 remote_command="docker compose -f /opt/services.yaml up -d --build --wait"
 echo -e "Starting containers on ${C}${remote_user}@${remote_host}${NC} using ${C}${remote_command}${NC}"
 
