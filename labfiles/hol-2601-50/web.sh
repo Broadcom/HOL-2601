@@ -16,8 +16,16 @@ cat <<EOF | sudo tee /etc/apache2/sites-available/${SITE}.conf
     CustomLog \${APACHE_LOG_DIR}/${SITE}_access.log combined
 </VirtualHost>
 EOF
+cat <<EOF | sudo tee /etc/apache2/conf-available/${SITE}.conf
+<Location /server-status>
+    SetHandler server-status
+    Require local
+</Location>
+EOF
+
 sudo a2ensite ${SITE}.conf
 sudo a2dissite 000-default.conf
 sudo a2enmod rewrite
+sudo a2enconf ${SITE}.conf
 sudo apachectl configtest
 sudo systemctl reload apache2
