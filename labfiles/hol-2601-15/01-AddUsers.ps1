@@ -195,6 +195,16 @@ ConnectToVcenter -vc $vcFqdn -username $vcUsername -password $password
 New-Role -RoleName "Hol_Auditor" -Privileges @("System.Anonymous", "System.Read", "System.View", "Namespaces.Observe","Namespaces.ListAccess", "Namespaces.View")
 
 foreach ($user in $Users) {
+    $DomainUsername = $user.username+"@"+$user.domain
+
+    ConnectToVcenter -vc $vcFqdn -username $DomainUsername -password "VMware123!"
+    sleep(5)
+    ConnectToVcenter -vc $vcFqdn -username $DomainUsername -password $password
+
+    Disconnect-VIServer -Confirm:$false
+    
+}
+foreach ($user in $Users) {
     New-SsoUser -Username $user.username -Domain $user.domain -Password $user.password -Firstname $user.firstname -Lastname $user.lastname -Description $user.description
     Set-Permission -Username $user.username -Domain $user.domain -RoleName $user.roleName -EntityName $user.EntityName -EntityType $user.EntityType -Propogate:$true
 }

@@ -34,7 +34,6 @@ Function New-RandomPassword {
 
 $password = Get-Content "/home/holuser/Desktop/PASSWORD.txt" -TotalCount 1
 $vcFqdn = "vc-wld01-a.site-a.vcf.lab"
-$vcUsername = "administrator@wld.sso"
 
 $users = @(
     @{username="audituser"; domain="wld.sso"; password=$password; firstname="audit"; lastname="user"; description="Created By Script"; roleName="HOL_Auditor"; EntityName="wld-01a-DC"; EntityType="Datacenter"}
@@ -44,6 +43,7 @@ $users = @(
 foreach ($user in $Users) {
     $DomainUsername = $user.username+"@"+$user.domain
     $randomPassword = New-RandomPassword -length 12
+    
     ConnectToVcenter -vc $vcFqdn -username $DomainUsername -password $randomPassword
     sleep(5)
     ConnectToVcenter -vc $vcFqdn -username $DomainUsername -password $password
