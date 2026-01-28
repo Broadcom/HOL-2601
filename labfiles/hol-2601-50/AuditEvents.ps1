@@ -16,6 +16,18 @@ Function ConnectToVcenter {
     Connect-VIServer -Server $vc -Credential $credential -Force
 }
 
+Function New-RandomPassword {
+    param (
+        [int]$length = 12
+    )
+
+    $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+[]{}|;:,.<>?'
+    $bytes = [byte[]]::new($length)
+    [System.Security.Cryptography.RNGCryptoServiceProvider]::Create().GetBytes($bytes)
+    $password = -join ($bytes | ForEach-Object { $chars[(Get-Random -Maximum $chars.Length)] })
+    return $password
+}
+
 Function ConnectToSsoDomain {
     param (
         [string]$vc,
@@ -54,7 +66,6 @@ Function Remove-Permission {
     }
 
 }
-
 Function Set-Permission {
     param (
         [string]$Username,
@@ -67,17 +78,17 @@ Function Set-Permission {
 
     try {       
         if ($EntityType -eq "Datacenter") {
-            $entity = Get-Datacenter -Name $EntityName
+            $entity = Get-Datacenter -Name $EntityName | Out-Null
         } else {
-            $entity = Get-View (Get-Inventory -Name $EntityName -NoRecursion | Where-Object {$_.GetType().Name -eq $EntityType}).Id
+            $entity = Get-View (Get-Inventory -Name $EntityName -NoRecursion | Where-Object {$_.GetType().Name -eq $EntityType}).Id | Out-Null
         }
         if (-not $entity){
             throw "Entity '$EntityName' of type '$EntityType' not found."
         }
 
-        $role = Get-VIRole -Name $RoleName -ErrorAction Stop
+        $role = Get-VIRole -Name $RoleName -ErrorAction Stop | Out-Null
 
-        New-VIPermission -Principal "$Domain\$Username" -Role $role -Entity $entity -Propagate:$Propagate -Confirm:$false
+        New-VIPermission -Principal "$Domain\$Username" -Role $role -Entity $entity -Propagate:$Propagate -Confirm:$false | Out-Null
 
         Write-Host "INFO: Role '$RoleName' assigned to '$Username@$Domain' on '$EntityName'." -ForegroundColor Green
     } catch {
@@ -97,14 +108,12 @@ Function New-SsoUser {
     
     try {
 
-        $ssoUser = Get-SsoPersonUser -Name $Username -Domain $Domain 
+        $ssoUser = Get-SsoPersonUser -Name $Username -Domain $Domain | Out-Null
 
         if ($ssoUser) {
             Write-Host "INFO: User '$Username' already exists in the '$Domain' domain." -ForegroundColor Yellow
         } else {
-            New-SsoPersonUser -UserName $Username -Password $Password `
-                          -FirstName $Firstname -LastName $Lastname -Email "$Username@$Domain" `
-                          -Description $Description
+            New-SsoPersonUser -UserName $Username -Password $Password -FirstName $Firstname -LastName $Lastname -Email "$Username@$Domain" -Description $Description | Out-Null
 
             Write-Host "INFO: User '$Username' in SSO Domain '$Domain' created successfully." -ForegroundColor Green
         }
@@ -122,11 +131,11 @@ Function Remove-SsoUser {
     
     try {
 
-        $ssoUser = Get-SsoPersonUser -Name $Username -Domain $Domain 
+        $ssoUser = Get-SsoPersonUser -Name $Username -Domain $Domain | Out-Null
 
         if ($ssoUser) {
             Write-Host "INFO: User '$Username' found in the '$Domain' domain." -ForegroundColor White
-            Get-SsoPersonUser -Name $Username -Domain $Domain | Remove-SsoPersonUser
+            Get-SsoPersonUser -Name $Username -Domain $Domain | Remove-SsoPersonUser | Out-Null
             Write-Host "INFO: User '$Username' in domain '$Domain' deleted." -ForegroundColor Green
         } else {
             Write-Host "INFO: User '$Username' not found in SSO Domain '$Domain'." -ForegroundColor Yellow
@@ -143,12 +152,12 @@ Function New-Role {
     )
 
     try {
-        $existingRole = Get-VIRole -Name $RoleName -ErrorAction SilentlyContinue
+        $existingRole = Get-VIRole -Name $RoleName -ErrorAction SilentlyContinue | Out-Null
 
         if ($existingRole) {
             Write-Host "INFO: Role '$RoleName' already exists." -ForegroundColor Yellow
         } else {
-            $newRole = New-VIRole -Name $RoleName -Privilege (Get-VIPrivilege -id $Privileges) -ErrorAction Stop
+            $newRole = New-VIRole -Name $RoleName -Privilege (Get-VIPrivilege -id $Privileges) -ErrorAction Stop | Out-Null
             Write-Host "INFO: Successfully created role '$RoleName'." -ForegroundColor Green
             return $NewRole
         }
@@ -163,7 +172,7 @@ Function Remove-Role {
     )
     Write-Host "TASK: Remove Role: '$RoleName'." -ForegroundColor White
     try {
-        $role = Get-VIRole -Name $RoleName -ErrorAction SilentlyContinue
+        $role = Get-VIRole -Name $RoleName -ErrorAction SilentlyContinue | Out-Null
 
         if ($role) {
             Remove-VIRole -Role $role -Confirm:$false
@@ -192,22 +201,41 @@ $users = @(
 ConnectToSsoDomain -vc $vcFqdn -username $vcUsername -password $password
 ConnectToVcenter -vc $vcFqdn -username $vcUsername -password $password
 
-New-Role -RoleName "Hol_Auditor" -Privileges @("System.Anonymous", "System.Read", "System.View", "Namespaces.Observe","Namespaces.ListAccess", "Namespaces.View")
+New-Role -RoleName "Hol_Auditor" -Privileges @("System.Anonymous", "System.Read", "System.View", "Namespaces.Observe","Namespaces.ListAccess", "Namespaces.View") 
 
 foreach ($user in $Users) {
-    $DomainUsername = $user.username+"@"+$user.domain
+    New-SsoUser -Username $user.username -Domain $user.domain -Password $user.password -Firstname $user.firstname -Lastname $user.lastname -Description $user.description 
+    Set-Permission -Username $user.username -Domain $user.domain -RoleName $user.roleName -EntityName $user.EntityName -EntityType $user.EntityType -Propogate:$true 
+}
 
-    ConnectToVcenter -vc $vcFqdn -username $DomainUsername -password "VMware123!"
+Disconnect-VIServer -Confirm:$false
+Disconnect-SsoAdminServer -Server $vcFqdn
+
+sleep(10)
+
+foreach ($user in $Users) {
+    $DomainUsername = $user.username+"@"+$user.domain 
+    $randomPassword = New-RandomPassword -length 12
+    
+    ConnectToVcenter -vc $vcFqdn -username $DomainUsername -password $randomPassword
     sleep(5)
     ConnectToVcenter -vc $vcFqdn -username $DomainUsername -password $password
 
     Disconnect-VIServer -Confirm:$false
     
 }
+
+sleep(10)
+
+ConnectToSsoDomain -vc $vcFqdn -username $vcUsername -password $password
+ConnectToVcenter -vc $vcFqdn -username $vcUsername -password $password
+
 foreach ($user in $Users) {
-    New-SsoUser -Username $user.username -Domain $user.domain -Password $user.password -Firstname $user.firstname -Lastname $user.lastname -Description $user.description
-    Set-Permission -Username $user.username -Domain $user.domain -RoleName $user.roleName -EntityName $user.EntityName -EntityType $user.EntityType -Propogate:$true
+    Remove-Permission -Username $user.username -Domain $user.domain -EntityName $user.EntityName -EntityType $user.EntityType
+    Remove-SsoUser -Username $user.username -Domain $user.domain
 }
+
+Remove-Role -RoleName "Hol_Auditor"
 
 Disconnect-VIServer -Confirm:$false
 Disconnect-SsoAdminServer -Server $vcFqdn

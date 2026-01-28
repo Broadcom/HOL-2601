@@ -16,6 +16,18 @@ Function ConnectToVcenter {
     Connect-VIServer -Server $vc -Credential $credential -Force
 }
 
+Function New-RandomPassword {
+    param (
+        [int]$length = 12
+    )
+
+    $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+[]{}|;:,.<>?'
+    $bytes = [byte[]]::new($length)
+    [System.Security.Cryptography.RNGCryptoServiceProvider]::Create().GetBytes($bytes)
+    $password = -join ($bytes | ForEach-Object { $chars[(Get-Random -Maximum $chars.Length)] })
+    return $password
+}
+
 ########################################################################
 ## FUNCTIONS BEFORE THIS LINE
 ########################################################################
@@ -31,8 +43,8 @@ $users = @(
 
 foreach ($user in $Users) {
     $DomainUsername = $user.username+"@"+$user.domain
-
-    ConnectToVcenter -vc $vcFqdn -username $DomainUsername -password "VMware123!"
+    $randomPassword = New-RandomPassword -length 12
+    ConnectToVcenter -vc $vcFqdn -username $DomainUsername -password $randomPassword
     sleep(5)
     ConnectToVcenter -vc $vcFqdn -username $DomainUsername -password $password
 

@@ -1,0 +1,36 @@
+if [ -f /etc/apt/sources.list.d/ubuntu.list ]; then
+    sudo rm /etc/apt/sources.list.d/ubuntu.list
+fi
+
+echo "deb [trusted=yes] https://repo.site-a.vcf.lab ./" | sudo tee /etc/apt/sources.list.d/offline.list
+
+cat <<EOF | sudo tee /usr/local/share/ca-certificates/ca.crt
+-----BEGIN CERTIFICATE-----
+MIIELzCCAxegAwIBAgIUTqZgS3r7srSFrmATfBXpJ3jK2YQwDQYJKoZIhvcNAQEN
+BQAwgaUxCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRIwEAYDVQQH
+DAlQYWxvIEFsdG8xDzANBgNVBAoMBlZNd2FyZTEWMBQGA1UECwwNSGFuZHMtb24g
+TGFiczEfMB0GA1UEAwwWY29uc29sZS5zaXRlLWEudmNmLmxhYjEjMCEGCSqGSIb3
+DQEJARYUYWRtaW5Ac2l0ZS1hLnZjZi5sYWIwIBcNMjUwMzEzMTQ0NTU0WhgPMjA1
+NTAzMDYxNDQ1NTRaMIGlMQswCQYDVQQGEwJVUzETMBEGA1UECAwKQ2FsaWZvcm5p
+YTESMBAGA1UEBwwJUGFsbyBBbHRvMQ8wDQYDVQQKDAZWTXdhcmUxFjAUBgNVBAsM
+DUhhbmRzLW9uIExhYnMxHzAdBgNVBAMMFmNvbnNvbGUuc2l0ZS1hLnZjZi5sYWIx
+IzAhBgkqhkiG9w0BCQEWFGFkbWluQHNpdGUtYS52Y2YubGFiMIIBIjANBgkqhkiG
+9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkJ8wP/+MEulRnq1rDJmpm4qE0OAaF+2MafFw
+PMU/avJqU1+9xPTzP1yXmojQDd6c/hCxsSUdstwT5phpjO6iai2KM2IvrnBzYEEE
+aSWsTqyr7qfEhOnVAUzekHI5uXAoac5t0c3cIreOVl0dzgHtom5/6HBOG5oJypMD
+2dq1x+8AEgGA567xybe49Hfi9g0ySXZpPH3+TWkCXWK8bO1yOh2UfzfL0XYjPHvf
+yvBCiiBSd09y3W58IrzQAwdPuS13/uQstosEodgU9fSymETgQZttKlPhrH5aBCAj
+xrOm9gb0zO7veLcotvWsjYcUylCVQRnhAhBzLckj7h6uSjMosQIDAQABo1MwUTAd
+BgNVHQ4EFgQUsOohoeIPJvW+a2awcfbeN1eUlo8wHwYDVR0jBBgwFoAUsOohoeIP
+JvW+a2awcfbeN1eUlo8wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQ0FAAOC
+AQEALXK64b28NhGT0/EMWkxwH8z/Tnl2zLUZOCdLH1ihuQvXoPQb34PsGrncC39D
+lBc53hX8e6T1Kcoz+5ybWPhGD/RYBpv2InmYEPROy1LUo7sdaZHVADN7f2kd9Sq5
+NpChQkSQt2PzDGT87gNrQQpYxTk2HPCeKQQ7yey9HJtLTk2vwVMCA9YqnpMjyxDL
+aGFcixxxjLGpBH48u+40GHcTo6uy53iu6YyPb1P3kn/bX53giVlnAPcPu7ggi8P8
+jwUuSo9Vh0++fW/QDlLqzIfF/Xg9paWff9lC69Rc5GOKULCvIJb2wcEK+YATV54O
+bgsnpQXquNZC6PmKXaZC+7Gttg==
+-----END CERTIFICATE-----
+EOF
+
+sudo update-ca-certificates
+sudo apt update

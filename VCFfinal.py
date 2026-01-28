@@ -130,22 +130,21 @@ if 'vravms' in lsf.config['VCFFINAL'].keys():
                 lsf.labstartup_sleep(lsf.sleep_seconds)
                 verify_nic_connected (vm, False) # if not connected, disconnect and reconnect
 
-
+            
 ########################################################
-#  26xx - Restart Docker Services via Compose
+#  26xx - PVC Fixes for VKS
 ########################################################
 pwd = lsf.password
 
 if lsf.LMC: 
     if not lsf.labcheck:
-        lsf.write_vpodprogress('Rebuilding Docker Containers', 'GOOD-2', color=color)
-        lsf.write_output(f"TASK: Rebuilding Docker Containers", logfile=lsf.logfile)
+        lsf.write_vpodprogress('Running VKS PVC Fix', 'GOOD-2', color=color)
+        lsf.write_output(f"TASK: Running VKS PVC Fix", logfile=lsf.logfile)
         try:
-            lsf.ssh(f'docker compose -f /opt/services.yaml restart', 'holuser@docker', pwd)
+            lsf.ssh(f'bash /home/holuser/labfiles/pvc_fix.sh', 'holuser@console', pwd)
         except Exception as e:
             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
             print(f'INFO: {e}')
-            
 
 ########################################################
 #  26xx - Check Gitlab Status
@@ -198,6 +197,21 @@ if 'vraurls' in lsf.config['VCFFINAL'].keys():
 
 for si in lsf.sis:
     connect.Disconnect(si)
+
+########################################################
+#  26xx - Restart Docker Services via Compose
+########################################################
+# pwd = lsf.password
+
+# if lsf.LMC: 
+#     if not lsf.labcheck:
+#         lsf.write_vpodprogress('Rebuilding Docker Containers with --force-recreate', 'GOOD-2', color=color)
+#         lsf.write_output(f"TASK: Rebuilding Docker Containers with --force-recreate", logfile=lsf.logfile)
+#         try:
+#             lsf.ssh(f'docker compose -f /opt/services.yaml up -d --build --wait --force-recreate', 'holuser@docker', pwd)
+#         except Exception as e:
+#             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
+#             print(f'INFO: {e}')
 
 lsf.write_output(f'{sys.argv[0]} finished.')
  
