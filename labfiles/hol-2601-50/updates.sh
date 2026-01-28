@@ -18,6 +18,7 @@ scp_options="-o StrictHostKeyChecking=accept-new -o ConnectTimeout=5 -o BatchMod
 source_files=(
     /home/holuser/labfiles/hol-2601-50/repo.sh
     /home/holuser/labfiles/hol-2601-50/agent.sh
+    /home/holuser/labfiles/hol-2601-50/web.sh
 )
 
 remote_folder="/tmp"
