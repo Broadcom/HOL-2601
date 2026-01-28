@@ -19,7 +19,7 @@ EOF
 cat <<EOF | sudo tee /etc/apache2/conf-available/${SITE}.conf
 <Location /server-status>
     SetHandler server-status
-    Require local
+    Require ip 10.0.0.0/8
 </Location>
 EOF
 
