@@ -18,13 +18,13 @@ scp_options="-o StrictHostKeyChecking=accept-new -o ConnectTimeout=5 -o BatchMod
 source_files=(
     /home/holuser/labfiles/hol-2601-50/repo.sh
     /home/holuser/labfiles/hol-2601-50/agent.sh
-    /home/holuser/labfiles/hol-2601-50/web.sh
 )
 
 remote_folder="/tmp"
 
-source_agent_file="/home/holuser/labfiles/hol-2601-50/repo.sh"
-remote_agent_file="/tmp/repo.sh"
+web_files=(
+    /home/holuser/labfiles/hol-2601-50/web.sh
+)
 
 if [ -z "$password" ]; then
     echo -e "Error: Password is empty. Please ensure PASSWORD.txt contains the correct password."
@@ -52,4 +52,10 @@ while IFS= read -r host || [[ -n "$host" ]]; do
     sshpass -p "$password" ssh $ssh_options "${remote_user}@${host}" "echo $password | sudo -S apt -y install apache2" > /dev/null 2>&1 && echo -e "${G}Apache 2 successfully installed on ${host}${NC}" || { echo -e "${R}Failed to install Apache 2 on ${host}${NC}"; continue; }
     sshpass -p "$password" ssh $ssh_options "${remote_user}@${host}" "echo $password | sudo -S apt -y install mysql-server" > /dev/null 2>&1 && echo -e "${G}MySQL server successfully installed on ${host}${NC}" || { echo -e "${R}Failed to install MySQL server on ${host}${NC}"; continue; }
 
+    for file in "${web_files[@]}"; do
+        remote_file="${remote_folder}/${file##*/}"
+        sshpass -p "$password" scp "$file" "${remote_user}@${host}:$remote_file" && echo -e "${G}File: $file copied successfully to ${host}:${remote_file}${NC}" || { echo -e "${R}Failed to copy file: $file to ${host}:${remote_file}${NC}"; continue; }
+        sshpass -p "$password" ssh $ssh_options "${remote_user}@${host}" "echo $password | sudo -S bash $remote_file" > /dev/null 2>&1 && echo -e "${G}Script ${remote_file} executed successfully on ${host}${NC}" || { echo -e "${R}Failed to execute ${remote_file} script on ${host}${NC}"; continue; }
+        sshpass -p "$password" ssh $ssh_options "${remote_user}@${host}" "rm $remote_file" > /dev/null 2>&1 && echo -e "${G}File ${remote_file} removed successfully on ${host}${NC}" || { echo -e "${R}Failed to remove ${remote_file} script on ${host}${NC}"; continue; }
+    done
 done < "$remote_hosts"
