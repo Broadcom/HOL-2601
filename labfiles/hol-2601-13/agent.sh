@@ -4,7 +4,7 @@
 
 set -e
 
-USER="$1"
+USER="holuser"
 
 if [[ -z "$USER" ]]; then
   echo "Usage: $0 <username>"

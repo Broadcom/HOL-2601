@@ -10,7 +10,7 @@ W='\e[97m'
 NC='\e[0m'
 
 password=$(</home/holuser/Desktop/PASSWORD.txt)
-remote_hosts="/home/holuser/labfiles/hol-2601-50/hosts.txt"
+remote_hosts="hosts.txt"
 
 remote_user="holuser"
 ssh_options="-n -q -o StrictHostKeyChecking=accept-new -o ConnectTimeout=5 -o LogLevel=ERROR"
