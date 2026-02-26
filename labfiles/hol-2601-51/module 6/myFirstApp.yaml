@@ -76,7 +76,7 @@ resources:
             ssh_pwauth: true
             users:
             - name: root
-              passwd: VMware123!
+              passwd: 
               lock_passwd: false
               shell: /bin/bash
             package_update: true
