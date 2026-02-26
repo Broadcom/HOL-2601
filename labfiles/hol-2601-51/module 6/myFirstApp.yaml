@@ -1,0 +1,84 @@
+formatVersion: 1
+inputs:
+  hostname:
+    type: string
+    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+    maxLength: 63
+    minLength: 1
+    title: Hostname
+  vm-class:
+    type: string
+    title: Virtual Machine Size
+    $data: /data/virtualmachineclasses?namespace=ns-apps-project-pbdj2
+    default: best-effort-small
+  vm-image:
+    type: string
+    enum:
+      - ubuntu-24-04-base
+    default: ubuntu-24-04-base
+resources:
+  CCI_Supervisor_Namespace_1:
+    type: CCI.Supervisor.Namespace
+    properties:
+      name: ns-apps-project-pbdj2
+      existing: true
+  Linux_vm:
+    type: CCI.Supervisor.Resource
+    dependsOn:
+      - loadbalancer
+      - secret
+    properties:
+      context: ${resource.CCI_Supervisor_Namespace_1.id}
+      manifest:
+        apiVersion: vmoperator.vmware.com/v1alpha3
+        kind: VirtualMachine
+        metadata:
+          name: vm-${to_lower(input.hostname)}
+        spec:
+          className: ${input.vm-class}
+          imageName: ${input.vm-image}
+          powerState: PoweredOn
+          storageClass: cluster-wld01-01a-vsan-storage-policy
+          bootstrap:
+            cloudInit:
+              rawCloudConfig:
+                name: vm-${to_lower(input.hostname)}-bootstrap-secret
+  loadbalancer:
+    type: CCI.Supervisor.Resource
+    properties:
+      context: ${resource.CCI_Supervisor_Namespace_1.id}
+      manifest:
+        apiVersion: vmoperator.vmware.com/v1alpha3
+        kind: VirtualMachineService
+        metadata:
+          name: virtual-machine-service-1-${env.shortDeploymentId}
+        spec:
+          type: LoadBalancer
+          ports:
+            - name: ssh
+              port: 22
+              protocol: TCP
+              targetPort: 22
+  secret:
+    type: CCI.Supervisor.Resource
+    properties:
+      context: ${resource.CCI_Supervisor_Namespace_1.id}
+      manifest:
+        apiVersion: v1
+        kind: Secret
+        metadata:
+          name: vm-${to_lower(input.hostname)}-bootstrap-secret
+          labels:
+            vm-selector: vm-${to_lower(input.hostname)}
+        stringData:
+          user-data: |
+            #cloud-config
+            ssh_pwauth: true
+            users:
+            - name: root
+              passwd: 
+              lock_passwd: false
+              shell: /bin/bash
+            package_update: true
+            packages:
+             - apache2

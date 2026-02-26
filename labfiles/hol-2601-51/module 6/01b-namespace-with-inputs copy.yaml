@@ -1,0 +1,36 @@
+formatVersion: 2
+inputs: 
+  name:
+    type: string
+    title: Namespace Name
+    description: Name for the Namespace (e.g. my-namespace)
+  region:
+    type: string
+    title: Namespace Region
+    description: Region for the Namespace (e.g. region-a)
+    enum:
+      - region-a
+  class:
+    type: string
+    title: Namespace Class
+    description: Class Namespace (e.g. small, medium or large)
+    enum:
+      - small
+      - medium
+      - large
+  vpc:
+    type: string
+    title: VPC Name
+    description: VPC for the Namespace (e.g. region-a-Default-VPC)
+    enum:
+      - region-a-Default-VPC
+
+resources:
+  Supervisor_Namespace:
+    type: CCI.Supervisor.Namespace
+    properties:
+      name: ${input.name}
+      regionName: ${input.region}
+      className: ${input.class}
+      vpcName: ${input.vpc}
+      existing: false

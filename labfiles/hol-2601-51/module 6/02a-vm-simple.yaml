@@ -1,0 +1,47 @@
+formatVersion: 1
+inputs: {}
+resources:
+  CCI_Supervisor_Namespace_1:
+    type: CCI.Supervisor.Namespace
+    properties:
+      name: ns-apps-project-pbdj2
+      existing: true
+  Virtual_Machine_1:
+    type: CCI.Supervisor.Resource
+    properties:
+      context: ${resource.CCI_Supervisor_Namespace_1.id}
+      manifest:
+        apiVersion: vmoperator.vmware.com/v1alpha3
+        kind: VirtualMachine
+        metadata:
+          name: virtual-machine-1-${env.shortDeploymentId}
+          labels:
+            vm-selector: hol-simple-vm
+            vm-lb: vm-lb-hol-simple-vm
+        spec:
+          className: best-effort-small
+          imageName: ubuntu-24-04-base
+          powerState: PoweredOn
+          storageClass: cluster-wld01-01a-vsan-storage-policy
+      wait:
+        conditions:
+          - type: VirtualMachineCreated
+            status: 'True'
+  LoadBalancer:
+    type: CCI.Supervisor.Resource
+    properties:
+      context: ${resource.CCI_Supervisor_Namespace_1.id}
+      manifest:
+        apiVersion: vmoperator.vmware.com/v1alpha3
+        kind: VirtualMachineService
+        metadata:
+          name: vm-lb-hol-simple-vm
+        spec:
+          selector:
+            vm-lb: vm-lb-hol-simple-vm
+          type: LoadBalancer
+          ports:
+            - name: ssh
+              protocol: TCP
+              port: 22
+              targetPort: 22

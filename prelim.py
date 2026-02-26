@@ -212,31 +212,6 @@ if not lsf.labcheck:
 #exit(1)
 
 ########################################################
-#  2501 - Commit Gitlab Projects files to Gitlab
-########################################################
-
-# if lsf.LMC:
-#     try:
-#         if os.path.isfile(f'{labfilesDestination}/gitlab/sync.ps1'):
-#             lsf.write_output(f'2501: Committing Repos to Gitlab.', logfile=lsf.logfile)
-#             print(f'2501: Committing Repos to Gitlab.')
-#             command = "powershell -NoProfile -ExecutionPolicy Bypass -File c:\gitlab\sync.ps1"
-#             lsf.runwincmd(command,'mainconsole','Administrator', '******')
-#         else:
-#             lsf.labfail(f'2501: Failed to commit Repos to Gitlab')
-#             print(f'2501: Failed to commit Repos to Gitlab')
-#             exit(1)
-
-#     except Exception as e:
-#         lsf.labfail(f'2501: {e}')
-#         print(f'2501: {e}')
-#         exit(1)
-# else:
-#     lsf.labfail(f'2501: Error committing repository files to Gitlab.')
-#     print(f'2501: Error committing repository files to Gitlab.')
-#     exit(1)
-
-########################################################
 #  26xx - Copy LabFiles from vPod Repo
 ########################################################
 

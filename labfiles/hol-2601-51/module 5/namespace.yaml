@@ -1,0 +1,16 @@
+apiVersion: infrastructure.cci.vmware.com/v1alpha2
+kind: SupervisorNamespaceClassConfig
+metadata:
+  name: tiny
+spec:
+  storageClasses:
+    - name: "*"
+      limit: 1024Mi
+  vmClasses:
+    - name: "*"
+  contentSources: []
+  defaultLimits:
+    cpuLimit: 1000M
+    cpuReservation: 0M
+    memoryLimit: 1024Mi
+    memoryReservation: 0Mi

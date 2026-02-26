@@ -1,0 +1,11 @@
+formatVersion: 2
+inputs: {}
+resources:
+  Supervisor_Namespace:
+    type: CCI.Supervisor.Namespace
+    properties:
+      name: ns-example-1
+      regionName: region-a
+      className: small
+      vpcName: region-a-Default-VPC
+      existing: false

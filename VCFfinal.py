@@ -199,7 +199,7 @@ for si in lsf.sis:
     connect.Disconnect(si)
 
 ########################################################
-#  26xx - Restart Docker Services via Compose
+#  26xx - Running Scipted Build Updates
 ########################################################
 # pwd = lsf.password
 

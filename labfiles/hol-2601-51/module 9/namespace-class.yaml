@@ -1,0 +1,17 @@
+apiVersion: infrastructure.cci.vmware.com/v1alpha2
+kind: SupervisorNamespaceClassConfig
+metadata:
+  name: new
+spec:
+  storageClasses:
+    - name: cluster-wld01-01a vSAN Storage Policy
+      limit: 20480Mi
+  vmClasses:
+    - name: best-effort-large
+    - name: best-effort-medium
+  contentSources: []
+  defaultLimits:
+    cpuLimit: 100000M
+    cpuReservation: 0M
+    memoryLimit: 10240Mi
+    memoryReservation: 0Mi

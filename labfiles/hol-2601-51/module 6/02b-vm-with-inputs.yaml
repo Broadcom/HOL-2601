@@ -1,0 +1,61 @@
+formatVersion: 2
+inputs: 
+  namespace:
+    type: string
+    tile: Select Namespace
+    $data: /data/namespaces?projectId={{project}}
+  vmName:
+    type: string
+    title: Virtual Machine Name
+    description: Name for the Virtual Machine (e.g. "my-vm")
+  storageClass:
+    type: string
+    title: Storage Class
+    description: Storage class for the Virtual Machine (e.g. "cluster-wld01-01a-vsan-storage-policy")
+    enum:
+     - cluster-wld01-01a-vsan-storage-policy
+resources:
+  Supervisor_Namespace:
+    type: CCI.Supervisor.Namespace
+    properties:
+      name: ${input.namespace}
+      existing: true
+  Virtual_Machine:
+    type: CCI.Supervisor.Resource
+    properties:
+      context: ${resource.Supervisor_Namespace.id}
+      manifest:
+        apiVersion: vmoperator.vmware.com/v1alpha3
+        kind: VirtualMachine
+        metadata:
+          name: virtual-machine-1-${env.shortDeploymentId}
+          labels:
+            vm-selector: ${replace(input.vmName, " ", "-")}
+            vm-lb: lb-${replace(input.vmName, " ", "-")}
+        spec:
+          className: best-effort-small
+          imageName: ubuntu-24-04-base
+          powerState: PoweredOn
+          storageClass: ${input.storageClass}
+      wait:
+        conditions:
+          - type: VirtualMachineCreated
+            status: 'True'
+  LoadBalancer:
+    type: CCI.Supervisor.Resource
+    properties:
+      context: ${resource.Supervisor_Namespace.id}
+      manifest:
+        apiVersion: vmoperator.vmware.com/v1alpha3
+        kind: VirtualMachineService
+        metadata:
+          name: vm-lb-hol-simple-vm
+        spec:
+          selector:
+            vm-lb: vm-lb-hol-simple-vm
+          type: LoadBalancer
+          ports:
+            - name: ssh
+              protocol: TCP
+              port: 22
+              targetPort: 22
