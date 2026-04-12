@@ -66,7 +66,7 @@ if lsf.lab_sku == "VCF9-VKS-D":
 ########################################################
 pwd = lsf.password
 
-if lsf.lab_sku == "HOL-2601" and lsf.LMC: 
+if lsf.LMC: 
     if not lsf.labcheck:
         lsf.write_vpodprogress('Creating Security Audit Events using PowerShell', 'GOOD-2', color=color)
         lsf.write_output(f"TASK: Creating Security Audit Events using PowerShell", logfile=lsf.logfile)
