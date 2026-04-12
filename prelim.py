@@ -205,12 +205,6 @@ if not lsf.labcheck:
 # Insert your code here using the file in your vPod_repo
 #
 
-# fail like this
-#now = datetime.datetime.now()
-#delta = now - lsf.start_time
-#lsf.labfail('PRELIM ISSUE', delta)
-#exit(1)
-
 ########################################################
 #  26xx - Copy LabFiles from vPod Repo
 ########################################################
@@ -317,6 +311,11 @@ if lsf.LMC:
 #     exit(1)
 
 
+# fail like this
+#now = datetime.datetime.now()
+#delta = now - lsf.start_time
+#lsf.labfail('PRELIM ISSUE', delta)
+#exit(1)
 
 lsf.write_output(f'{sys.argv[0]} finished.', logfile=lsf.logfile) 
 exit(0)

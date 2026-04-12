@@ -131,9 +131,9 @@ if 'vravms' in lsf.config['VCFFINAL'].keys():
                 verify_nic_connected (vm, False) # if not connected, disconnect and reconnect
 
             
-########################################################
+# #######################################################
 #  26xx - PVC Fixes for VKS
-########################################################
+# #######################################################
 pwd = lsf.password
 
 if lsf.LMC: 
