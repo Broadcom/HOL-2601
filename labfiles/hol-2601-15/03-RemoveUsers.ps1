@@ -29,10 +29,10 @@ function Connect-VCenter {
         [Parameter(Mandatory)]
         [string]$username,
         [Parameter(Mandatory)]
-        [string]$password
+        [string]$Password
     )
     
-    $encryptedPassword = ConvertTo-SecureString -String $password -AsPlainText -Force
+    $encryptedPassword = ConvertTo-SecureString -String $Password -AsPlainText -Force
     $credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $username, $encryptedPassword
 
     Connect-VIServer -Server $vc -Credential $credential -Force
@@ -49,10 +49,10 @@ function New-RandomPassword {
     $bytes = New-Object byte[] ($Length)
     [System.Security.Cryptography.RNGCryptoServiceProvider]::Create().GetBytes($bytes)
 
-    $passwordChars = for ($i = 0; $i -lt $Length; $i++) {
+    $PasswordChars = for ($i = 0; $i -lt $Length; $i++) {
         $chars[ $bytes[$i] % $chars.Length ]
     }
-    -join $passwordChars
+    -join $PasswordChars
 }
 
 function Connect-SsoDomain {
@@ -63,10 +63,10 @@ function Connect-SsoDomain {
         [Parameter(Mandatory)]
         [string]$username,
         [Parameter(Mandatory)]
-        [string]$password
+        [string]$Password
     )
     
-    $encryptedPassword = ConvertTo-SecureString -String $password -AsPlainText -Force
+    $encryptedPassword = ConvertTo-SecureString -String $Password -AsPlainText -Force
     $credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $username, $encryptedPassword
 
     Connect-SsoAdminServer -Server $vc -Credential $credential -SkipCertificateCheck
@@ -246,8 +246,39 @@ function Remove-Role {
 ########################################################################
 ## FUNCTIONS BEFORE THIS LINE
 ########################################################################
-
 $modules = @("VCF.PowerCLI", "VMware.vSphere.SsoAdmin")
+
+$PasswordFiles = @(
+    "/home/holuser/creds.txt",
+    "/home/holuser/Desktop/PASSWORD.txt"
+)
+
+$Password = $null
+
+foreach ($file in $PasswordFiles) {
+    if (Test-Path -Path $file -PathType Leaf) {
+        $content = (Get-Content $file -TotalCount 1).Trim()
+        if ($content) {
+            $Password = $content
+            Write-Info "Password retrieved from file: $file"
+            break
+        }
+    }
+}
+
+if (-not $Password) {
+    Write-ErrorMsg "Password not found in any of the specified files."
+    exit 1
+}
+
+$vcFqdn = "vc-wld01-a.site-a.vcf.lab"
+$vcUsername = "administrator@wld.sso"
+
+$users = @(
+    @{username="audituser"; domain="wld.sso"; password=$Password; firstname="audit"; lastname="user"; description="Created By Script"; roleName="HOL_Auditor"; EntityName="dc-a"; EntityType="Datacenter"}
+    @{username="rogueadmin"; domain="wld.sso"; password=$Password; firstname="rogue"; lastname="admin"; description="Created By Script"; roleName="Admin"; EntityName="dc-a"; EntityType="Datacenter"}
+    @{username="rogueuser"; domain="wld.sso"; password=$Password; firstname="rogue"; lastname="user"; description="Created By Script"; roleName="TrustedAdmin"; EntityName="dc-a"; EntityType="Datacenter"}
+)
 
 Write-Info "Importing PowerCLI Modules"
 
@@ -261,18 +292,10 @@ foreach ($module in $modules) {
     Write-Info "Module '$module' imported."
 }
 
-$password = Get-Content "/home/holuser/Desktop/PASSWORD.txt" -TotalCount 1
-$vcFqdn = "vc-wld01-a.site-a.vcf.lab"
-$vcUsername = "administrator@wld.sso"
 
-$users = @(
-    @{username="audituser"; domain="wld.sso"; password=$password; firstname="audit"; lastname="user"; description="Created By Script"; roleName="HOL_Auditor"; EntityName="dc-a"; EntityType="Datacenter"}
-    @{username="rogueadmin"; domain="wld.sso"; password=$password; firstname="rogue"; lastname="admin"; description="Created By Script"; roleName="Admin"; EntityName="dc-a"; EntityType="Datacenter"}
-    @{username="rogueuser"; domain="wld.sso"; password=$password; firstname="rogue"; lastname="user"; description="Created By Script"; roleName="TrustedAdmin"; EntityName="dc-a"; EntityType="Datacenter"}
-)
 
-Connect-SsoDomain -vc $vcFqdn -username $vcUsername -password $password
-Connect-VCenter -vc $vcFqdn -username $vcUsername -password $password
+Connect-SsoDomain -vc $vcFqdn -username $vcUsername -password $Password
+Connect-VCenter -vc $vcFqdn -username $vcUsername -password $Password
 
 foreach ($user in $Users) {
     Remove-Permission -Username $user.username -Domain $user.domain -EntityName $user.EntityName -EntityType $user.EntityType
