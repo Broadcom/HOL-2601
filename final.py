@@ -8,6 +8,7 @@ import requests
 import logging
 from pathlib import Path
 
+sys.path.append('/vpodrepo/2026-Labs/2601')
 # default logging level is WARNING (other levels are DEBUG, INFO, ERROR and CRITICAL)
 logging.basicConfig(level=logging.DEBUG)
 
@@ -65,9 +66,11 @@ if lsf.lab_sku == "VCF9-VKS-D":
 #  26xx - Create Security Audit Events using PowerShell
 ########################################################
 pwd = lsf.password
-
+lsf.write_vpodprogress('Running HOL-26xx Startup Scripts', 'GOOD-2', color=color)
+        
 if lsf.LMC: 
     if not lsf.labcheck:
+        lsf.write_vpodprogress('Creating Security Audit Events using PowerShell', 'GOOD-2', color=color)
         lsf.write_vpodprogress('Creating Security Audit Events using PowerShell', 'GOOD-2', color=color)
         lsf.write_output(f"TASK: Creating Security Audit Events using PowerShell", logfile=lsf.logfile)
         try:

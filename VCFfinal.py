@@ -8,7 +8,7 @@ import logging
 import lsfunctions as lsf
 
 sys.path.append('/vpodrepo/2026-Labs/2601')
-import functions.hol_functions as hol
+# import functions.hol_functions as hol
 
 def verify_nic_connected (vm_obj, simple):
     """
