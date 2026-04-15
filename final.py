@@ -74,7 +74,8 @@ if lsf.LMC:
         lsf.write_vpodprogress('Creating Security Audit Events using PowerShell', 'GOOD-2', color=color)
         lsf.write_output(f"TASK: Creating Security Audit Events using PowerShell", logfile=lsf.logfile)
         try:
-            lsf.ssh(f'pwsh /vpodrepo/2026-labs/2601/AuditEvents.ps1', 'holuser@console', pwd)
+            lsf.run_command(f'pwsh /vpodrepo/2026-labs/2601/AuditEvents.ps1', logfile=lsf.logfile)
+            #lsf.ssh(f'pwsh /vpodrepo/2026-labs/2601/AuditEvents.ps1', 'holuser@console', pwd)
         except Exception as e:
             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
             print(f'INFO: {e}')
