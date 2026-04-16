@@ -79,10 +79,10 @@ if lsf.LMC:
         except Exception as e:
             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
             print(f'INFO: {e}')
-        finally:
-            lsf.write_output(f"TASK: Creating Hourly Security Audit Events Job", logfile=lsf.logfile)
-            job = f"0 * * * * {cmd}"
-            subprocess.run (f'crontab -l 2>/dev/null; echo "{job}") | crontab -', shell=True)
+        # finally:
+        #     lsf.write_output(f"TASK: Creating Hourly Security Audit Events Job", logfile=lsf.logfile)
+        #     job = f"0 * * * * {cmd}"
+        #     subprocess.run (f'crontab -l 2>/dev/null; echo "{job}") | crontab -', shell=True)
 
 # fail like this
 #lsf.labfail('FINAL ISSUE')
