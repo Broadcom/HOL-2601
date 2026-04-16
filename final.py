@@ -67,19 +67,22 @@ if lsf.lab_sku == "VCF9-VKS-D":
 ########################################################
 pwd = lsf.password
 lsf.write_vpodprogress('Running HOL-26xx Startup Scripts', 'GOOD-2', color=color)
-        
+cmd = 'pwsh /vpodrepo/2026-labs/2601/AuditEvents.ps1'
+
 if lsf.LMC: 
     if not lsf.labcheck:
         lsf.write_vpodprogress('Creating Security Audit Events using PowerShell', 'GOOD-2', color=color)
         lsf.write_vpodprogress('Creating Security Audit Events using PowerShell', 'GOOD-2', color=color)
         lsf.write_output(f"TASK: Creating Security Audit Events using PowerShell", logfile=lsf.logfile)
         try:
-            lsf.run_command(f'pwsh /vpodrepo/2026-labs/2601/AuditEvents.ps1')
-            #lsf.ssh(f'pwsh /vpodrepo/2026-labs/2601/AuditEvents.ps1', 'holuser@console', pwd)
+            lsf.run_command({cmd})
         except Exception as e:
             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
             print(f'INFO: {e}')
-
+        finally:
+            lsf.write_output(f"TASK: Creating Hourly Security Audit Events Job", logfile=lsf.logfile)
+            job = f"0 * * * * {cmd}"
+            subprocess.run (f'crontab -l 2>/dev/null; echo "{job}") | crontab -', shell=True)
 
 # fail like this
 #lsf.labfail('FINAL ISSUE')
