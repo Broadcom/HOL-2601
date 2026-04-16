@@ -75,7 +75,7 @@ if lsf.LMC:
         lsf.write_vpodprogress('Creating Security Audit Events using PowerShell', 'GOOD-2', color=color)
         lsf.write_output(f"TASK: Creating Security Audit Events using PowerShell", logfile=lsf.logfile)
         try:
-            lsf.run_command({cmd})
+            lsf.run_command(cmd)
         except Exception as e:
             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
             print(f'INFO: {e}')
