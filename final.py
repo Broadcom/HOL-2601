@@ -61,6 +61,20 @@ if lsf.lab_sku == "VCF9-VKS-D":
         lsf.labfail("HOL-2788 clone/copy failed")
         exit(1)
 
+# #######################################################
+#  26xx - PVC Fixes for VKS
+# #######################################################
+pwd = lsf.password
+
+if lsf.LMC: 
+    if not lsf.labcheck:
+        lsf.write_vpodprogress('Running VKS PVC Fix', 'GOOD-2', color=color)
+        lsf.write_output(f"TASK: Running VKS PVC Fix", logfile=lsf.logfile)
+        try:
+            lsf.ssh(f'bash /home/holuser/labfiles/pvc_fix.sh', 'holuser@console', pwd)
+        except Exception as e:
+            lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
+            print(f'INFO: {e}')
 
 ########################################################
 #  26xx - Create Security Audit Events using PowerShell
@@ -83,6 +97,25 @@ if lsf.LMC:
         #     lsf.write_output(f"TASK: Creating Hourly Security Audit Events Job", logfile=lsf.logfile)
         #     job = f"0 * * * * {cmd}"
         #     subprocess.run (f'crontab -l 2>/dev/null; echo "{job}") | crontab -', shell=True)
+
+########################################################
+#  26xx - Check Gitlab Status
+########################################################
+# gitFqdn = "gitlab.site-a.vcf.lab"
+# sslVerify = False
+# pwd = lsf.password
+
+# if lsf.LMC:
+#   if not lsf.labcheck:
+#     lsf.write_output(f"TASK: Checking Gitlab Status...", logfile=lsf.logfile)
+#     lsf.write_vpodprogress(f'Checking Gitlab Status...', 'GOOD-8', color=color)
+#     while True:
+#         if hol.isGitlabReady(gitFqdn, sslVerify) and hol.isGitlabLive(gitFqdn, sslVerify) and hol.isGitlabHealthy(gitFqdn, sslVerify):
+#             lsf.write_output(f'INFO: Gitlab {gitFqdn} is in a Ready state!', logfile=lsf.logfile)
+#             break
+#         else:
+#             lsf.write_output(f'INFO: Gitlab {gitFqdn} is not Ready!', logfile=lsf.logfile)
+#             lsf.labstartup_sleep(30)
 
 # fail like this
 #lsf.labfail('FINAL ISSUE')
