@@ -17,7 +17,7 @@ resource "vcfa_org" "org" {
 }
 
 resource "vcfa_org_settings" "org_settings" {
-  org_id                           = data.vcfa_org.org.id
+  org_id                           = vcfa_org.org.id
   can_create_subscribed_libraries  = true
   quarantine_content_library_items = false
 }
@@ -117,7 +117,7 @@ data "vcfa_storage_class" "sc" {
   name      = tolist(var.region_storage_policy_names)[0]
 }
 resource "vcfa_org_ldap" "rainpole-io" {
-  org_id                 = data.vcfa_org.org.id
+  org_id                 = vcfa_org.org.id
   ldap_mode              = "CUSTOM"
   auto_trust_certificate = false # Because is_ssl = false
   custom_settings {

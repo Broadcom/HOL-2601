@@ -16,6 +16,15 @@ terraform {
             source = "vmware/vcf"
             version = "0.17.1"
         }
+        vsphere = {
+            source = "hashicorp/vsphere"
+            version = "~> 2.0.0"
+        }
+        
+        nsxt = {
+            source = "vmware/nsxt"
+            version = "~> 3.11.1"
+        }
     }
 }
 locals {
@@ -30,4 +39,21 @@ provider "vcfa" {
     allow_unverified_ssl    = var.vcfa_insecure
     logging                 = true
     logging_file            = var.vcfa_log_file
+}
+
+provider "vsphere" {
+  user           = var.vcenter_username
+  password       = local.password
+  vsphere_server = var.vcenter_url
+
+  # If you have a self-signed cert
+  allow_unverified_ssl = true
+}
+
+provider "nsxt" {
+  host           = var.nsx_wld01_manager_url
+  username       = var.nsx_wld01_manager_username
+  password       = local.password
+  allow_unverified_ssl = true
+  max_retries    = 4
 }

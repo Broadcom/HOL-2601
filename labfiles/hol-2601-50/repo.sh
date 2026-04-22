@@ -1,8 +1,21 @@
-if [ -f /etc/apt/sources.list.d/ubuntu.list ]; then
-    sudo rm /etc/apt/sources.list.d/ubuntu.list
+SOURCES_FILE="/etc/apt/sources.list.d/ubuntu.list"
+BACKUP_FILE="/etc/apt/sources.list.d/ubuntu.list.bak.$(date +%s)"
+UBUNTU_FILE="/etc/apt/sources.list.d/ubuntu.sources"
+
+if [ -f $SOURCES_FILE ]; then
+    sudo mv "$SOURCES_FILE" "$BACKUP_FILE"
+    echo "[INFO] Backup File created: $BACKUP_FILE"
 fi
 
-echo "deb [trusted=yes] https://repo.site-a.vcf.lab ./" | sudo tee /etc/apt/sources.list.d/offline.list
+if [ -f $UBUNTU_FILE ]; then
+    sudo mv "$UBUNTU_FILE" "${UBUNTU_FILE}.disabled"
+    echo "[INFO] Backup File created: ${UBUNTU_FILE}.disabled"
+fi
+
+cat > "$SOURCES_FILE" <<EOF
+# Offline Repository for HOL-2601
+deb [trusted=yes] https://repo.site-a.vcf.lab ./
+EOF
 
 cat <<EOF | sudo tee /usr/local/share/ca-certificates/ca.crt
 -----BEGIN CERTIFICATE-----
@@ -33,4 +46,12 @@ bgsnpQXquNZC6PmKXaZC+7Gttg==
 EOF
 
 sudo update-ca-certificates
+
+echo "[INFO] Updated CA Certificates"
+
+echo "[INFO] Cleaning apt cache"
+sudo apt clean
+rm -rf /var/lib/apt/lists/*
+
+echo "[INFO] Updating apt repositories"
 sudo apt update

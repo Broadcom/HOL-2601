@@ -93,13 +93,32 @@ if lsf.LMC:
         except Exception as e:
             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
             print(f'INFO: {e}')
-        # finally:
-        #     lsf.write_output(f"TASK: Creating Hourly Security Audit Events Job", logfile=lsf.logfile)
-        #     job = f"0 * * * * {cmd}"
-        #     subprocess.run (f'crontab -l 2>/dev/null; echo "{job}") | crontab -', shell=True)
+
 
 ########################################################
-#  26xx - Check Gitlab Status
+#  26xx - Update Gitlab Repository
+########################################################
+# gitFqdn = "gitlab.site-a.vcf.lab"
+# sslVerify = False
+# pwd = lsf.password
+
+pwd = lsf.password
+cmd = 'bash /vpodrepo/2026-labs/2601/gitlab.sh'
+
+if lsf.LMC: 
+    if not lsf.labcheck:
+        lsf.write_vpodprogress('Updating Gitlab Repositories', 'GOOD-2', color=color)
+        lsf.write_vpodprogress('Updating Gitlab Repositories', 'GOOD-2', color=color)
+        lsf.write_output(f"TASK: Updating Gitlab Repositories", logfile=lsf.logfile)
+        try:
+            lsf.run_command(cmd)
+        except Exception as e:
+            lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
+            print(f'INFO: {e}')
+
+
+########################################################
+#  26xx - Update Gitlab 
 ########################################################
 # gitFqdn = "gitlab.site-a.vcf.lab"
 # sslVerify = False
