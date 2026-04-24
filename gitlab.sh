@@ -7,11 +7,16 @@ TOKEN=$(</home/holuser/gitlab.txt)
 GITLAB_REPO_DIR="${SCRIPT_DIR}/gitlab"
 BRANCH="main"
 USERNAME="hol.admin"
-REMOTE_URL="https://${USERNAME}:${TOKEN}@gitlab.site-a.vcf.lab/hol.admin/hol-all-apps.git"
+REMOTE_URL="https://${USERNAME}:${TOKEN}@gitlab.site-a.vcf.lab/Cloud-Admin-Team/All-Apps.git"
 REMOTE_NAME="origin"
 
 if [ ! -d "$GITLAB_REPO_DIR" ]; then
     echo "[INFO] Gitlab folder missing."
+    exit 1
+fi
+
+if [ -z "$TOKEN" ]; then
+    echo "[ERROR] GitLab token is empty. Please ensure /home/holuser/gitlab.txt contains the token."
     exit 1
 fi
 
