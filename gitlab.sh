@@ -69,7 +69,7 @@ git add .
 
 if ! git diff --cached --quiet; then
     echo "[INFO] Committing changes to Git repository..."
-    git commit -m "Commit for GitLab repository - $(date +%Y-%m-%d %H:%M:%S)"
+    git commit -m "Commit for GitLab repository - $(date +%s)"
 else
     echo "[INFO] No changes to commit."
 fi
