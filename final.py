@@ -102,19 +102,19 @@ if lsf.LMC:
 # sslVerify = False
 # pwd = lsf.password
 
-# pwd = lsf.password
-# cmd = 'bash /vpodrepo/2026-labs/2601/gitlab.sh'
+pwd = lsf.password
+cmd = 'bash /vpodrepo/2026-labs/2601/gitlab.sh'
 
-# if lsf.LMC: 
-#     if not lsf.labcheck:
-#         lsf.write_vpodprogress('Updating Gitlab Repositories', 'GOOD-2', color=color)
-#         lsf.write_vpodprogress('Updating Gitlab Repositories', 'GOOD-2', color=color)
-#         lsf.write_output(f"TASK: Updating Gitlab Repositories", logfile=lsf.logfile)
-#         try:
-#             lsf.run_command(cmd)
-#         except Exception as e:
-#             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
-#             print(f'INFO: {e}')
+if lsf.LMC: 
+    if not lsf.labcheck:
+        lsf.write_vpodprogress('Updating Gitlab Repositories', 'GOOD-2', color=color)
+        lsf.write_vpodprogress('Updating Gitlab Repositories', 'GOOD-2', color=color)
+        lsf.write_output(f"TASK: Updating Gitlab Repositories", logfile=lsf.logfile)
+        try:
+            lsf.run_command(cmd)
+        except Exception as e:
+            lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
+            print(f'INFO: {e}')
 
 
 ########################################################
