@@ -4,7 +4,7 @@ data "vcfa_version" "version" {
 }
 
 data "vcfa_vcenter" "vc" {
-    name = replace(var.vcenter_url, "https://", "")
+    name = replace(var.wld_vcenter_url, "https://", "")
 }
 data "vcfa_supervisor" "sv" {
     name = var.supervisor_name
