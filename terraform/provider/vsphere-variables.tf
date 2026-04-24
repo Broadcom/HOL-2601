@@ -7,7 +7,7 @@ variable "vsphere_username" {
 variable "vsphere_server" {
   type          = string
   description   = "The vSphere server to connect to"
-  default       = var.vcenter_url
+  default       = "vc-wld01-a.site-a.vcf.lab"
 }
 variable "datacenter" {
   type          = string
