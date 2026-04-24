@@ -65,4 +65,3 @@ vm_ipv4_netmask = 24
 nsx_wld01_manager_url = "nsx-wld01-a.site-a.vcf.lab"
 nsx_wld01_manager_username = "admin"
 nsx_wld01_manager_password = ""
-nsx_wld01_project = "hol-all-apps"

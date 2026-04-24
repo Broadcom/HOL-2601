@@ -14,3 +14,9 @@ variable "nsx_wld01_manager_password" {
   description = "The password for the NSX Manager for WLD01"
   sensitive   = true
 }
+
+variable "nsx_wld01_project" {
+  type        = string
+  description = "The NSX-T project to use for VCFA"
+  default     = "hol-all-apps"
+}
