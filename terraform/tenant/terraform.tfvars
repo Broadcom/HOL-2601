@@ -8,12 +8,12 @@ vcfa_log_file = "vcfa.log"
 
 wld_vcenter_url = "vc-wld01-a.site-a.vcf.lab"
 wld_vcenter_username = "administrator@wld.sso"
-wld_vcenter_password = local.password
+wld_vcenter_password = ""
 wld_vcenter_storage_policy_names = [ "vSAN Default Storage Policy" ]
 
 nsx_manager_url = "nsx-wld01-a.site-a.vcf.lab"
 nsx_Manager_username = "admin"
-nsx_Manager_password = local.password
+nsx_Manager_password = ""
 nsx_tier0_gateway_name = "t0-wld-a"
 nsx_edge_cluster_name = "edgecl-wld-a"
 

@@ -11,7 +11,7 @@ resource "vcfa_region" "region" {
 resource "vcfa_org" "tenant_org" {
     name                = var.org_name
     display_name        = var.org_name
-    description         = "Hands-on Labs Organization for All Apps"
+    description         = "Hands-on Labs Organization"
     is_enabled          = true
     is_classic_tenant   = false
 }
