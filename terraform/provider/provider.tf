@@ -42,9 +42,9 @@ provider "vcfa" {
 }
 
 provider "vsphere" {
-  user           = var.vcenter_username
+  user           = var.wld_vcenter_username
   password       = local.password
-  vsphere_server = var.vcenter_url
+  vsphere_server = var.wld_vcenter_url
 
   # If you have a self-signed cert
   allow_unverified_ssl = true
