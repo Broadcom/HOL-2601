@@ -30,7 +30,7 @@ region_vm_class_names = ["best-effort-large", "best-effort-medium", "best-effort
 
 region_quota_cpu_limit_mhz = 25000
 region_quota_cpu_reservation_mhz = 0
-region_quota_mem_limit_mb = 51,200
+region_quota_mem_limit_mb = 51200
 region_quota_mem_reservation_mb = 0
 region_quota_storage_limit_mb = 1024000
 

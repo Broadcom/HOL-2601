@@ -37,7 +37,7 @@ region_quota_storage_limit_mb = 10240
 tenant_content_library_name = "Organization"
 tenant_content_library_description = "Tenant Content Library"
 
-org_name = "hol-all-apps"
+vcfa_tenant_org = "hol-all-apps"
 org_local_username = "admin"
 org_local_password = ""
 org_log_name = "all-apps"

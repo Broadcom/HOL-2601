@@ -107,7 +107,7 @@ variable "region_quota_storage_limit_mb" {
 
 # Org
 
-variable "org_name" {
+variable "vcfa_tenant_org" {
   type        = string
   description = "The name of the org to create"
 }

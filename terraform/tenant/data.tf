@@ -45,7 +45,7 @@ data "vcfa_tier0_gateway" "t0-gw" {
 }
 
 data "vcfa_org" "tenant_org" {
-  name = "vcfa_tenant_org"
+  name = var.vcfa_tenant_org
 }
 
 data "nsxt_policy_project" "hol-all-apps" {
