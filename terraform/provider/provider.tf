@@ -17,7 +17,7 @@ terraform {
             version = "0.17.1"
         }
         vsphere = {
-            source = "vmware/vsphere"
+            source = "hashicorp/vsphere"
             version = "~> 2.0.0"
         }
         
@@ -42,9 +42,9 @@ provider "vcfa" {
 }
 
 provider "vsphere" {
-  user           = var.wld_vcenter_username
+  user           = var.vcenter_username
   password       = local.password
-  vsphere_server = var.wld_vcenter_url
+  vsphere_server = var.vcenter_url
 
   # If you have a self-signed cert
   allow_unverified_ssl = true
