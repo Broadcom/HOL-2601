@@ -11,11 +11,11 @@ wld_vcenter_username = "administrator@wld.sso"
 wld_vcenter_password = ""
 wld_vcenter_storage_policy_names = [ "vSAN Default Storage Policy" ]
 
-nsx_manager_url = "nsx-wld01-a.site-a.vcf.lab"
-nsx_Manager_username = "admin"
-nsx_Manager_password = ""
-nsx_tier0_gateway_name = "t0-wld-a"
-nsx_edge_cluster_name = "edgecl-wld-a"
+nsx_wld01_manager_url = "nsx-wld01-a.site-a.vcf.lab"
+nsx_wld01_manager_username = "admin"
+nsx_wld01_manager_password = ""
+nsx_wld01_tier0_gateway_name = "t0-wld-a"
+nsx_wld01_edge_cluster_name = "edgecl-wld-a"
 
 ipspace_max_subnet_size = 24
 ipspace_max_cidr_count = 10
@@ -42,7 +42,4 @@ org_local_username = "admin"
 org_local_password = ""
 org_log_name = "all-apps"
 
-nsx_wld01_manager_url = "nsx-wld01-a.site-a.vcf.lab"
-nsx_wld01_manager_username = "admin"
-nsx_wld01_manager_password = ""
 nsx_wld01_project = "hol-all-apps"

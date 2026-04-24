@@ -20,3 +20,12 @@ variable "nsx_wld01_project" {
   description = "The NSX-T project to use for VCFA"
   default     = "hol-all-apps"
 }
+
+variable "nsx_wld01_tier0_gateway_name" {
+  type        = string
+  description = "The name of the NSX Tier-0 gateway"
+}
+variable "nsx_wld01_edge_cluster_name" {
+  type        = string
+  description = "The name of the NSX edge cluster"
+}

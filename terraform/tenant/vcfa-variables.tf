@@ -58,18 +58,7 @@ variable "wld_vcenter_storage_policy_names" {
 }
 
 # NSX 
-variable "nsx_manager_url" {
-  type        = string
-  description = "The NSX Manager URL to connect to"
-}
-variable "nsx_manager_username" {
-  type        = string
-  description = "The NSX Manager username"
-}
-variable "nsx_manager_password" {
-  type        = string
-  description = "The NSX Manager password"
-}
+
 variable "nsx_tier0_gateway_name" {
   type        = string
   description = "The name of the NSX Tier-0 gateway"
