@@ -174,3 +174,5 @@ variable "ipspace_scope_cidr1" {
   description = "The CIDR block for the IP space scope"
   default     = "10.0.0.0/8"
 }
+
+#
