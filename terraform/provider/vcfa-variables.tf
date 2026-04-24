@@ -62,11 +62,11 @@ variable "nsx_manager_url" {
   type        = string
   description = "The NSX Manager URL to connect to"
 }
-variable "nsx_Manager_username" {
+variable "nsx_manager_username" {
   type        = string
   description = "The NSX Manager username"
 }
-variable "nsx_Manager_password" {
+variable "nsx_manager_password" {
   type        = string
   description = "The NSX Manager password"
 }

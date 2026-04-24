@@ -3,7 +3,10 @@ variable "vsphere_username" {
   description   = "The vSphere username"
   default       = "administrator@wld.sso"
 }
-
+variable "vsphere_password" {
+  type          = string
+  description   = "The vSphere password"
+}
 variable "vsphere_server" {
   type          = string
   description   = "The vSphere server to connect to"
