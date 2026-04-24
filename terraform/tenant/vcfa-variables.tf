@@ -57,17 +57,6 @@ variable "wld_vcenter_storage_policy_names" {
   description = "The names of the vCenter storage policies to use"
 }
 
-# NSX 
-
-variable "nsx_tier0_gateway_name" {
-  type        = string
-  description = "The name of the NSX Tier-0 gateway"
-}
-variable "nsx_edge_cluster_name" {
-  type        = string
-  description = "The name of the NSX edge cluster"
-}
-
 # Supervisor
 variable "supervisor_name" {
   type        = string

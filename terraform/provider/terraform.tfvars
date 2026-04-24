@@ -28,11 +28,11 @@ supervisor_zone_name = "z-wld-a"
 region_storage_policy_names = [ "vSAN Default Storage Policy" ]
 region_vm_class_names = ["best-effort-large", "best-effort-medium", "best-effort-small", "best-effort-xsmall"]
 
-region_quota_cpu_limit_mhz = 1000
-region_quota_cpu_reservation_mhz = 500
-region_quota_mem_limit_mb = 2048
-region_quota_mem_reservation_mb = 1024
-region_quota_storage_limit_mb = 10240
+region_quota_cpu_limit_mhz = 25000
+region_quota_cpu_reservation_mhz = 0
+region_quota_mem_limit_mb = 51,200
+region_quota_mem_reservation_mb = 0
+region_quota_storage_limit_mb = 1024000
 
 global_content_library_name = "Provider"
 global_content_library_description = "Provider Content Library"
