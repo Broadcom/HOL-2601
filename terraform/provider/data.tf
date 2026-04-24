@@ -59,7 +59,3 @@ data "vcfa_tier0_gateway" "t0-gw" {
 data "vcfa_org" "system" {
   name = "System"
 }
-
-data "nsxt_policy_project" "hol-all-apps" {
-  display_name = var.nsx_wld01_project
-}
