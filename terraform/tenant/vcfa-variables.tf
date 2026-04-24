@@ -147,9 +147,13 @@ variable "org_local_password" {
   description = "The local password for the org"
 }
 
-variable "global_content_library_name" {
+variable "tenant_content_library_name" {
   type        = string
-  description = "The name of the Provider content library to use"
+  description = "The name of the Tenant content library to use"
+}
+variable "tenant_content_library_description" {
+  type        = string
+  description = "The description of the Tenant content library to use"
 }
 variable "ipspace_max_subnet_size" {
   type        = number

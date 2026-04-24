@@ -151,6 +151,10 @@ variable "global_content_library_name" {
   type        = string
   description = "The name of the Provider content library to use"
 }
+variable "global_content_library_description" {
+  type        = string
+  description = "The description of the Provider content library to use"
+}
 variable "ipspace_max_subnet_size" {
   type        = number
   description = "The maximum subnet size for the IP space"

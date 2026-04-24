@@ -3,18 +3,6 @@ data "vcfa_version" "version" {
     fail_if_not_match = false
 }
 
-data "vcfa_vcenter" "vc" {
-    name = replace(var.vcenter_url, "https://", "")
-}
-data "vcfa_supervisor" "sv" {
-    name = var.supervisor_name
-    vcenter_id = data.vcfa_vcenter.vc.id
-}
-
-data "vcfa_nsx_manager" "nsx" {
-  name = replace(var.nsx_manager_url, "https://", "")
-}
-
 data "vcfa_region_zone" "zone" {
   region_id = vcfa_region.region.id
   name      = var.supervisor_zone_name
@@ -56,8 +44,8 @@ data "vcfa_tier0_gateway" "t0-gw" {
   region_id = vcfa_region.region.id
 }
 
-data "vcfa_org" "system" {
-  name = "System"
+data "vcfa_org" "tenant_org" {
+  name = "vcfa_tenant_org"
 }
 
 data "nsxt_policy_project" "hol-all-apps" {

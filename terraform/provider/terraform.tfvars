@@ -35,6 +35,7 @@ region_quota_mem_reservation_mb = 1024
 region_quota_storage_limit_mb = 10240
 
 global_content_library_name = "Provider"
+global_content_library_description = "Provider Content Library"
 
 org_name = "hol-all-apps"
 org_local_username = "admin"
