@@ -56,7 +56,6 @@ data "vcfa_tier0_gateway" "t0-gw" {
   region_id = vcfa_region.region.id
 }
 
-
 data "vcfa_org" "system" {
   name = "System"
 }

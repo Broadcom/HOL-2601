@@ -40,19 +40,19 @@ variable "vcfa_log_file" {
 }
 
 # vcenter
-variable "vcenter_url" {
+variable "wld_vcenter_url" {
   type        = string
   description = "The vCenter URL to connect to"
 }
-variable "vcenter_username" {
+variable "wld_vcenter_username" {
   type        = string
   description = "The vCenter username"
 }
-variable "vcenter_password" {
+variable "wld_vcenter_password" {
   type        = string
   description = "The vCenter password"
 }
-variable "vcenter_storage_policy_names" {
+variable "wld_vcenter_storage_policy_names" {
   type        = list(string)
   description = "The names of the vCenter storage policies to use"
 }

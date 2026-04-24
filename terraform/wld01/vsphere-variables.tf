@@ -1,13 +1,20 @@
+variable "password_file_path" {
+  type        = string
+  description = "The path to the file containing the password for the VCF Automation API"
+  default     = "/home/holuser/creds.txt"
+}
+
 variable "vsphere_username" {
   type          = string
   description   = "The vSphere username"
-  default       = "administrator@wld.sso"
 }
-
+variable "vsphere_password" {
+  type          = string
+  description   = "The vSphere password"
+}
 variable "vsphere_server" {
   type          = string
   description   = "The vSphere server to connect to"
-  default       = var.vcenter_url
 }
 variable "datacenter" {
   type          = string

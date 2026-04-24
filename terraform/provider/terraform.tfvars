@@ -6,14 +6,14 @@ vcfa_username = "admin"
 vcfa_org = "system"
 vcfa_log_file = "vcfa.log"
 
-vcenter_url = "vc-wld01-a.site-a.vcf.lab"
-vcenter_username = "administrator@wld.sso"
-vcenter_password = ""
-vcenter_storage_policy_names = [ "vSAN Default Storage Policy" ]
+wld_vcenter_url = "vc-wld01-a.site-a.vcf.lab"
+wld_vcenter_username = "administrator@wld.sso"
+wld_vcenter_password = local.password
+wld_vcenter_storage_policy_names = [ "vSAN Default Storage Policy" ]
 
 nsx_manager_url = "nsx-wld01-a.site-a.vcf.lab"
 nsx_Manager_username = "admin"
-nsx_Manager_password = ""
+nsx_Manager_password = local.password
 nsx_tier0_gateway_name = "t0-wld-a"
 nsx_edge_cluster_name = "edgecl-wld-a"
 
@@ -41,6 +41,9 @@ org_local_username = "admin"
 org_local_password = ""
 org_log_name = "all-apps"
 
+vsphere_server = "vc-wld01-a.site-a.vcf.lab"
+vsphere_password = local.password
+vsphere_username = "administrator@wld.sso"
 datacenter = "wld-01a-DC"
 cluster = "cluster-wld01-01a"
 datastore = "vsanDatastore"
@@ -61,5 +64,5 @@ vm_ipv4_netmask = 24
 
 nsx_wld01_manager_url = "nsx-wld01-a.site-a.vcf.lab"
 nsx_wld01_manager_username = "admin"
-nsx_wld01_manager_password = ""
+nsx_wld01_manager_password = local.password
 nsx_wld01_project = "hol-all-apps"
