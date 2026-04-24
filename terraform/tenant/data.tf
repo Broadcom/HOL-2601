@@ -34,13 +34,13 @@ data "vcfa_region_storage_policy" "region-sc" {
 }
 
 data "vcfa_edge_cluster" "edge-cluster" {
-  name             = var.nsx_edge_cluster_name
+  name             = var.nsx_wld01_edge_cluster_name
   region_id        = vcfa_region.region.id
   sync_before_read = true
 }
 
 data "vcfa_tier0_gateway" "t0-gw" {
-  name      = var.nsx_tier0_gateway_name
+  name      = var.nsx_wld01_tier0_gateway_name
   region_id = vcfa_region.region.id
 }
 
