@@ -23,7 +23,7 @@ resource "vcfa_org_settings" "org_settings" {
 }
 
 resource "vcfa_org_region_quota" "region_quota" {
-  org_id         = vcfa_org.org.id
+  org_id         = vcfa_org.tenant_org.id
   region_id      = vcfa_region.region.id
   supervisor_ids = [data.vcfa_supervisor.sv.id]
   zone_resource_allocations {
