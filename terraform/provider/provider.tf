@@ -17,10 +17,9 @@ terraform {
             version = "0.17.1"
         }
         vsphere = {
-            source = "hashicorp/vsphere"
+            source = "vmware/vsphere"
             version = "~> 2.0.0"
         }
-        
         nsxt = {
             source = "vmware/nsxt"
             version = "~> 3.11.1"
