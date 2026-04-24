@@ -8,7 +8,7 @@ resource "vcfa_region" "region" {
   storage_policy_names = var.region_storage_policy_names
 }
 
-resource "vcfa_org" "org" {
+resource "vcfa_org" "tenant_org" {
     name                = var.org_name
     display_name        = var.org_name
     description         = "Hands-on Labs Organization for All Apps"
@@ -17,7 +17,7 @@ resource "vcfa_org" "org" {
 }
 
 resource "vcfa_org_settings" "org_settings" {
-  org_id                           = vcfa_org.org.id
+  org_id                           = vcfa_org.tenant_org.id
   can_create_subscribed_libraries  = true
   quarantine_content_library_items = false
 }
@@ -47,19 +47,19 @@ resource "vcfa_org_region_quota" "region_quota" {
 
 # Create VCFA Network Logs Label
 resource "vcfa_org_networking" "network" {
-  org_id   = vcfa_org.org.id
+  org_id   = vcfa_org.tenant_org.id
   log_name = lower(var.org_log_name)
 }
 
 # Fetch VCFA Org Admin Role
 data "vcfa_role" "org-admin" {
-  org_id = vcfa_org.org.id
+  org_id = vcfa_org.tenant_org.id
   name   = "Organization Administrator"
 }
 
 # Create First User for VCFA Org
 resource "vcfa_org_local_user" "user" {
-  org_id   = vcfa_org.org.id
+  org_id   = vcfa_org.tenant_org.id
   role_ids = [data.vcfa_role.org-admin.id]
   username = var.org_local_username
   password = local.password
