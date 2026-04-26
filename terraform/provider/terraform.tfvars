@@ -74,3 +74,8 @@ ldap_port = 389
 ldap_search_base = "dc=rainpole,dc=io"
 ldap_ssl = false
 ldap_password = ""
+
+
+vcfo_orchestrator_password = ""
+vcfo_orchestrator_url = "o11n-01a.site-a.vcf.lab"
+vcfo_orchestrator_username = "root"
