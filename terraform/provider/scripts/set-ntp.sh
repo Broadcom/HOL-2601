@@ -1,0 +1,1 @@
+vracli ntp systemd --set 10.1.1.1
