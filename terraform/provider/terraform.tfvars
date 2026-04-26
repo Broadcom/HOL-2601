@@ -37,10 +37,10 @@ region_quota_storage_limit_mb = 1024000
 global_content_library_name = "Provider"
 global_content_library_description = "Provider Content Library"
 
-org_name = "hol-all-apps"
-org_local_username = "admin"
-org_local_password = ""
-org_log_name = "all-apps"
+vcfa_tenant_org = "hol-all-apps"
+vcfa_tenant_org_local_username = "admin"
+vcfa_tenant_org_local_password = ""
+vcfa_tenant_org_log_name = "all-apps"
 
 vsphere_server = "vc-wld01-a.site-a.vcf.lab"
 vsphere_password = ""

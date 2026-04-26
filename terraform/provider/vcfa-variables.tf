@@ -129,20 +129,20 @@ variable "region_quota_storage_limit_mb" {
 
 # Org
 
-variable "org_name" {
+variable "vcfa_tenant_org" {
   type        = string
   description = "The name of the org to create"
 }
 
-variable "org_log_name" {
+variable "vcfa_tenant_org_log_name" {
   type        = string
   description = "The log name for the org"
 }
-variable "org_local_username" {
+variable "vcfa_tenant_org_local_username" {
   type        = string
   description = "The local username for the org"
 }
-variable "org_local_password" {
+variable "vcfa_tenant_org_local_password" {
   type        = string
   description = "The local password for the org"
 }

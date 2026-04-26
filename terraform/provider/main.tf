@@ -9,8 +9,8 @@ resource "vcfa_region" "region" {
 }
 
 resource "vcfa_org" "tenant_org" {
-    name                = var.org_name
-    display_name        = var.org_name
+    name                = var.vcfa_tenant_org
+    display_name        = var.vcfa_tenant_org
     description         = "Hands-on Labs Organization"
     is_enabled          = true
     is_classic_tenant   = false
@@ -48,7 +48,7 @@ resource "vcfa_org_region_quota" "region_quota" {
 # Create VCFA Network Logs Label
 resource "vcfa_org_networking" "network" {
   org_id   = vcfa_org.tenant_org.id
-  log_name = lower(var.org_log_name)
+  log_name = lower(var.vcfa_tenant_org_log_name)
 }
 
 # Fetch VCFA Org Admin Role
@@ -61,7 +61,7 @@ data "vcfa_role" "org-admin" {
 resource "vcfa_org_local_user" "user" {
   org_id   = vcfa_org.tenant_org.id
   role_ids = [data.vcfa_role.org-admin.id]
-  username = var.org_local_username
+  username = var.vcfa_tenant_org_local_username
   password = local.password
 }
 
@@ -77,8 +77,8 @@ resource "vcfa_edge_cluster_qos" "edge-cluster-qos" {
 
 # Create VCFA IP Space
 resource "vcfa_ip_space" "ipspace" {
-  name                          = "${var.org_name}-ipspace"
-  description                   = "${var.org_name} IP Space"
+  name                          = "${var.vcfa_tenant_org}-ipspace"
+  description                   = "${var.vcfa_tenant_org} IP Space"
   region_id                     = vcfa_region.region.id
   external_scope                = "0.0.0.0/0"
   default_quota_max_subnet_size = var.ipspace_max_subnet_size
@@ -92,8 +92,8 @@ resource "vcfa_ip_space" "ipspace" {
 }
 # Create VCFA Provider Gateway
 resource "vcfa_provider_gateway" "provider-gw" {
-  name             = "${var.org_name}-provider-gw"
-  description      = "${var.org_name} Provider Gateway"
+  name             = "${var.vcfa_tenant_org}-provider-gw"
+  description      = "${var.vcfa_tenant_org} Provider Gateway"
   region_id        = vcfa_region.region.id
   tier0_gateway_id = data.vcfa_tier0_gateway.t0-gw.id
   ip_space_ids     = [vcfa_ip_space.ipspace.id]
@@ -101,11 +101,9 @@ resource "vcfa_provider_gateway" "provider-gw" {
 
 # Create VCFA Regional Networking
 resource "vcfa_org_regional_networking" "regional-network" {
-  name = "${var.org_name}-regional-network"
-
+  name = "${var.vcfa_tenant_org}-regional-network"
   org_id = vcfa_org_networking.network.id
-
-  provider_gateway_id = vcfa_provider_gateway.provider-gw.id
+    provider_gateway_id = vcfa_provider_gateway.provider-gw.id
   region_id           = vcfa_region.region.id
 
   edge_cluster_id = data.vcfa_edge_cluster.edge-cluster.id
