@@ -3,6 +3,10 @@ data "vcfa_version" "version" {
     fail_if_not_match = false
 }
 
+data "vcfa_region" "region" {
+  name = var.region_name
+}
+
 data "vcfa_region_zone" "zone" {
   region_id = vcfa_region.region.id
   name      = var.supervisor_zone_name

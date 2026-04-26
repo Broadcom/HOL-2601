@@ -115,38 +115,38 @@ data "vcfa_storage_class" "sc" {
   name      = tolist(var.region_storage_policy_names)[0]
 }
 
-resource "vcfa_provider_ldap" "example" {
-  count = var.ldap_host == "" ? 0 : 1
+# resource "vcfa_provider_ldap" "example" {
+#   count = var.ldap_host == "" ? 0 : 1
 
-  auto_trust_certificate  = true
-  server                  = var.ldap_host
-  port                    = var.ldap_port
-  is_ssl                  = var.ldap_ssl
-  username                = var.ldap_bind_dn
-  password                = local.password
-  base_distinguished_name = var.ldap_search_base
-  connector_type          = "OPEN_LDAP"
-  custom_ui_button_label  = "OpenLDAP"
-  user_attributes {
-    object_class                = "person"
-    unique_identifier           = "entryUUID"
-    username                    = "cn"
-    display_name                = "displayName"
-    given_name                  = "givenName"
-    surname                     = "sn"
-    email                       = "mail"
-    telephone                   = "telephoneNumber"
-    group_membership_identifier = "dn"
+#   auto_trust_certificate  = true
+#   server                  = var.ldap_host
+#   port                    = var.ldap_port
+#   is_ssl                  = var.ldap_ssl
+#   username                = var.ldap_bind_dn
+#   password                = local.password
+#   base_distinguished_name = var.ldap_search_base
+#   connector_type          = "OPEN_LDAP"
+#   custom_ui_button_label  = "OpenLDAP"
+#   user_attributes {
+#     object_class                = "person"
+#     unique_identifier           = "entryUUID"
+#     username                    = "cn"
+#     display_name                = "displayName"
+#     given_name                  = "givenName"
+#     surname                     = "sn"
+#     email                       = "mail"
+#     telephone                   = "telephoneNumber"
+#     group_membership_identifier = "dn"
 
-  }
-  group_attributes {
-    object_class                = "groupOfNames"
-    unique_identifier           = "entryUUID"
-    name                        = "cn"
-    membership                  = "member"
-    group_membership_identifier = "dn"
-  }
-}
+#   }
+#   group_attributes {
+#     object_class                = "groupOfNames"
+#     unique_identifier           = "entryUUID"
+#     name                        = "cn"
+#     membership                  = "member"
+#     group_membership_identifier = "dn"
+#   }
+# }
 
 # Create Content Library
 resource "vcfa_content_library" "provider_cl" {
