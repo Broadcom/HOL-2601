@@ -123,9 +123,9 @@ resource "vcfa_provider_ldap" "example" {
   port                    = var.ldap_port
   is_ssl                  = var.ldap_ssl
   username                = var.ldap_bind_dn
-  password                = var.ldap_password
+  password                = local.password
   base_distinguished_name = var.ldap_search_base
-  connector_type          = "CUSTOM"
+  connector_type          = "OPEN_LDAP"
   custom_ui_button_label  = "OpenLDAP"
   user_attributes {
     object_class                = "person"

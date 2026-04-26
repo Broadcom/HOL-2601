@@ -43,3 +43,10 @@ org_local_password = ""
 org_log_name = "all-apps"
 
 nsx_wld01_project = "hol-all-apps"
+
+ldap_bind_dn = "cn=ldap.service,ou=service accounts,dc=rainpole,dc=io"
+ldap_host = "ldap.site-a.vcf.lab"
+ldap_port = 389
+ldap_search_base = "dc=rainpole,dc=io"
+ldap_ssl = false
+ldap_password = ""

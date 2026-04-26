@@ -6,13 +6,13 @@ resource "vcfa_org_ldap" "rainpole-io" {
   ldap_mode              = "CUSTOM"
   auto_trust_certificate = false # Because is_ssl = false
   custom_settings {
-    server                  = "ldap.site-a.vcf.lab"
-    port                    = 389
-    connector_type          = "OPEN_LDAP"
-    base_distinguished_name = "dc=rainpole,dc=io"
-    is_ssl                  = false
-    username                = "cn=ldap.service,ou=service accounts,dc=rainpole,dc=io"
+    server                  = var.ldap_host
+    port                    = var.ldap_port
+    is_ssl                  = var.ldap_ssl
+    username                = var.ldap_bind_dn
     password                = local.password
+    base_distinguished_name = var.ldap_search_base
+    connector_type          = "OPEN_LDAP"
     user_attributes {
       object_class                = "person"
       unique_identifier           = "entryUUID"
