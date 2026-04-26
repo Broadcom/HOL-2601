@@ -24,6 +24,10 @@ terraform {
             source = "vmware/nsxt"
             version = "~> 3.11.1"
         }
+        null = {
+            source  = "hashicorp/null"
+            version = "3.2.4"
+        }
     }
 }
 locals {
