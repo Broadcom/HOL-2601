@@ -115,8 +115,41 @@ data "vcfa_storage_class" "sc" {
   name      = tolist(var.region_storage_policy_names)[0]
 }
 
+resource "vcfa_provider_ldap" "example" {
+  count = var.ldap_host == "" ? 0 : 1
+
+  auto_trust_certificate  = true
+  server                  = var.ldap_host
+  port                    = var.ldap_port
+  is_ssl                  = var.ldap_ssl
+  username                = var.ldap_bind_dn
+  password                = var.ldap_password
+  base_distinguished_name = var.ldap_search_base
+  connector_type          = "CUSTOM"
+  custom_ui_button_label  = "OpenLDAP"
+  user_attributes {
+    object_class                = "person"
+    unique_identifier           = "entryUUID"
+    username                    = "cn"
+    display_name                = "displayName"
+    given_name                  = "givenName"
+    surname                     = "sn"
+    email                       = "mail"
+    telephone                   = "telephoneNumber"
+    group_membership_identifier = "dn"
+
+  }
+  group_attributes {
+    object_class                = "groupOfNames"
+    unique_identifier           = "entryUUID"
+    name                        = "cn"
+    membership                  = "member"
+    group_membership_identifier = "dn"
+  }
+}
+
 # Create Content Library
-resource "vcfa_content_library" "cl" {
+resource "vcfa_content_library" "provider_cl" {
   org_id      = data.vcfa_org.system.id
   name        = var.global_content_library_name
   description = var.global_content_library_description

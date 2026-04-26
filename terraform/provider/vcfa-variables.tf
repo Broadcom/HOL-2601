@@ -178,3 +178,34 @@ variable "ipspace_scope_cidr1" {
   description = "The CIDR block for the IP space scope"
   default     = "10.0.0.0/8"
 }
+
+variable "ldap_host" {
+  type        = string
+  description = "The LDAP host to connect to"
+}
+variable "ldap_port" {
+  type        = number
+  description = "The LDAP port to connect to"
+  default     = 389
+}
+
+variable "ldap_bind_dn" {
+  type        = string
+  description = "The LDAP bind DN"
+} 
+variable "ldap_password" {
+  type        = string
+  description = "The LDAP password"
+  sensitive   = true
+}
+
+variable "ldap_ssl" {
+  type        = bool
+  description = "Whether to use SSL for the LDAP connection"
+  default     = false
+}
+
+variable "ldap_search_base" {
+  type        = string
+  description = "The LDAP search base"
+}

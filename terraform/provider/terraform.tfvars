@@ -66,3 +66,11 @@ vm_ipv4_netmask = 24
 nsx_wld01_manager_url = "nsx-wld01-a.site-a.vcf.lab"
 nsx_wld01_manager_username = "admin"
 nsx_wld01_manager_password = ""
+
+
+ldap_bind_dn = "cn=ldap.service,ou=service accounts,dc=rainpole,dc=io"
+ldap_host = "ldap.site-a.vcf.lab"
+ldap_port = 389
+ldap_search_base = "dc=rainpole,dc=io"
+ldap_ssl = false
+ldap_password = ""
