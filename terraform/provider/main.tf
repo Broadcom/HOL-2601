@@ -187,3 +187,14 @@ resource "null_resource" "set_ntp" {
     EOT
   }
 }
+
+resource "null_resource" "set_auth" {
+  triggers = {
+    always_run = timestamp()
+  }
+  provisioner "local-exec" {
+    command = <<EOT
+    sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "vracli vro authentication set -p tm -username admin -password ${local.password} -hn ${format("https://%s", var.vcfa_url)} --tenant ${var.vcfa_tenant_org}"
+    EOT
+  }
+}
