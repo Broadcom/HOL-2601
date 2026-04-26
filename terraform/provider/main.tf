@@ -205,7 +205,7 @@ resource "null_resource" "set_auth" {
   }
   provisioner "local-exec" {
     command = <<EOT
-    sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "vracli vro authentication set --provider=tm --username=${var.vcfa_username} --password-file=/tmp/pwd.txt --hostname=${format("https://%s", var.vcfa_url)} --tenant=${var.vcfa_tenant_org}"
+    sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "vracli vro authentication set --force --accept-certificates --provider=tm --username=${var.vcfa_username} --password-file=/tmp/pwd.txt --hostname=${format("https://%s", var.vcfa_url)} --tenant=${var.vcfa_tenant_org}"
     EOT
   }
 }
