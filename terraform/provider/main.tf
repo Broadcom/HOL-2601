@@ -157,3 +157,21 @@ resource "vcfa_content_library" "provider_cl" {
     data.vcfa_storage_class.sc.id
   ]
 }
+
+#Set NTP on VCFO Orchestrator
+resource "null_resource" "set_ntp" {
+  triggers = {
+    always_run = timestamp()
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "vracli ntp systemd --set 10.1.1.1"
+    ]
+    connection {
+      type = "ssh"
+      host = var.vcfo_orchestrator_url
+      user = var.vcfo_orchestrator_username
+      password = local.password
+    }
+  }
+}
