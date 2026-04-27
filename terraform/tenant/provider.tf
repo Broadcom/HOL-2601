@@ -1,4 +1,7 @@
 terraform {
+    backend "local" {
+        path = "/vpodrouter/2026-labs/2601/terraform/terraform.tfstate"
+    }
     required_providers {
         vcfa = {
             source = "vmware/vcfa"
