@@ -195,8 +195,7 @@ resource "null_resource" "pwd_file" {
   provisioner "local-exec" {
     command = <<EOT
     sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} <<EOF
-    echo ${local.password} > /tmp/pwd.txt
-    chmod 600 /tmp/pwd.txt
+    echo ${local.password} > /data/vco/usr/lib/vco/pwd.txt
     EOF
     EOT
   }
@@ -208,7 +207,7 @@ resource "null_resource" "set_auth" {
   # }
   provisioner "local-exec" {
     command = <<EOT
-    sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "vracli vro authentication set --force --ignore-certificate --provider=tm --username=${var.vcfa_username} --password-file=/tmp/pwd.txt --hostname=${ var.vcfa_url} --tenant=${var.vcfa_tenant_org}"
+    sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "vracli vro authentication set --force --ignore-certificate --provider=tm --username=${var.vcfa_username} --password-file=/usr/lib/vco/pwd.txt --hostname=${ var.vcfa_url} --tenant=${var.vcfa_tenant_org}"
     EOT
   }
 }
