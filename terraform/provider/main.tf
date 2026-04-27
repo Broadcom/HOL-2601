@@ -232,5 +232,5 @@ resource "vcfa_rights_bundle" "orch-rb" {
     name = data.vcfa_rights_bundle.orch-rights-bundle.name
     description = data.vcfa_rights_bundle.orch-rights-bundle.description
     publish_to_all_orgs = false
-    org_ids = [ data.vcfa_org.tenant_org.id ]
+    org_ids = [ vcfa_org.tenant_org.id ]
 }
