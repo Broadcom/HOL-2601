@@ -59,3 +59,7 @@ data "vcfa_tier0_gateway" "t0-gw" {
 data "vcfa_org" "system" {
   name = "System"
 }
+
+data "vcfa_rights_bundle" "orch-rights-bundle" {
+  name = "Orchestrator Rights Bundle"
+}
