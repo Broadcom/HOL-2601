@@ -178,9 +178,9 @@ resource "vcfa_content_library" "provider_cl" {
 
 
 resource "null_resource" "set_ntp" {
-  triggers = {
-    always_run = timestamp()
-  }
+  # triggers = {
+  #   always_run = timestamp()
+  # }
   provisioner "local-exec" {
     command = <<EOT
     sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "vracli ntp systemd --set 10.1.1.1"
@@ -189,20 +189,23 @@ resource "null_resource" "set_ntp" {
 }
 
 resource "null_resource" "pwd_file" {
-  triggers = {
-    always_run = timestamp()
-  }
+  # triggers = {
+  #   always_run = timestamp()
+  # }
   provisioner "local-exec" {
     command = <<EOT
-    sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "echo ${local.password} > /tmp/pwd.txt"
+    sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} <<EOF
+    echo ${local.password} > /tmp/pwd.txt
+    chmod 600 /tmp/pwd.txt
+    EOF
     EOT
   }
 }
 
 resource "null_resource" "set_auth" {
-  triggers = {
-    always_run = timestamp()
-  }
+  # triggers = {
+  #   always_run = timestamp()
+  # }
   provisioner "local-exec" {
     command = <<EOT
     sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "vracli vro authentication set --force --ignore-certificate --provider=tm --username=${var.vcfa_username} --password-file=/tmp/pwd.txt --hostname=${ var.vcfa_url} --tenant=${var.vcfa_tenant_org}"
