@@ -3,13 +3,13 @@
 
 resource "vcfa_api_token" "system_api_token" {
   name             = "system_token"
-  file_name        = "${path.root}/system_token.json"
+  file_name        = "${path.cwd}/system_token.json"
   allow_token_file = true
 }
 
 locals {
-  token_file = jsondecode(file(vcfa_api_token.system_api_token.file_name))
   depends_on = [vcfa_api_token.system_api_token]
+  token_file = jsondecode(file(vcfa_api_token.system_api_token.file_name))
 }
 
 output "name" {
