@@ -3,7 +3,7 @@
 
 resource "vcfa_api_token" "system_api_token" {
   name             = "system_token"
-  file_name        = "${path.module}/system_token.json"
+  file_name        = "${path.root}/system_token.json"
   allow_token_file = true
 }
 
