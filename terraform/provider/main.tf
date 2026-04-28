@@ -16,7 +16,7 @@ output "name" {
 }
 
 output "api_token" {
-  value = vcfa_api_token.system_api_token.token
+  value = vcfa_api_token.system_api_token
 }
 
 resource "vcfa_region" "region" {
