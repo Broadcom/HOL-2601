@@ -63,3 +63,13 @@ data "vcfa_org" "system" {
 data "vcfa_rights_bundle" "orch-rights-bundle" {
   name = "Orchestrator Rights Bundle"
 }
+
+data "vcfa_storage_class" "sc" {
+  region_id = vcfa_region.region.id
+  name      = tolist(var.region_storage_policy_names)[0]
+}
+
+data "vcfa_role" "org-admin" {
+  org_id = vcfa_org.tenant_org.id
+  name   = "Organization Administrator"
+}

@@ -31,6 +31,10 @@ terraform {
             source  = "hashicorp/null"
             version = "3.2.4"
         }
+        rest = {
+            source = "vmware/rest"
+            version = "~> 1.0.0"
+        }
     }
 }
 locals {
@@ -46,6 +50,7 @@ provider "vcfa" {
     logging                 = true
     logging_file            = var.vcfa_log_file
 }
+
 
 provider "vsphere" {
   user           = var.wld_vcenter_username

@@ -1,6 +1,16 @@
 
 # RESOURCES
 
+resource "vcfa_api_token" "system_api_token" {
+  name             = "system_token"
+  file_name        = "system_token.json"
+  allow_token_file = true
+}
+
+output "api_token" {
+  value = vcfa_api_token.system_api_token.token
+}
+
 resource "vcfa_region" "region" {
   name                 = var.region_name
   nsx_manager_id       = data.vcfa_nsx_manager.nsx.id
@@ -52,10 +62,6 @@ resource "vcfa_org_networking" "network" {
 }
 
 # Fetch VCFA Org Admin Role
-data "vcfa_role" "org-admin" {
-  org_id = vcfa_org.tenant_org.id
-  name   = "Organization Administrator"
-}
 
 # Create First User for VCFA Org
 resource "vcfa_org_local_user" "user" {
@@ -109,45 +115,6 @@ resource "vcfa_org_regional_networking" "regional-network" {
   edge_cluster_id = data.vcfa_edge_cluster.edge-cluster.id
 }
 
-# Fetch VM Storage Class for use by Content Library in VCFA Region
-data "vcfa_storage_class" "sc" {
-  region_id = vcfa_region.region.id
-  name      = tolist(var.region_storage_policy_names)[0]
-}
-
-# resource "vcfa_provider_ldap" "example" {
-#   count = var.ldap_host == "" ? 0 : 1
-
-#   auto_trust_certificate  = true
-#   server                  = var.ldap_host
-#   port                    = var.ldap_port
-#   is_ssl                  = var.ldap_ssl
-#   username                = var.ldap_bind_dn
-#   password                = local.password
-#   base_distinguished_name = var.ldap_search_base
-#   connector_type          = "OPEN_LDAP"
-#   custom_ui_button_label  = "OpenLDAP"
-#   user_attributes {
-#     object_class                = "person"
-#     unique_identifier           = "entryUUID"
-#     username                    = "cn"
-#     display_name                = "displayName"
-#     given_name                  = "givenName"
-#     surname                     = "sn"
-#     email                       = "mail"
-#     telephone                   = "telephoneNumber"
-#     group_membership_identifier = "dn"
-
-#   }
-#   group_attributes {
-#     object_class                = "groupOfNames"
-#     unique_identifier           = "entryUUID"
-#     name                        = "cn"
-#     membership                  = "member"
-#     group_membership_identifier = "dn"
-#   }
-# }
-
 # Create Content Library
 resource "vcfa_content_library" "provider_cl" {
   org_id      = data.vcfa_org.system.id
@@ -157,54 +124,7 @@ resource "vcfa_content_library" "provider_cl" {
     data.vcfa_storage_class.sc.id
   ]
 }
-
-# Set NTP on VCFO Orchestrator
-# resource "null_resource" "set_ntp" {
-#   triggers = {
-#     always_run = timestamp()
-#   }
-#   provisioner "remote-exec" {
-#     inline = [
-#       "vracli ntp systemd --set 10.1.1.1"
-#     ]
-#     connection {
-#       type = "ssh"
-#       host = var.vcfo_orchestrator_url
-#       user = var.vcfo_orchestrator_username
-#       password = local.password
-#     }
-#   }
-# }
-
-
-# resource "null_resource" "set_ntp" {
-#   triggers = {
-#     always_run = timestamp()
-#   }
-#   provisioner "local-exec" {
-#     command = <<EOT
-#     sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "vracli ntp systemd --set 10.1.1.1"
-#     EOT
-#   }
-# }
-
-# resource "null_resource" "pwd_file" {
-#   triggers = {
-#     always_run = timestamp()
-#   }
-#   provisioner "local-exec" {
-#     command = <<EOT
-#     sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} <<EOF
-#     echo ${local.password} > /data/vco/usr/lib/vco/pwd.txt
-#     EOF
-#     EOT
-#   }
-# }
-
 # resource "null_resource" "orchestrator_setup" {
-#   # triggers = {
-#   #   always_run = timestamp()
-#   # }
 #   provisioner "local-exec" {
 #     command = <<EOT
 #     sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} <<EOF
@@ -217,20 +137,10 @@ resource "vcfa_content_library" "provider_cl" {
 #   }
 # }
 
-# resource "null_resource" "deploy_sh" {
-#   triggers = {
-#     always_run = timestamp()
-#   }
-#   provisioner "local-exec" {
-#     command = <<EOT
-#     sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "/opt/scripts/deploy.sh"
-#     EOT
-#   }
-# }
 
-resource "vcfa_rights_bundle" "orch-rb" {
-    name = data.vcfa_rights_bundle.orch-rights-bundle.name
-    description = data.vcfa_rights_bundle.orch-rights-bundle.description
-    publish_to_all_orgs = false
-    org_ids = [ vcfa_org.tenant_org.id ]
-}
+# resource "vcfa_rights_bundle" "orch-rb" {
+#     name = data.vcfa_rights_bundle.orch-rights-bundle.name
+#     description = data.vcfa_rights_bundle.orch-rights-bundle.description
+#     publish_to_all_orgs = false
+#     org_ids = [ vcfa_org.tenant_org.id ]
+# }
