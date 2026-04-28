@@ -37,6 +37,9 @@ region_quota_storage_limit_mb = 1024000
 global_content_library_name = "Provider"
 global_content_library_description = "Provider Content Library"
 
+vcfa_tenant_org_content_library_name = "Organization"
+vcfa_tenant_org_content_library_description = "Tenant Content Library"
+
 vcfa_tenant_org = "hol-all-apps"
 vcfa_tenant_org_local_username = "admin"
 vcfa_tenant_org_local_password = ""
