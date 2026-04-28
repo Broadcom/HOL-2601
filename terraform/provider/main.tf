@@ -9,7 +9,7 @@ resource "vcfa_api_token" "system_api_token" {
 
 locals {
   depends_on = [vcfa_api_token.system_api_token]
-  token_file = jsondecode(vcfa_api_token.system_api_token.file_name)
+  token_file = jsondecode(file(vcfa_api_token.system_api_token.file_name))
 }
 
 output "name" {
