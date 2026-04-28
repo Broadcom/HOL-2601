@@ -7,6 +7,14 @@ resource "vcfa_api_token" "system_api_token" {
   allow_token_file = true
 }
 
+locals {
+  token_file = jsondecode(file(vcfa_api_token.system_api_token.file_name))
+}
+
+output "name" {
+  value = local.token_file.refresh_token
+}
+
 output "api_token" {
   value = vcfa_api_token.system_api_token.token
 }

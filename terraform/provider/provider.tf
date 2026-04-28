@@ -31,10 +31,6 @@ terraform {
             source  = "hashicorp/null"
             version = "3.2.4"
         }
-        rest = {
-            source = "vmware/rest"
-            version = "~> 1.0.0"
-        }
     }
 }
 locals {
