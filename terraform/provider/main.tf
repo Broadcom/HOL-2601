@@ -144,8 +144,6 @@ resource "null_resource" "set_password_file" {
   provisioner "local-exec" {
     command = <<EOT
     sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "echo ${local.password} > /data/vco/usr/lib/vco/pwd.txt"
-    vracli vro authentication set --force --ignore-certificate --provider=tm --username=${var.vcfa_username} --password-file="/usr/lib/vco/pwd.txt" --hostname=${format("https://%s", var.vcfa_url)} --tenant=${var.vcfa_tenant_org}
-    /opt/scripts/deploy.sh
     EOF
     EOT
   }
