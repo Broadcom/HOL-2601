@@ -146,14 +146,6 @@ variable "vcfa_tenant_org_local_password" {
   type        = string
   description = "The local password for the org"
 }
-variable "vcfa_tenant_org_content_library_name" {
-  type        = string
-  description = "The name of the Tenant content library to use"
-}
-variable "vcfa_tenant_org_content_library_description" {
-  type        = string
-  description = "The description of the Tenant content library to use"
-}
 
 variable "global_content_library_name" {
   type        = string
