@@ -6,15 +6,6 @@ resource "vcfa_api_token" "system_api_token" {
   file_name        = "${path.cwd}/system_token.json"
   allow_token_file = true
 }
-
-# locals {
-#   token_file = jsondecode(file(vcfa_api_token.system_api_token.file_name))
-# }
-
-# output "name" {
-#   value = local.token_file.refresh_token
-# }
-
 output "api_token" {
   value = vcfa_api_token.system_api_token.refresh_token
 }
@@ -132,71 +123,16 @@ resource "vcfa_content_library" "provider_cl" {
     data.vcfa_storage_class.sc.id
   ]
 }
-# resource "null_resource" "orchestrator_setup" {
-#   provisioner "local-exec" {
-#     command = <<EOT
-#     sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} <<EOF
-#     vracli ntp systemd --set 10.1.1.1
-#     echo ${local.password} > /data/vco/usr/lib/vco/pwd.txt
-#     vracli vro authentication set --force --ignore-certificate --provider=tm --username=${var.vcfa_username} --password-file=/usr/lib/vco/pwd.txt --hostname=format("https://%s", var.vcfa_url) --tenant=${var.vcfa_tenant_org}
-#     /opt/scripts/deploy.sh
-#     EOF
-#     EOT
-#   }
-# }
 
-
-# resource "vcfa_rights_bundle" "orch-rb" {
-#     name = data.vcfa_rights_bundle.orch-rights-bundle.name
-#     description = data.vcfa_rights_bundle.orch-rights-bundle.description
-#     publish_to_all_orgs = false
-#     org_ids = [ vcfa_org.tenant_org.id ]
-# }
-
-
-## HOL-ALL-APP Tenant Configuration
-
-# resource "vcfa_org_ldap" "rainpole-io" {
-#   org_id                 = vcfa_org.tenant_org.id
-#   ldap_mode              = "CUSTOM"
-#   auto_trust_certificate = false # Because is_ssl = false
-#   custom_settings {
-#     server                  = var.ldap_host
-#     port                    = var.ldap_port
-#     is_ssl                  = var.ldap_ssl
-#     username                = var.ldap_bind_dn
-#     password                = local.password
-#     base_distinguished_name = var.ldap_search_base
-#     connector_type          = "OPEN_LDAP"
-#     user_attributes {
-#       object_class                = "person"
-#       unique_identifier           = "entryUUID"
-#       username                    = "cn"
-#       display_name                = "displayName"
-#       given_name                  = "givenName"
-#       surname                     = "sn"
-#       email                       = "mail"
-#       telephone                   = "telephoneNumber"
-#       group_membership_identifier = "dn"
-
-#     }
-#     group_attributes {
-#       object_class                = "groupOfNames"
-#       unique_identifier           = "entryUUID"
-#       name                        = "cn"
-#       membership                  = "member"
-#       group_membership_identifier = "dn"
-#     }
-#   }
-# }
-
-
-# # Create Content Library
-# resource "vcfa_content_library" "tenant_cl" {
-#   org_id      = data.vcfa_org.tenant_org.id
-#   name        = var.vcfa_tenant_org_content_library_name
-#   description = var.vcfa_tenant_org_content_library_description
-#   storage_class_ids = [
-#     data.vcfa_storage_class.sc.id
-#   ]
-# }
+resource "null_resource" "orchestrator_setup" {
+  provisioner "local-exec" {
+    command = <<EOT
+    sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} <<EOF
+    vracli ntp systemd --set 10.1.1.1
+    echo ${local.password} > /data/vco/usr/lib/vco/pwd.txt
+    vracli vro authentication set --force --ignore-certificate --provider=tm --username=${var.vcfa_username} --password-file=/usr/lib/vco/pwd.txt --hostname=format("https://%s", var.vcfa_url) --tenant=${var.vcfa_tenant_org}
+    /opt/scripts/deploy.sh
+    EOF
+    EOT
+  }
+}
