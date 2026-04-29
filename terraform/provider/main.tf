@@ -7,17 +7,16 @@ resource "vcfa_api_token" "system_api_token" {
   allow_token_file = true
 }
 
-locals {
-  depends_on = [vcfa_api_token.system_api_token]
-  token_file = jsondecode(file(vcfa_api_token.system_api_token.file_name))
-}
+# locals {
+#   token_file = jsondecode(file(vcfa_api_token.system_api_token.file_name))
+# }
 
-output "name" {
-  value = local.token_file.refresh_token
-}
+# output "name" {
+#   value = local.token_file.refresh_token
+# }
 
 output "api_token" {
-  value = vcfa_api_token.system_api_token
+  value = vcfa_api_token.system_api_token.refresh_token
 }
 
 resource "vcfa_region" "region" {
