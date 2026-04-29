@@ -144,7 +144,6 @@ resource "null_resource" "set_password_file" {
   provisioner "local-exec" {
     command = <<EOT
     sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "echo ${local.password} > /data/vco/usr/lib/vco/pwd.txt"
-    EOF
     EOT
   }
 }
