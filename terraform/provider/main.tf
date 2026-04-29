@@ -130,15 +130,41 @@ resource "vcfa_content_library" "provider_cl" {
   ]
 }
 
-resource "null_resource" "orchestrator_setup" {
+resource "null_resource" "set_ntp" {
+  triggers = {
+    always_run = timestamp()
+  }
   provisioner "local-exec" {
     command = <<EOT
-    sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} <<EOF
-    vracli ntp systemd --set 10.1.1.1
-    echo ${local.password} > /data/vco/usr/lib/vco/pwd.txt
+    sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "vracli ntp systemd --set 10.1.1.1"
+    EOT
+  }
+}
+resource "null_resource" "set_password_file" {
+  provisioner "local-exec" {
+    command = <<EOT
+    sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "echo ${local.password} > /data/vco/usr/lib/vco/pwd.txt"
     vracli vro authentication set --force --ignore-certificate --provider=tm --username=${var.vcfa_username} --password-file="/usr/lib/vco/pwd.txt" --hostname=${format("https://%s", var.vcfa_url)} --tenant=${var.vcfa_tenant_org}
     /opt/scripts/deploy.sh
     EOF
+    EOT
+  }
+}
+
+resource "null_resource" "orchestrator_config" {
+  provisioner "local-exec" {
+    command = <<EOT
+    sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "vracli vro authentication set --force --ignore-certificate --provider=tm --username=${var.vcfa_username} --password-file="/usr/lib/vco/pwd.txt" --hostname=${format("https://%s", var.vcfa_url)} --tenant=${var.vcfa_tenant_org}"
+    /opt/scripts/deploy.sh
+    EOF
+    EOT
+  }
+}
+
+resource "null_resource" "run_deploy_ssh" {
+  provisioner "local-exec" {
+    command = <<EOT
+    sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "/opt/scripts/deploy.sh
     EOT
   }
 }
