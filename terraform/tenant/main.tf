@@ -28,7 +28,7 @@ resource "null_resource" "api_" {
       -H "accept: application/json" \
       -H "Content-Type: application/json" \
       -H "Authorization: Bearer ${vcfa_api_token.system_api_token.refresh_token}" \
-      -u "${var.vcfa_username}:${local.password}" \
+      -u "${var.vcfa_tenant_org_username}:${local.password}" \
       -d '{"name":"system_token","file_name":"${path.cwd}/system_token.json","allow_token_file":true}' 
     EOT
   }
