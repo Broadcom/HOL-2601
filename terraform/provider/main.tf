@@ -6,9 +6,15 @@ resource "vcfa_api_token" "system_api_token" {
   file_name        = "${path.cwd}/system_token.json"
   allow_token_file = true
 }
-output "api_token" {
-  value = vcfa_api_token.system_api_token.refresh_token
+
+locals {
+  token_file = jsondecode(data.local_file.token.content)
 }
+output "api_token" {
+  value = local.token_file.refresh_token
+  sensitive = true
+}
+
 
 resource "vcfa_region" "region" {
   name                 = var.region_name

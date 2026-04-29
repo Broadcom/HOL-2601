@@ -73,3 +73,9 @@ data "vcfa_role" "org-admin" {
   org_id = vcfa_org.tenant_org.id
   name   = "Organization Administrator"
 }
+
+data "local_file" "token" {
+  filename = vcfa_api_token.system_api_token.file_name
+  depends_on = [ vcfa_api_token.system_api_token ]
+}
+
