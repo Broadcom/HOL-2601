@@ -7,6 +7,15 @@ resource "vcfa_api_token" "tenant_api_token" {
   allow_token_file = true
 }
 
+locals {
+  token_file = jsondecode(data.local_file.token.content)
+}
+
+output "api_token" {
+  value = local.token_file.refresh_token
+  sensitive = true
+}
+
 output "api_token" {
   value = vcfa_api_token.tenant_api_token.refresh_token
 }

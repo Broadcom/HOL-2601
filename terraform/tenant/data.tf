@@ -20,30 +20,8 @@ data "vcfa_region_zone" "zone" {
   name      = var.supervisor_zone_name
 }
 
-data "vcfa_region_vm_class" "vm_class1" {
-  name      = tolist(var.region_vm_class_names)[0]
-  region_id = vcfa_region.region.id
-}
 
-data "vcfa_region_vm_class" "vm_class2" {
-  name      = tolist(var.region_vm_class_names)[1]
-  region_id = vcfa_region.region.id
-}
 
-data "vcfa_region_vm_class" "vm_class3" {
-  name      = tolist(var.region_vm_class_names)[2]
-  region_id = vcfa_region.region.id
-}
-
-data "vcfa_region_vm_class" "vm_class4" {
-  name      = tolist(var.region_vm_class_names)[3]
-  region_id = vcfa_region.region.id
-}
-
-data "vcfa_region_storage_policy" "region-sc" {
-  name      = tolist(var.region_storage_policy_names)[0]
-  region_id = vcfa_region.region.id
-}
 
 data "vcfa_edge_cluster" "edge-cluster" {
   name             = var.nsx_edge_cluster_name
@@ -64,12 +42,14 @@ data "vcfa_rights_bundle" "orch-rights-bundle" {
   name = "Orchestrator Rights Bundle"
 }
 
-data "vcfa_storage_class" "sc" {
-  region_id = vcfa_region.region.id
-  name      = tolist(var.region_storage_policy_names)[0]
-}
 
 data "vcfa_role" "org-admin" {
   org_id = vcfa_org.tenant_org.id
   name   = "Organization Administrator"
+}
+
+
+data "local_file" "token" {
+  filename = vcfa_api_token.tenant_api_token.file_name
+  depends_on = [ vcfa_api_token.tenant_api_token ]
 }
