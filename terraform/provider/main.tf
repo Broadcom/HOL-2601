@@ -136,7 +136,7 @@ resource "null_resource" "orchestrator_setup" {
     sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} <<EOF
     vracli ntp systemd --set 10.1.1.1
     echo ${local.password} > /data/vco/usr/lib/vco/pwd.txt
-    vracli vro authentication set --force --ignore-certificate --provider=tm --username=${var.vcfa_username} --password-file=/usr/lib/vco/pwd.txt --hostname=format("https://%s", var.vcfa_url) --tenant=${var.vcfa_tenant_org}
+    vracli vro authentication set --force --ignore-certificate --provider=tm --username=${var.vcfa_username} --password-file="/usr/lib/vco/pwd.txt" --hostname=${format("https://%s", var.vcfa_url)} --tenant=${var.vcfa_tenant_org}
     /opt/scripts/deploy.sh
     EOF
     EOT
