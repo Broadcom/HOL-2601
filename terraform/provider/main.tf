@@ -163,7 +163,7 @@ resource "null_resource" "orchestrator_config" {
     sshpass -p '${local.password}' ssh \
      -o StrictHostKeyChecking=no \
      ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} \
-     'vracli vro authentication set --force --ignore-certificate --provider=tm --username=${var.vcfa_username} --password-file="/usr/lib/vco/pwd.txt" --hostname=${format("https://%s", var.vcfa_url)} --tenant=${var.vcfa_tenant_org}'
+     "vracli vro authentication set --force --ignore-certificate --provider=tm --username=${var.vcfa_username} --password-file="/usr/lib/vco/pwd.txt" --hostname=${format("https://%s", var.vcfa_url)} --tenant=${var.vcfa_tenant_org}"
     EOT
   }
 }
@@ -172,6 +172,6 @@ resource "null_resource" "run_deploy_ssh" {
   depends_on = [ orchestrator_config ]
   provisioner "local-exec" {
     interpreter = [ "/bin/bash", "-c" ]
-    command = sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} '/opt/scripts/deploy.sh'
+    command = sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "/opt/scripts/deploy.sh"
   }
 }
