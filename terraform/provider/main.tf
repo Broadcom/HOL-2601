@@ -135,7 +135,7 @@ resource "null_resource" "set_ntp" {
     always_run = timestamp()
   }
   provisioner "local-exec" {
-    command = sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "vracli ntp systemd --set 10.1.1.1"
+    command = sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "vracli ntp systemd --set 10.1.1.1"
   }
 }
 resource "null_resource" "set_password_file" {
@@ -144,7 +144,7 @@ triggers = {
     always_run = timestamp()
   }
     provisioner "local-exec" {
-    command = sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "echo ${local.password} > /data/vco/usr/lib/vco/pwd.txt"
+    command = sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "echo ${local.password} > /data/vco/usr/lib/vco/pwd.txt"
   }
 }
 
@@ -160,7 +160,7 @@ resource "null_resource" "orchestrator_config" {
     echo "PWD=${PWD}"
     echo "PATH=$PATH"
 
-    sshpass -p '${local.password}' ssh \
+    sshpass -p "${local.password}" ssh \
      -o StrictHostKeyChecking=no \
      ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} \
      "vracli vro authentication set --force --ignore-certificate --provider=tm --username=${var.vcfa_username} --password-file="/usr/lib/vco/pwd.txt" --hostname=${format("https://%s", var.vcfa_url)} --tenant=${var.vcfa_tenant_org}"
@@ -172,6 +172,6 @@ resource "null_resource" "run_deploy_ssh" {
   depends_on = [ orchestrator_config ]
   provisioner "local-exec" {
     interpreter = [ "/bin/bash", "-c" ]
-    command = sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "/opt/scripts/deploy.sh"
+    command = sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "/opt/scripts/deploy.sh"
   }
 }
