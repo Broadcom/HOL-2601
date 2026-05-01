@@ -130,7 +130,7 @@ resource "vcfa_content_library" "provider_cl" {
 }
 
 resource "null_resource" "set_ntp" {
-  depends_on = [ vcfa_org.tenant_org ]
+  depends_on = [ vcfa_org.tenant_org, vcfa_org_settings.org_settings, vcfa_org_region_quota.region_quota, vcfa_org_networking.network, vcfa_org_local_user.user, vcfa_edge_cluster_qos.edge-cluster-qos, vcfa_ip_space.ipspace, vcfa_provider_gateway.provider-gw, vcfa_org_regional_networking.regional-network, vcfa_content_library.provider_cl ]
   triggers = {
     always_run = timestamp()
   }
