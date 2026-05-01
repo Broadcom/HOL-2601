@@ -12,7 +12,6 @@ locals {
 }
 output "api_token" {
   value = local.token_file.refresh_token
-  sensitive = true
 }
 
 
