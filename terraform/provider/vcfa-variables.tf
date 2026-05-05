@@ -147,6 +147,15 @@ variable "vcfa_tenant_org_local_password" {
   description = "The local password for the org"
 }
 
+variable "vcfa_username_pwd_file" {
+  type        = string
+  description = "The password file for the org user (orchestrator)"
+}
+
+variable "vcfa_fullpath_password_file" {
+  type        = string
+  description = "The full path to the password file for the org user (orchestrator)"
+}
 variable "global_content_library_name" {
   type        = string
   description = "The name of the Provider content library to use"

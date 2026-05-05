@@ -5,6 +5,8 @@ vcfa_password = ""
 vcfa_username = "admin"
 vcfa_org = "system"
 vcfa_log_file = "vcfa.log"
+vcfa_username_pwd_file = "/usr/lib/vco/pwd.txt"
+vcfa_fullpath_password_file = "/data/vco/usr/lib/vco/pwd.txt"
 
 wld_vcenter_url = "vc-wld01-a.site-a.vcf.lab"
 wld_vcenter_username = "administrator@wld.sso"
@@ -79,3 +81,4 @@ ldap_password = ""
 vcfo_orchestrator_password = ""
 vcfo_orchestrator_url = "o11n-01a.site-a.vcf.lab"
 vcfo_orchestrator_username = "root"
+

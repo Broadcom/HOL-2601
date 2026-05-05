@@ -185,7 +185,7 @@ sshpass -p '${local.password}' ssh \
  ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} '
  
  set -euo pipefail
- echo ${local.password} > /data/vco/usr/lib/vco/pwd.txt
+ echo ${local.password} > ${var.vcfa_fullpath_password_file}
 
 '
 
@@ -215,7 +215,7 @@ vracli vro authentication set \
 --ignore-certificate \
 --provider=tm \
 --username="${var.vcfa_username}" \
---password-file="/usr/lib/vco/pwd.txt" \
+--password-file="${var.vcfa_username_pwd_file}" \
 --hostname="${format("https://%s", var.vcfa_url)}" \
 --tenant="${var.vcfa_tenant_org}"
 '
@@ -239,7 +239,7 @@ set -euo pipefail
 
 vracli vro authentication unregister \
  --username="${var.vcfa_username}"
- --password-file="/usr/lib/vco/pwd.txt"
+ --password-file="${var.vcfa_username_pwd_file}"
 '
 EOT
   }
