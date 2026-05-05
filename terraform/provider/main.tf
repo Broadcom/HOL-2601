@@ -208,6 +208,13 @@ EOT
 
 resource "null_resource" "orchestrator_config" {
   depends_on = [ null_resource.set_password_file ]
+
+  triggers = {
+    vcfo_orchestrator_url      = var.vcfo_orchestrator_url
+    vcfo_orchestrator_username = var.vcfa_username
+    vcfo_password_file         = var.vcfa_username_pwd_file
+    vcfa_tenant_org            = var.vcfa_tenant_org
+  }
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
     quiet = false
@@ -227,64 +234,37 @@ vracli vro authentication set \
 --force \
 --ignore-certificate \
 --provider=tm \
---username="${var.vcfa_username}" \
---password-file="${var.vcfa_username_pwd_file}" \
+  --username="${var.vcfa_username}" \
+  --password-file="${var.vcfa_username_pwd_file}" \
 --hostname="${format("https://%s", var.vcfa_url)}" \
 --tenant="${var.vcfa_tenant_org}"
 '
 EOT
   }
-#   provisioner "local-exec" {
-#     when = destroy
-#     interpreter = ["/bin/bash", "-c"]
-#     quiet = false
-#     on_failure = continue
+  provisioner "local-exec" {
+    when = destroy
+    interpreter = ["/bin/bash", "-c"]
+    quiet = false
+    on_failure = continue
 
-#     command = <<EOT
-# set -euo pipefail
+    command = <<EOT
+set -euo pipefail
 
-# sshpass -p '${local.password}' ssh \
-#  -o StrictHostKeyChecking=no \
-#  -o ConnectTimeout=10 \
-#  ${self.triggers.vcfo_orchestrator_username}@${self.triggers.vcfo_orchestrator_url} '
+sshpass -p '${local.password}' ssh \
+ -o StrictHostKeyChecking=no \
+ -o ConnectTimeout=10 \
+ ${self.triggers.vcfo_orchestrator_username}@${self.triggers.vcfo_orchestrator_url} '
 
-# set -euo pipefail
+set -euo pipefail
 
-# vracli vro authentication unregister
-# '
-# EOT
-#   }
+vracli vro authentication unregister \
+ --username=${self.triggers.vcfo_orchestrator_username}
+ --password-file=${self.triggers.vcfo_password_file}
+'
+EOT
+  }
 }
 
-
-# resource "null_resource" "orchestrator_check" {
-#   depends_on = [ null_resource.orchestrator_config ]
-#   provisioner "local-exec" {
-#     interpreter = ["/bin/bash", "-c"]
-#     quiet = false
-
-#     command = <<EOT
-# set -euo pipefail
-
-# for i in {1..30}; do
-#   if sshpass -p '${local.password}' ssh \
-#     -o StrictHostKeyChecking=no \
-#     -o ConnectTimeout=10 \
-#     ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} \
-#     'vracli vro get-auth | grep "o11n.tenant.id": "${vcfa_org.tenant_org.id}"';
-#   then
-#     echo "Orchestrator is authenticated with VCFA. Proceeding with deployment."
-#     exit 0
-#   fi
-#     echo "Waiting for orchestrator to authenticate with VCFA... (attempt $i/30)"
-#     sleep 10
-# done
-
-# echo "Orchestrator failed to authenticate with VCFA within the expected time."
-# exit 1
-# EOT 
-#   }
-# }
 resource "null_resource" "run_deploy_ssh" {
   depends_on = [ null_resource.orchestrator_config ]
   provisioner "local-exec" {
@@ -306,6 +286,12 @@ EOT
   }
 }
 
+resource "null_resource" "orchestrator_ready" {
+  depends_on = [ 
+    null_resource.run_deploy_ssh 
+  ]
+}
+
 resource "vcfa_api_token" "org_api_token" {
   depends_on = [
     null_resource.tenant_ready
@@ -322,4 +308,15 @@ locals {
 output "org_api_token" {
   depends_on = [ data.local_file.org_token_file ]
   value = local.org_token_file.refresh_token
+}
+
+data "vra_integration" "orchestrator_integration" {
+  depends_on = [
+    null_resource.tenant_ready,
+    null_resource.null_resource.orchestrator_ready
+  ]
+  name = "orchestrator"
+}
+output "orchestrator_integration" {
+  value = data.vra_integration.orchestrator_integration
 }
