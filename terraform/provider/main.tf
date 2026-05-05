@@ -310,13 +310,13 @@ output "org_api_token" {
   value = local.org_token_file.refresh_token
 }
 
-data "vra_integration" "orchestrator_integration" {
-  depends_on = [
-    null_resource.tenant_ready,
-    null_resource.null_resource.orchestrator_ready
-  ]
-  name = "orchestrator"
-}
-output "orchestrator_integration" {
-  value = data.vra_integration.orchestrator_integration
-}
+# data "vra_integration" "orchestrator_integration" {
+#   depends_on = [
+#     null_resource.tenant_ready,
+#     null_resource.null_resource.orchestrator_ready
+#   ]
+#   name = "orchestrator"
+# }
+# output "orchestrator_integration" {
+#   value = data.vra_integration.orchestrator_integration
+# }
