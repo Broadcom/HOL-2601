@@ -233,13 +233,13 @@ set -euo pipefail
 sshpass -p '${local.password}' ssh \
  -o StrictHostKeyChecking=no \
  -o ConnectTimeout=10 \
- ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} '
+ ${self.triggers.vcfo_orchestrator_username}@${self.triggers.vcfo_orchestrator_url} '
 
 set -euo pipefail
 
 vracli vro authentication unregister \
- --username="${var.vcfa_username}"
- --password-file="${var.vcfa_username_pwd_file}"
+ --username="${self.triggers.vcfa_username}"
+ --password-file="${self.triggers.vcfa_username_pwd_file}"
 '
 EOT
   }
