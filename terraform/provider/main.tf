@@ -132,6 +132,8 @@ resource "vcfa_content_library" "provider_cl" {
   ]
 }
 
+
+
 resource "null_resource" "tenant_ready" {
   depends_on = [ 
     vcfa_org.tenant_org, 
@@ -144,6 +146,19 @@ resource "null_resource" "tenant_ready" {
     vcfa_provider_gateway.provider-gw, 
     vcfa_org_regional_networking.regional-network, 
     vcfa_content_library.provider_cl 
+  ]
+}
+
+resource "vcfa_rights_bundle" "set-orchestrator-rights" {
+  depends_on = [
+    null_resource.tenant_ready
+  ]
+  
+  name = data.vcfa_rights_bundle.orch-rights-bundle.name
+  description = data.vcfa_rights_bundle.orch-rights-bundle.description
+  publish_to_all_orgs = false
+  org_ids = [
+    vcfa_org.tenant_org.id
   ]
 }
 
