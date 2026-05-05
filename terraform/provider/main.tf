@@ -129,17 +129,32 @@ resource "vcfa_content_library" "provider_cl" {
   ]
 }
 
+resource "null_resource" "tenant_ready" {
+  depends_on = [ 
+    vcfa_org.tenant_org, 
+    vcfa_org_settings.org_settings, 
+    vcfa_org_region_quota.region_quota, 
+    vcfa_org_networking.network, 
+    vcfa_org_local_user.user, 
+    vcfa_edge_cluster_qos.edge-cluster-qos, 
+    vcfa_ip_space.ipspace, 
+    vcfa_provider_gateway.provider-gw, 
+    vcfa_org_regional_networking.regional-network, 
+    vcfa_content_library.provider_cl 
+  ]
+}
+
 resource "null_resource" "set_ntp" {
-  depends_on = [ vcfa_org.tenant_org, vcfa_org_settings.org_settings, vcfa_org_region_quota.region_quota, vcfa_org_networking.network, vcfa_org_local_user.user, vcfa_edge_cluster_qos.edge-cluster-qos, vcfa_ip_space.ipspace, vcfa_provider_gateway.provider-gw, vcfa_org_regional_networking.regional-network, vcfa_content_library.provider_cl ]
-  triggers = {
-    always_run = timestamp()
-  }
+  depends_on = [
+    null_resource.tenant_ready
+  ]
   provisioner "local-exec" {
     command = <<EOT
     sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "vracli ntp systemd --set 10.1.1.1"
     EOT
   }
 }
+
 resource "null_resource" "set_password_file" {
   depends_on = [ null_resource.set_ntp ]
   provisioner "local-exec" {
@@ -152,17 +167,71 @@ resource "null_resource" "set_password_file" {
 resource "null_resource" "orchestrator_config" {
   depends_on = [ null_resource.set_password_file ]
   provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    
     command = <<EOT
-    sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "vracli vro authentication set --force --ignore-certificate --provider=tm --username=${var.vcfa_username} --password-file="/usr/lib/vco/pwd.txt" --hostname=${format("https://%s", var.vcfa_url)} --tenant=${var.vcfa_tenant_org}"
-    EOT
+set -euo pipefail
+
+sshpass -p '${local.password}' ssh \
+ -o StrictHostKeyChecking=no \
+ -o ConnectTimeout=10 \
+ ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} '
+
+set -euo pipefail
+
+vracli vro authentication set \
+--force \
+--ignore-certificate \
+--provider=tm \
+--username="${var.vcfa_username}" \
+--password-file="/usr/lib/vco/pwd.txt"
+--hostname=${format("https://%s", var.vcfa_url)} 
+--tenant=${var.vcfa_tenant_org}"
+'
+EOT
   }
 }
 
-resource "null_resource" "run_deploy_ssh" {
+resource "null_resource" "orchestrator_check" {
   depends_on = [ null_resource.orchestrator_config ]
   provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    
     command = <<EOT
-    sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "/opt/scripts/deploy.sh"
-    EOT
+set -euo pipefail
+for i in {1..30}; do
+  if sshpass -p '${local.password}' ssh \
+    -o StrictHostKeyChecking=no \
+    -o ConnectTimeout=10 \
+    ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} \
+    'vracli vro get-auth | grep "Provider=tm" -A 4'
+  then
+    echo "Orchestrator is authenticated with VCFA. Proceeding with deployment."
+    exit 0
+  fi
+    echo "Waiting for orchestrator to authenticate with VCFA... (attempt $i/30)"
+    sleep 10
+done
+
+echo "Orchestrator failed to authenticate with VCFA within the expected time."
+exit 1
+EOT 
+  }
+}
+resource "null_resource" "run_deploy_ssh" {
+  depends_on = [ null_resource.orchestrator_check ]
+  provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    command = <<EOT
+set -euo pipefail
+sshpass -p '${local.password}' ssh \
+ -o StrictHostKeyChecking=no \
+ -o ConnectTimeout=10 \
+ ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} '
+
+set -euo pipefail
+bash /opt/scripts/deploy.sh
+'
+EOT
   }
 }
