@@ -152,6 +152,11 @@ variable "vcfa_username_pwd_file" {
   description = "The password file for the org user (orchestrator)"
 }
 
+variable "vcfa_orchestrator_rights_bundle" {
+  type        = string
+  description = "The name of the rights bundle to assign to the orchestrator"
+
+}
 variable "vcfa_fullpath_password_file" {
   type        = string
   description = "The full path to the password file for the org user (orchestrator)"

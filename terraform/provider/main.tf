@@ -132,8 +132,6 @@ resource "vcfa_content_library" "provider_cl" {
   ]
 }
 
-
-
 resource "null_resource" "tenant_ready" {
   depends_on = [ 
     vcfa_org.tenant_org, 
@@ -149,14 +147,11 @@ resource "null_resource" "tenant_ready" {
   ]
 }
 
-resource "vcfa_rights_bundle" "set-orchestrator-rights" {
-  depends_on = [
-    null_resource.tenant_ready
-  ]
-  
-  name = data.vcfa_rights_bundle.orch-rights-bundle.name
-  description = data.vcfa_rights_bundle.orch-rights-bundle.description
+resource "vcfa_rights_bundle" "orchestrator-rights" {
+  name = "${data.vcfa_rights_bundle.orch-rights.name} Custom"
+  description = "Custom rights bundle for Orchestrator"
   publish_to_all_orgs = false
+  rights = data.vcfa_rights_bundle.orch-rights.rights
   org_ids = [
     vcfa_org.tenant_org.id
   ]

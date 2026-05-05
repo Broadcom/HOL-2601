@@ -60,10 +60,13 @@ data "vcfa_org" "system" {
   name = "System"
 }
 
-data "vcfa_rights_bundle" "orch-rights-bundle" {
+data "vcfa_rights_bundle" "orch-rights" {
   name = "Orchestrator Rights Bundle"
 }
 
+output "orchestrator-rb" {
+  value = data.vcfa_rights_bundle.orch-rights
+}
 data "vcfa_storage_class" "sc" {
   region_id = vcfa_region.region.id
   name      = tolist(var.region_storage_policy_names)[0]
