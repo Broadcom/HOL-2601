@@ -221,26 +221,26 @@ vracli vro authentication set \
 '
 EOT
   }
-  provisioner "local-exec" {
-    when = destroy
-    interpreter = ["/bin/bash", "-c"]
-    quiet = false
-    on_failure = continue
+#   provisioner "local-exec" {
+#     when = destroy
+#     interpreter = ["/bin/bash", "-c"]
+#     quiet = false
+#     on_failure = continue
 
-    command = <<EOT
-set -euo pipefail
+#     command = <<EOT
+# set -euo pipefail
 
-sshpass -p '${local.password}' ssh \
- -o StrictHostKeyChecking=no \
- -o ConnectTimeout=10 \
- ${self.triggers.vcfo_orchestrator_username}@${self.triggers.vcfo_orchestrator_url} '
+# sshpass -p '${local.password}' ssh \
+#  -o StrictHostKeyChecking=no \
+#  -o ConnectTimeout=10 \
+#  ${self.triggers.vcfo_orchestrator_username}@${self.triggers.vcfo_orchestrator_url} '
 
-set -euo pipefail
+# set -euo pipefail
 
-vracli vro authentication unregister
-'
-EOT
-  }
+# vracli vro authentication unregister
+# '
+# EOT
+#   }
 }
 
 
