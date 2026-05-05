@@ -64,3 +64,11 @@ provider "nsxt" {
   allow_unverified_ssl = true
   max_retries    = 4
 }
+
+provider "vra" {
+    alias = "hol-all-apps"
+    refresh_token = local.org_token_file.refresh_token
+    url          = format("https://%s", var.vcfa_url)
+    insecure     = true
+
+}

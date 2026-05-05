@@ -77,8 +77,12 @@ data "vcfa_role" "org-admin" {
   name   = "Organization Administrator"
 }
 
-data "local_file" "token" {
+data "local_file" "system_token_file" {
   filename = vcfa_api_token.system_api_token.file_name
   depends_on = [ vcfa_api_token.system_api_token ]
 }
 
+data "local_file" "org_token_file" {
+  filename = vcfa_api_token.org_api_token.file_name
+  depends_on = [ vcfa_api_token.org_api_token ]
+}

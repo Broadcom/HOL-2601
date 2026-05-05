@@ -8,10 +8,10 @@ resource "vcfa_api_token" "system_api_token" {
 }
 
 locals {
-  token_file = jsondecode(data.local_file.token.content)
+  token_file = jsondecode(data.local_file.system_token_file.content)
 }
 output "api_token" {
-  value = local.token_file.refresh_token
+  value = local.system_token_file.refresh_token
 }
 
 
@@ -148,6 +148,9 @@ resource "null_resource" "tenant_ready" {
 }
 
 resource "vcfa_rights_bundle" "orchestrator-rights" {
+  depends_on = [
+    null_resource.tenant_ready
+  ]
   name = "${data.vcfa_rights_bundle.orch-rights.name} Custom"
   description = "Custom rights bundle for Orchestrator"
   publish_to_all_orgs = false
@@ -301,4 +304,22 @@ bash /opt/scripts/deploy.sh
 '
 EOT
   }
+}
+
+resource "vcfa_api_token" "org_api_token" {
+  depends_on = [
+    null_resource.tenant_ready
+  ]
+  
+  name             = "org_token"
+  file_name        = "${path.cwd}/org_token.json"
+  allow_token_file = true
+}
+
+locals {
+  token_file = jsondecode(data.local_file.org_token_file.content)
+}
+output "org_api_token" {
+  depends_on = [ data.local_file.org_token_file ]
+  value = local.org_token_file.refresh_token
 }
