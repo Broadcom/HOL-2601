@@ -216,8 +216,8 @@ vracli vro authentication set \
 --provider=tm \
 --username="${var.vcfa_username}" \
 --password-file="/usr/lib/vco/pwd.txt" \
---hostname=${format("https://%s", var.vcfa_url)} \
---tenant=${var.vcfa_tenant_org}"
+--hostname="${format("https://%s", var.vcfa_url)}" \
+--tenant="${var.vcfa_tenant_org}"
 '
 EOT
   }
