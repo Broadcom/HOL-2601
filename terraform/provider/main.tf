@@ -8,7 +8,7 @@ resource "vcfa_api_token" "system_api_token" {
 }
 
 locals {
-  token_file = jsondecode(data.local_file.system_token_file.content)
+  system_token_file = jsondecode(data.local_file.system_token_file.content)
 }
 output "api_token" {
   value = local.system_token_file.refresh_token
@@ -317,7 +317,7 @@ resource "vcfa_api_token" "org_api_token" {
 }
 
 locals {
-  token_file = jsondecode(data.local_file.org_token_file.content)
+  org_token_file = jsondecode(data.local_file.org_token_file.content)
 }
 output "org_api_token" {
   depends_on = [ data.local_file.org_token_file ]
