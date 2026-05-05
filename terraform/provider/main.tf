@@ -214,6 +214,7 @@ resource "null_resource" "orchestrator_config" {
     vcfo_username       = var.vcfa_username
     vcfo_password_file  = var.vcfa_username_pwd_file
     vcfa_org            = var.vcfa_tenant_org
+    vcfa_password       = local.password
   }
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
@@ -249,7 +250,7 @@ EOT
     command = <<EOT
 set -euo pipefail
 
-sshpass -p '${local.password}' ssh \
+sshpass -p '${self.triggers.vcfa_password}' ssh \
  -o StrictHostKeyChecking=no \
  -o ConnectTimeout=10 \
  ${self.triggers.vcfo_username}@${self.triggers.vcfo_url} '
