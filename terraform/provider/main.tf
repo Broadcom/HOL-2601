@@ -124,7 +124,6 @@ resource "vcfa_content_library" "provider_cl" {
   depends_on = [
     vcfa_region.region
   ]
-  
   org_id      = data.vcfa_org.system.id
   name        = var.global_content_library_name
   description = var.global_content_library_description
@@ -153,18 +152,44 @@ resource "null_resource" "set_ntp" {
     null_resource.tenant_ready
   ]
   provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    quiet = false
+
     command = <<EOT
-    sshpass -p "${local.password}" ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "vracli ntp systemd --set 10.1.1.1"
-    EOT
+set -euo pipefail
+
+sshpass -p "${local.password}" ssh \
+ -o StrictHostKeyChecking=no \
+ -o ConnectTimeout=10 \
+ ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} '
+
+set -euo pipefail 
+vracli ntp systemd --set 10.1.1.1
+'
+EOT
   }
 }
 
 resource "null_resource" "set_password_file" {
   depends_on = [ null_resource.set_ntp ]
   provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    quiet = false
+
     command = <<EOT
-    sshpass -p '${local.password}' ssh -o StrictHostKeyChecking=no ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} "echo ${local.password} > /data/vco/usr/lib/vco/pwd.txt"
-    EOT
+set -euo pipefail
+
+sshpass -p '${local.password}' ssh \
+ -o StrictHostKeyChecking=no \
+ -o ConnectTimeout=10 \
+ ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} '
+ 
+ set -euo pipefail
+ echo ${local.password} > /data/vco/usr/lib/vco/pwd.txt
+
+'
+
+EOT
   }
 }
 
@@ -172,9 +197,11 @@ resource "null_resource" "orchestrator_config" {
   depends_on = [ null_resource.set_password_file ]
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    
+    quiet = false
+
     command = <<EOT
 set -euo pipefail
+
 
 sshpass -p '${local.password}' ssh \
  -o StrictHostKeyChecking=no \
@@ -188,8 +215,8 @@ vracli vro authentication set \
 --ignore-certificate \
 --provider=tm \
 --username="${var.vcfa_username}" \
---password-file="/usr/lib/vco/pwd.txt"
---hostname=${format("https://%s", var.vcfa_url)} 
+--password-file="/usr/lib/vco/pwd.txt" \
+--hostname=${format("https://%s", var.vcfa_url)} \
 --tenant=${var.vcfa_tenant_org}"
 '
 EOT
@@ -200,9 +227,11 @@ resource "null_resource" "orchestrator_check" {
   depends_on = [ null_resource.orchestrator_config ]
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    
+    quiet = false
+
     command = <<EOT
 set -euo pipefail
+
 for i in {1..30}; do
   if sshpass -p '${local.password}' ssh \
     -o StrictHostKeyChecking=no \
@@ -226,8 +255,11 @@ resource "null_resource" "run_deploy_ssh" {
   depends_on = [ null_resource.orchestrator_check ]
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
+    quiet = false
+
     command = <<EOT
 set -euo pipefail
+
 sshpass -p '${local.password}' ssh \
  -o StrictHostKeyChecking=no \
  -o ConnectTimeout=10 \
