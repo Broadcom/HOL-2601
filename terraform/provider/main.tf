@@ -237,9 +237,7 @@ sshpass -p '${local.password}' ssh \
 
 set -euo pipefail
 
-vracli vro authentication unregister \
- --username="${self.triggers.vcfa_username}"
- --password-file="${self.triggers.vcfa_username_pwd_file}"
+vracli vro authentication unregister
 '
 EOT
   }
