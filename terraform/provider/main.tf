@@ -210,10 +210,10 @@ resource "null_resource" "orchestrator_config" {
   depends_on = [ null_resource.set_password_file ]
 
   triggers = {
-    vcfo_orchestrator_url      = var.vcfo_orchestrator_url
-    vcfo_orchestrator_username = var.vcfa_username
-    vcfo_password_file         = var.vcfa_username_pwd_file
-    vcfa_tenant_org            = var.vcfa_tenant_org
+    vcfo_url            = var.vcfo_orchestrator_url
+    vcfo_username       = var.vcfa_username
+    vcfo_password_file  = var.vcfa_username_pwd_file
+    vcfa_org            = var.vcfa_tenant_org
   }
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
@@ -244,7 +244,6 @@ EOT
   provisioner "local-exec" {
     when = destroy
     interpreter = ["/bin/bash", "-c"]
-    quiet = false
     on_failure = continue
 
     command = <<EOT
@@ -253,12 +252,12 @@ set -euo pipefail
 sshpass -p '${local.password}' ssh \
  -o StrictHostKeyChecking=no \
  -o ConnectTimeout=10 \
- ${self.triggers.vcfo_orchestrator_username}@${self.triggers.vcfo_orchestrator_url} '
+ ${self.triggers.vcfo_username}@${self.triggers.vcfo_url} '
 
 set -euo pipefail
 
 vracli vro authentication unregister \
- --username=${self.triggers.vcfo_orchestrator_username}
+ --username=${self.triggers.vcfo_username}
  --password-file=${self.triggers.vcfo_password_file}
 '
 EOT
