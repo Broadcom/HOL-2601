@@ -221,41 +221,11 @@ vracli vro authentication set \
 '
 EOT
   }
-}
-
-resource "null_resource" "orchestrator_check" {
-  depends_on = [ null_resource.orchestrator_config ]
   provisioner "local-exec" {
+    when = destroy
     interpreter = ["/bin/bash", "-c"]
     quiet = false
-
-    command = <<EOT
-set -euo pipefail
-
-for i in {1..30}; do
-  if sshpass -p '${local.password}' ssh \
-    -o StrictHostKeyChecking=no \
-    -o ConnectTimeout=10 \
-    ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} \
-    'vracli vro get-auth | grep "Provider=tm" -A 4'
-  then
-    echo "Orchestrator is authenticated with VCFA. Proceeding with deployment."
-    exit 0
-  fi
-    echo "Waiting for orchestrator to authenticate with VCFA... (attempt $i/30)"
-    sleep 10
-done
-
-echo "Orchestrator failed to authenticate with VCFA within the expected time."
-exit 1
-EOT 
-  }
-}
-resource "null_resource" "run_deploy_ssh" {
-  depends_on = [ null_resource.orchestrator_check ]
-  provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    quiet = false
+    on_failure = continue
 
     command = <<EOT
 set -euo pipefail
@@ -266,8 +236,60 @@ sshpass -p '${local.password}' ssh \
  ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} '
 
 set -euo pipefail
-bash /opt/scripts/deploy.sh
+
+vracli vro authentication unregister \
+ --username="${var.vcfa_username}"
+ --password-file="/usr/lib/vco/pwd.txt"
 '
 EOT
   }
 }
+
+# resource "null_resource" "orchestrator_check" {
+#   depends_on = [ null_resource.orchestrator_config ]
+#   provisioner "local-exec" {
+#     interpreter = ["/bin/bash", "-c"]
+#     quiet = false
+
+#     command = <<EOT
+# set -euo pipefail
+
+# for i in {1..30}; do
+#   if sshpass -p '${local.password}' ssh \
+#     -o StrictHostKeyChecking=no \
+#     -o ConnectTimeout=10 \
+#     ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} \
+#     'vracli vro get-auth | grep "Provider=tm" -A 4'
+#   then
+#     echo "Orchestrator is authenticated with VCFA. Proceeding with deployment."
+#     exit 0
+#   fi
+#     echo "Waiting for orchestrator to authenticate with VCFA... (attempt $i/30)"
+#     sleep 10
+# done
+
+# echo "Orchestrator failed to authenticate with VCFA within the expected time."
+# exit 1
+# EOT 
+#   }
+# }
+# resource "null_resource" "run_deploy_ssh" {
+#   depends_on = [ null_resource.orchestrator_check ]
+#   provisioner "local-exec" {
+#     interpreter = ["/bin/bash", "-c"]
+#     quiet = false
+
+#     command = <<EOT
+# set -euo pipefail
+
+# sshpass -p '${local.password}' ssh \
+#  -o StrictHostKeyChecking=no \
+#  -o ConnectTimeout=10 \
+#  ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} '
+
+# set -euo pipefail
+# bash /opt/scripts/deploy.sh
+# '
+# EOT
+#   }
+# }
