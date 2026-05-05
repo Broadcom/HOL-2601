@@ -121,6 +121,10 @@ resource "vcfa_org_regional_networking" "regional-network" {
 
 # Create Content Library
 resource "vcfa_content_library" "provider_cl" {
+  depends_on = [
+    vcfa_region.region
+  ]
+  
   org_id      = data.vcfa_org.system.id
   name        = var.global_content_library_name
   description = var.global_content_library_description
