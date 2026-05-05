@@ -268,7 +268,7 @@ EOT
 #     -o StrictHostKeyChecking=no \
 #     -o ConnectTimeout=10 \
 #     ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} \
-#     'vracli vro get-auth | grep "Provider=tm" -A 4'
+#     'vracli vro get-auth | grep "o11n.tenant.id": "${vcfa_org.tenant_org.id}"';
 #   then
 #     echo "Orchestrator is authenticated with VCFA. Proceeding with deployment."
 #     exit 0
@@ -282,23 +282,23 @@ EOT
 # EOT 
 #   }
 # }
-# resource "null_resource" "run_deploy_ssh" {
-#   depends_on = [ null_resource.orchestrator_check ]
-#   provisioner "local-exec" {
-#     interpreter = ["/bin/bash", "-c"]
-#     quiet = false
+resource "null_resource" "run_deploy_ssh" {
+  depends_on = [ null_resource.orchestrator_config ]
+  provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    quiet = false
 
-#     command = <<EOT
-# set -euo pipefail
+    command = <<EOT
+set -euo pipefail
 
-# sshpass -p '${local.password}' ssh \
-#  -o StrictHostKeyChecking=no \
-#  -o ConnectTimeout=10 \
-#  ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} '
+sshpass -p '${local.password}' ssh \
+ -o StrictHostKeyChecking=no \
+ -o ConnectTimeout=10 \
+ ${var.vcfo_orchestrator_username}@${var.vcfo_orchestrator_url} '
 
-# set -euo pipefail
-# bash /opt/scripts/deploy.sh
-# '
-# EOT
-#   }
-# }
+set -euo pipefail
+bash /opt/scripts/deploy.sh
+'
+EOT
+  }
+}
