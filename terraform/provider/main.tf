@@ -159,7 +159,6 @@ resource "vcfa_rights_bundle" "orchestrator-rights" {
     vcfa_org.tenant_org.id
   ]
 }
-
 resource "null_resource" "set_ntp" {
   depends_on = [
     null_resource.tenant_ready
