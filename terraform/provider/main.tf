@@ -154,7 +154,7 @@ resource "vcfa_rights_bundle" "orchestrator-rights" {
   name = "${data.vcfa_rights_bundle.orch-rights.name} Custom"
   description = "Custom rights bundle for Orchestrator"
   publish_to_all_orgs = false
-  rights = data.vcfa_rights_bundle.orch-rights.rights
+  rights = setunion(data.vcfa_rights_bundle.orch-rights.rights, ["Integrations Orchestrator: Manage"])
   org_ids = [
     vcfa_org.tenant_org.id
   ]
