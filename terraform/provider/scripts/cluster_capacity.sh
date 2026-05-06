@@ -25,7 +25,7 @@ if [[ -z $CLUSTER_PATH ]]; then
   exit 1
 fi
 
-json="$(govc object.collect -json "$CLUSTER_PATH" summary.totalCpu summary.totalMemory summary.totalVsanStorage summary.numHosts summary.numCpuCores)"
+json="$(govc object.collect -json "$CLUSTER_PATH" summary.totalCpu summary.totalMemory summary.numHosts summary.numCpuCores)"
 ds_json="$(govc datastore.info -json -ds "$DATASTORE")"
 
 cpu_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.totalCpu") | .Val')"
