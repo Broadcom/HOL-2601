@@ -2,21 +2,14 @@
 
 set -euo pipefail
 
-INPUT="$(cat)"
+export GOVC_URL="vc-wld01-01a.wld.sso"
+export GOVC_USERNAME="administrator@wld.sso"
+export GOVC_PASSWORD=$(</home/holuser/creds.txt)
+export GOVC_INSECURE="true"
 
-if [[ -z "$INPUT" ]]; then
-  echo "No input provided"
-  exit 1
-fi
-
-export GOVC_URL=$(echo "$INPUT" | jq -r '.vcenter_server')
-export GOVC_USERNAME=$(echo "$INPUT" | jq -r '.vcenter_username')
-export GOVC_PASSWORD=$(echo "$INPUT" | jq -r '.vcenter_password')
-export GOVC_INSECURE=$(echo "$INPUT" | jq -r '.insecure')
-
-DATACENTER=$(echo "$INPUT" | jq -r '.datacenter')
-CLUSTER=$(echo "$INPUT" | jq -r '.cluster')
-DATASTORE=$(echo "$INPUT" | jq -r '.datastore')
+DATACENTER="dc-a"
+CLUSTER="cluster-wld01-01a"
+DATASTORE="vsan-wld01-01a"
 
 CLUSTER_PATH="$(govc find "/${DATACENTER}" -type c -name "$CLUSTER" | head -n 1)"
 
