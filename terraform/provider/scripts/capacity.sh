@@ -39,3 +39,4 @@ jq -n \
     mem_capacity: $mem_capacity,
     vsan_capacity: $vsan_capacity
   }'
+  
