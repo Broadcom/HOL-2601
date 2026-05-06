@@ -30,19 +30,15 @@ cpu_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.TotalCpu") | 
 mem_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.TotalMemory") | .Val / 1024 / 1024 | floor')"
 vsan_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.TotalVsanStorage") | .Val')"
 total_hosts="$(echo "$json" | jq -r '.[] | select(.Name=="summary.NumHosts") | .Val')"
-total_cores="$(echo "$json" | jq -r '.[] | select(.Name=="summary.NumCpuCores") | .Val')"
-vsan_capacity_mb=$((vsan_capacity / 1024 / 1024))
 
 jq -n \
   --arg total_hosts "$total_hosts" \
   --arg cpu_capacity "$cpu_capacity" \
-  --arg total_cores "$total_cores" \
   --arg mem_capacity "$mem_capacity" \
   --arg vsan_capacity_mb "$vsan_capacity_mb" \
   '{
     total_hosts: $total_hosts,
     cpu_capacity: $cpu_capacity,
-    total_cores: $total_cores,
     mem_capacity: $mem_capacity,
     vsan_capacity: $vsan_capacity_mb
   }'
