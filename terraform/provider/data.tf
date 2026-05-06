@@ -86,3 +86,27 @@ data "local_file" "org_token_file" {
   filename = vcfa_api_token.org_api_token.file_name
   depends_on = [ vcfa_api_token.org_api_token ]
 }
+
+data "external" "cluster_capacity" {
+  program = ["bash", "-c", "${path.module}/scripts/cluster_capacity.sh"]
+  query = {
+    vcenter_server = var.wld_vcenter_url
+    vcenter_username = var.wld_vcenter_username
+    vcenter_password = local.password
+    datacenter = var.datacenter
+    cluster = var.cluster
+    insecure = true
+  }
+}
+
+output "cluster_mem_capacity" {
+  value = data.external.cluster_capacity.result.mem_capacity
+}
+
+output "cluster_cpu_capacity" {
+  value = data.external.cluster_capacity.result.cpu_capacity
+}
+
+output "cluster_vsan_capacity" {
+  value = data.external.cluster_capacity.result.vsan_capacity
+}
