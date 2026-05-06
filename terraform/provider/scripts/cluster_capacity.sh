@@ -13,6 +13,7 @@ export GOVC_URL=$(echo "$INPUT" | jq -r '.vcenter_server')
 export GOVC_USERNAME=$(echo "$INPUT" | jq -r '.vcenter_username')
 export GOVC_PASSWORD=$(echo "$INPUT" | jq -r '.vcenter_password')
 export GOVC_INSECURE=$(echo "$INPUT" | jq -r '.insecure')
+export GOVC_DATACENTER=$(echo "$INPUT" | jq -r '.datacenter')
 
 DATACENTER=$(echo "$INPUT" | jq -r '.datacenter')
 CLUSTER=$(echo "$INPUT" | jq -r '.cluster')
