@@ -96,6 +96,7 @@ data "external" "cluster_capacity" {
     datacenter = var.datacenter
     cluster = var.cluster
     insecure = true
+    datastore = var.datastore
   }
 }
 
