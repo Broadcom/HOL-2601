@@ -30,7 +30,7 @@ ds_json="$(govc datastore.info -json -ds "$DATASTORE")"
 
 cpu_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.totalCpu") | .Val')"
 mem_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.totalMemory") | .Val / 1024 / 1024 | floor')"
-ds_capacity="$(echo "$ds_json" | jq -r '.Datastores[0].summary.capacity')"
+vsan_capacity="$(echo "$ds_json" | jq -r '.Datastores[0].summary.capacity')"
 total_hosts="$(echo "$json" | jq -r '.[] | select(.Name=="summary.numHosts") | .Val')"
 total_cores="$(echo "$json" | jq -r '.[] | select(.Name=="summary.numCpuCores") | .Val')"
 
@@ -38,11 +38,11 @@ jq -n \
   --arg total_hosts "$total_hosts" \
   --arg cpu_capacity "$cpu_capacity" \
   --arg mem_capacity "$mem_capacity" \
-  --arg ds_capacity "$ds_capacity" \
+  --arg vsan_capacity "$vsan_capacity" \
   '{
     total_hosts: $total_hosts,
     cpu_capacity: $cpu_capacity,
     total_cores: $total_cores,
     mem_capacity: $mem_capacity,
-    ds_capacity: $ds_capacity
+    vsan_capacity: $vsan_capacity
   }'
