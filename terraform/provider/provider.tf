@@ -31,6 +31,12 @@ terraform {
             source  = "hashicorp/null"
             version = "3.2.4"
         }
+        external = {
+            source  = "hashicorp/external"
+            version = "2.3.5"
+        }
+    }
+  }
     }
 }
 locals {
@@ -71,4 +77,8 @@ provider "vra" {
     url          = format("https://%s", var.vcfa_url)
     insecure     = true
 
+}
+
+provider "external" {
+  version = "~> 2.0"
 }
