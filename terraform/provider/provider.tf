@@ -36,8 +36,9 @@ terraform {
             version = "~> 2.3.5"
         }
     }
-  }
 }
+
+
 locals {
   password = sensitive(trimspace(file(var.password_file_path)))
 }
