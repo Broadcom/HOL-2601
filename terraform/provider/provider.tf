@@ -17,7 +17,7 @@ terraform {
         }
         vcf = {
             source = "vmware/vcf"
-            version = "0.17.1"
+            version = "~> 0.17.1"
         }
         vsphere = {
             source = "vmware/vsphere"
@@ -29,15 +29,14 @@ terraform {
         }
         null = {
             source  = "hashicorp/null"
-            version = "3.2.4"
+            version = "~> 3.2.4"
         }
         external = {
             source  = "hashicorp/external"
-            version = "2.3.5"
+            version = "~> 2.3.5"
         }
     }
   }
-    }
 }
 locals {
   password = sensitive(trimspace(file(var.password_file_path)))
@@ -80,5 +79,5 @@ provider "vra" {
 }
 
 provider "external" {
-  version = "~> 2.0"
+
 }
