@@ -24,8 +24,8 @@ govc datastore.info "$DATASTORE"
 
 json="$(govc object.collect -json "$CLUSTER_PATH" summary.totalCpu summary.totalMemory summary.numHosts summary.numCpuCores)"
 ds_json="$(govc datastore.info -json "$DATASTORE")"
-cat $json
-cat $ds_json
+echo "$json" | jq -c .
+echo "$ds_json" | jq -c .
 cpu_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.totalCpu") | .Val')"
 mem_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.totalMemory") | .Val / 1024 / 1024 | floor')"
 vsan_capacity="$(echo "$ds_json" | jq -r '.Datastores[0].summary.capacity')"
