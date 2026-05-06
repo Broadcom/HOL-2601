@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-export GOVC_URL="vc-wld01-01a.wld.sso"
+export GOVC_URL="vc-wld01-a.site-a.vcf.lab"
 export GOVC_USERNAME="administrator@wld.sso"
 export GOVC_PASSWORD=$(</home/holuser/creds.txt)
 export GOVC_INSECURE="true"
@@ -32,6 +32,7 @@ jq -n \
   --arg cpu_capacity "$cpu_capacity" \
   --arg mem_capacity "$mem_capacity" \
   --arg vsan_capacity "$vsan_capacity" \
+  --arg total_cores "$total_cores" \
   '{
     total_hosts: $total_hosts,
     cpu_capacity: $cpu_capacity,
@@ -39,4 +40,3 @@ jq -n \
     mem_capacity: $mem_capacity,
     vsan_capacity: $vsan_capacity
   }'
-  
