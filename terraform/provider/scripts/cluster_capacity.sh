@@ -24,13 +24,13 @@ if [[ -z $CLUSTER_PATH ]]; then
   exit 1
 fi
 
-json="$(govc object.collect -json "$CLUSTER_PATH" summary)"
+json="$(govc object.collect -json "$CLUSTER_PATH" summary.TotalCpu summary.TotalMemory summary.TotalVsanStorage summary.NumHosts summary.NumCpuCores)"
 
-cpu_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary") | .Val.TotalCpu')"
-mem_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary") | .Val.TotalMemory / 1024 / 1024 | floor')"
-vsan_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary") | .Val.TotalVsanStorage')"
-total_hosts="$(echo "$json" | jq -r '.[] | select(.Name=="summary") | .Val.NumHosts')"
-total_cores="$(echo "$json" | jq -r '.[] | select(.Name=="summary") | .Val.NumCpuCores')"
+cpu_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.TotalCpu") | .Val')"
+mem_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.TotalMemory") | .Val / 1024 / 1024 | floor')"
+vsan_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.TotalVsanStorage") | .Val')"
+total_hosts="$(echo "$json" | jq -r '.[] | select(.Name=="summary.NumHosts") | .Val')"
+total_cores="$(echo "$json" | jq -r '.[] | select(.Name=="summary.NumCpuCores") | .Val')"
 vsan_capacity_mb=$((vsan_capacity / 1024 / 1024))
 
 jq -n \
