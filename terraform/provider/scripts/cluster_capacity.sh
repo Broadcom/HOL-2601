@@ -16,6 +16,7 @@ export GOVC_INSECURE=$(echo "$INPUT" | jq -r '.insecure')
 
 DATACENTER=$(echo "$INPUT" | jq -r '.datacenter')
 CLUSTER=$(echo "$INPUT" | jq -r '.cluster')
+DATASTORE=$(echo "$INPUT" | jq -r '.datastore')
 
 CLUSTER_PATH="$(govc find "/${DATACENTER}" -type c -name "$CLUSTER" | head -n 1)"
 
@@ -25,23 +26,23 @@ if [[ -z $CLUSTER_PATH ]]; then
 fi
 
 json="$(govc object.collect -json "$CLUSTER_PATH" summary.totalCpu summary.totalMemory summary.totalVsanStorage summary.numHosts summary.numCpuCores)"
+ds_json="$(govc datastore.info -json -ds "$DATASTORE")"
 
 cpu_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.totalCpu") | .Val')"
 mem_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.totalMemory") | .Val / 1024 / 1024 | floor')"
-vsan_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.totalVsanStorage") | .Val')"
+ds_capacity="$(echo "$ds_json" | jq -r '.Datastores[0].summary.capacity')"
 total_hosts="$(echo "$json" | jq -r '.[] | select(.Name=="summary.numHosts") | .Val')"
 total_cores="$(echo "$json" | jq -r '.[] | select(.Name=="summary.numCpuCores") | .Val')"
-vsan_capacity_mb=$((vsan_capacity / 1024 / 1024))
 
 jq -n \
   --arg total_hosts "$total_hosts" \
   --arg cpu_capacity "$cpu_capacity" \
   --arg mem_capacity "$mem_capacity" \
-  --arg vsan_capacity_mb "$vsan_capacity_mb" \
+  --arg ds_capacity "$ds_capacity" \
   '{
     total_hosts: $total_hosts,
     cpu_capacity: $cpu_capacity,
     total_cores: $total_cores,
     mem_capacity: $mem_capacity,
-    vsan_capacity: $vsan_capacity_mb
+    ds_capacity: $ds_capacity
   }'
