@@ -17,7 +17,7 @@ export GOVC_INSECURE=$(echo "$INPUT" | jq -r '.insecure')
 DATACENTER=$(echo "$INPUT" | jq -r '.datacenter')
 CLUSTER=$(echo "$INPUT" | jq -r '.cluster')
 
-CLUSTER_PATH="$(govc find /${DATACENTER} -type c -name="$CLUSTER" | head -n 1)"
+CLUSTER_PATH="$(govc find "/${DATACENTER}" -type c -name "$CLUSTER" | head -n 1)"
 
 if [[ -z $CLUSTER_PATH ]]; then
   echo "Cluster not found: $CLUSTER in datacenter: $DATACENTER"
