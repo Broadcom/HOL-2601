@@ -39,9 +39,6 @@ locals {
   password = sensitive(trimspace(file(var.password_file_path)))
 }
 
-locals {
-    gitlab_token = sensitive(trimspace(file(var.gitlab_token_file_path)))
-}
 provider "vcfa" {
     url                     = format("https://%s", var.vcfa_url)
     org                     = var.vcfa_org
