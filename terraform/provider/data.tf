@@ -88,7 +88,7 @@ data "local_file" "org_token_file" {
 }
 
 data "external" "cluster_capacity" {
-  program = ["bash", "-c", "${path.module}/scripts/cluster_capacity.sh"]
+  program = ["bash", "-c", "${path.cwd}/scripts/cluster_capacity.sh"]
   query = {
     vcenter_server = var.wld_vcenter_url
     vcenter_username = var.wld_vcenter_username

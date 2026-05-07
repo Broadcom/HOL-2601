@@ -20,19 +20,19 @@ output "api_token" {
   value = vcfa_api_token.tenant_api_token.refresh_token
 }
 
-resource "null_resource" "api_" {
- depends_on = [vcfa_api_token.system_api_token]
-   provisioner "local-exec" {
-    command = <<EOT
-    curl -k -X PUT "https://${var.vcfa_url}/api/v1/system/api-tokens/${vcfa_api_token.system_api_token.id}" \
-      -H "accept: application/json" \
-      -H "Content-Type: application/json" \
-      -H "Authorization: Bearer ${vcfa_api_token.system_api_token.refresh_token}" \
-      -u "${var.vcfa_tenant_org_username}:${local.password}" \
-      -d '{"name":"system_token","file_name":"${path.cwd}/system_token.json","allow_token_file":true}' 
-    EOT
-  }
-}
+# resource "null_resource" "api_" {
+#  depends_on = [vcfa_api_token.system_api_token]
+#    provisioner "local-exec" {
+#     command = <<EOT
+#     curl -k -X PUT "https://${var.vcfa_url}/api/v1/system/api-tokens/${vcfa_api_token.system_api_token.id}" \
+#       -H "accept: application/json" \
+#       -H "Content-Type: application/json" \
+#       -H "Authorization: Bearer ${vcfa_api_token.system_api_token.refresh_token}" \
+#       -u "${var.vcfa_tenant_org_username}:${local.password}" \
+#       -d '{"name":"system_token","file_name":"${path.cwd}/system_token.json","allow_token_file":true}' 
+#     EOT
+#   }
+# }
 
 
 resource "vcfa_org_ldap" "rainpole-io" {
