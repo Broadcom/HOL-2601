@@ -42,9 +42,9 @@ resource "vcfa_org_region_quota" "region_quota" {
   supervisor_ids = [data.vcfa_supervisor.sv.id]
   zone_resource_allocations {
     region_zone_id         = data.vcfa_region_zone.zone.id
-    cpu_limit_mhz          = var.region_quota_cpu_limit_mhz
+    cpu_limit_mhz          = tostring(output.cluster_cpu_capacity.value / 2)
     cpu_reservation_mhz    = var.region_quota_cpu_reservation_mhz
-    memory_limit_mib       = var.region_quota_mem_limit_mb
+    memory_limit_mib       = tostring(output.cluster_mem_capacity.value / 2)
     memory_reservation_mib = var.region_quota_mem_reservation_mb
   }
   region_vm_class_ids = [
@@ -55,7 +55,7 @@ resource "vcfa_org_region_quota" "region_quota" {
   ]
   region_storage_policy {
     region_storage_policy_id = data.vcfa_region_storage_policy.region-sc.id
-    storage_limit_mib        = var.region_quota_storage_limit_mb
+    storage_limit_mib        = tostring(output.cluster_vsan_capacity.value / 2)
   }
 }
 
