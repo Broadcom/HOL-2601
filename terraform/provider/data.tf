@@ -101,13 +101,21 @@ data "external" "cluster_capacity" {
 }
 
 output "cluster_mem_capacity" {
-  value = data.external.cluster_capacity.result.mem_capacity
+  value = tonumber(data.external.cluster_capacity.result.mem_capacity)
 }
 
 output "cluster_cpu_capacity" {
-  value = data.external.cluster_capacity.result.cpu_capacity
+  value = tonumber(data.external.cluster_capacity.result.cpu_capacity)
 }
 
 output "cluster_vsan_capacity" {
-  value = data.external.cluster_capacity.result.vsan_capacity
+  value = tonumber(data.external.cluster_capacity.result.vsan_capacity)
+}
+
+output "cluster_total_cores" {
+  value = tonumber(data.external.cluster_capacity.result.total_cores)
+}
+
+output "cluster_total_hosts" {
+  value = tonumber(data.external.cluster_capacity.result.total_hosts)
 }
