@@ -224,3 +224,11 @@ variable "ldap_search_base" {
   description = "The LDAP search base"
 }
 
+variable "vcfa_tenant_org_content_library_name" {
+  type        = string
+  description = "The name of the Tenant content library to use"
+}
+variable "vcfa_tenant_org_content_library_description" {
+  type        = string
+  description = "The description of the Tenant content library to use"
+}

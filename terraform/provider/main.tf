@@ -42,9 +42,9 @@ resource "vcfa_org_region_quota" "region_quota" {
   supervisor_ids = [data.vcfa_supervisor.sv.id]
   zone_resource_allocations {
     region_zone_id         = data.vcfa_region_zone.zone.id
-    cpu_limit_mhz          = tostring(tonumber(data.external.cluster_capacity.result.cpu_capacity) / 2)
+    cpu_limit_mhz          = tostring(tonumber(data.external.cluster_capacity.result.cpu_capacity) * 0.5)
     cpu_reservation_mhz    = var.region_quota_cpu_reservation_mhz
-    memory_limit_mib       = tostring(floor((tonumber(data.external.cluster_capacity.result.mem_capacity) * 0.953674) / 2))
+    memory_limit_mib       = tostring(floor((tonumber(data.external.cluster_capacity.result.mem_capacity) * 0.953674) * 0.5))
     memory_reservation_mib = var.region_quota_mem_reservation_mb
   }
   region_vm_class_ids = [
@@ -55,7 +55,7 @@ resource "vcfa_org_region_quota" "region_quota" {
   ]
   region_storage_policy {
     region_storage_policy_id = data.vcfa_region_storage_policy.region-sc.id
-    storage_limit_mib        = tostring(floor((tonumber(data.external.cluster_capacity.result.vsan_capacity) * 0.953674)/ 2))
+    storage_limit_mib        = tostring(floor((tonumber(data.external.cluster_capacity.result.vsan_capacity) * 0.953674) * 0.25))
   }
 }
 
@@ -308,3 +308,72 @@ output "org_api_token" {
   depends_on = [ data.local_file.org_token_file ]
   value = local.org_token_file.refresh_token
 }
+
+resource "vcfa_org_ldap" "rainpole-io" {
+  depends_on = [
+    null_resource.tenant_ready
+  ]
+  org_id                 = vcfa_org.tenant_org.id
+  ldap_mode              = "CUSTOM"
+  auto_trust_certificate = false # Because is_ssl = false
+  custom_settings {
+    server                  = var.ldap_host
+    port                    = var.ldap_port
+    is_ssl                  = var.ldap_ssl
+    username                = var.ldap_bind_dn
+    password                = local.password
+    base_distinguished_name = var.ldap_search_base
+    connector_type          = "OPEN_LDAP"
+    user_attributes {
+      object_class                = "person"
+      unique_identifier           = "entryUUID"
+      username                    = "cn"
+      display_name                = "displayName"
+      given_name                  = "givenName"
+      surname                     = "sn"
+      email                       = "mail"
+      telephone                   = "telephoneNumber"
+      group_membership_identifier = "dn"
+
+    }
+    group_attributes {
+      object_class                = "groupOfNames"
+      unique_identifier           = "entryUUID"
+      name                        = "cn"
+      membership                  = "member"
+      group_membership_identifier = "dn"
+    }
+  }
+}
+
+
+# Create Content Library
+resource "vcfa_content_library" "tenant_cl" {
+  depends_on = [
+    null_resource.tenant_ready
+  ]
+  org_id      = data.vcfa_org.tenant_org.id
+  name        = var.vcfa_tenant_org_content_library_name
+  description = var.vcfa_tenant_org_content_library_description
+  storage_class_ids = [
+    data.vcfa_storage_class.sc.id
+  ]
+}
+
+# resource "vra_integration" "gitlab" {
+#   depends_on = [
+#     null_resource.tenant_ready
+#   ]
+
+#   name        = var.gitlab_integration_name
+#   description = var.gitlab_integration_description
+#   integration_type = "GITLAB"
+#   integration_properties = {
+#     url: "https://${var.gitlab_integration_url}",
+#      project = var.gitlab_integration_project,
+#      branch = var.gitlab_integration_branch,
+#      token_type = "PERSONAL_ACCESS_TOKEN", 
+#   }}
+#   private_key = local.gitlab_token
+# }
+

@@ -42,6 +42,10 @@ terraform {
 locals {
   password = sensitive(trimspace(file(var.password_file_path)))
 }
+
+locals {
+    gitlab_token = sensitive(trimspace(file(var.gitlab_token_file_path)))
+}
 provider "vcfa" {
     url                     = format("https://%s", var.vcfa_url)
     org                     = var.vcfa_org
@@ -74,8 +78,8 @@ provider "nsxt" {
 provider "vra" {
     alias = "hol-all-apps"
     refresh_token = local.org_token_file.refresh_token
-    url          = format("https://%s", var.vcfa_url)
-    insecure     = true
+    url          = format("https://%s", var.vra_url)
+    insecure     = var.vra_insecure
 
 }
 
