@@ -27,7 +27,7 @@ ds_json="$(govc datastore.info -json "$DATASTORE")"
 echo "$json" | jq .
 echo "$ds_json" | jq .
 cpu_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.totalCpu") | .val')"
-mem_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.totalMemory") | .val / 1024 / 1024 | floor')"
+mem_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.totalMemory") | .val')"
 vsan_capacity="$(echo "$ds_json" | jq -r '.Datastores[0].capacity')"
 total_hosts="$(echo "$json" | jq -r '.[] | select(.Name=="summary.numHosts") | .val')"
 total_cores="$(echo "$json" | jq -r '.[] | select(.Name=="summary.numCpuCores") | .val')"
