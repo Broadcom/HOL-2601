@@ -24,13 +24,12 @@ govc datastore.info "$DATASTORE"
 
 json="$(govc object.collect -json "$CLUSTER_PATH" summary.totalCpu summary.totalMemory summary.numHosts summary.numCpuCores)"
 ds_json="$(govc datastore.info -json "$DATASTORE")"
-echo "$json" | jq -c .
-echo "$ds_json" | jq -c .
-cpu_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.totalCpu") | .Val')"
-mem_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.totalMemory") | .Val / 1024 / 1024 | floor')"
-vsan_capacity="$(echo "$ds_json" | jq -r '.Datastores[0].summary.capacity')"
-total_hosts="$(echo "$json" | jq -r '.[] | select(.Name=="summary.numHosts") | .Val')"
-total_cores="$(echo "$json" | jq -r '.[] | select(.Name=="summary.numCpuCores") | .Val')"
+
+cpu_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.totalCpu") | .val')"
+mem_capacity="$(echo "$json" | jq -r '.[] | select(.Name=="summary.totalMemory") | .val / 1024 / 1024 | floor')"
+vsan_capacity="$(echo "$ds_json" | jq -r '.Datastores[0].capacity')"
+total_hosts="$(echo "$json" | jq -r '.[] | select(.Name=="summary.numHosts") | .val')"
+total_cores="$(echo "$json" | jq -r '.[] | select(.Name=="summary.numCpuCores") | .val')"
 
 jq -n \
   --arg total_hosts "$total_hosts" \
