@@ -147,18 +147,18 @@ resource "null_resource" "tenant_ready" {
   ]
 }
 
-resource "vcfa_rights_bundle" "orchestrator-rights" {
-  depends_on = [
-    null_resource.tenant_ready
-  ]
-  name = "${data.vcfa_rights_bundle.orch-rights.name} Custom"
-  description = "Custom rights bundle for Orchestrator"
-  publish_to_all_orgs = false
-  rights = setunion(data.vcfa_rights_bundle.orch-rights.rights, ["Integrations Orchestrator: Manage"])
-  org_ids = [
-    vcfa_org.tenant_org.id
-  ]
-}
+# resource "vcfa_rights_bundle" "orchestrator-rights" {
+#   depends_on = [
+#     null_resource.tenant_ready
+#   ]
+#   name = "${data.vcfa_rights_bundle.orch-rights.name} Custom"
+#   description = "Custom rights bundle for Orchestrator"
+#   publish_to_all_orgs = false
+#   rights = setunion(data.vcfa_rights_bundle.orch-rights.rights, ["Integrations Orchestrator: Manage"])
+#   org_ids = [
+#     vcfa_org.tenant_org.id
+#   ]
+# }
 resource "null_resource" "set_ntp" {
   depends_on = [
     null_resource.tenant_ready
