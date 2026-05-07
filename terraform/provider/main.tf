@@ -44,7 +44,7 @@ resource "vcfa_org_region_quota" "region_quota" {
     region_zone_id         = data.vcfa_region_zone.zone.id
     cpu_limit_mhz          = tostring(tonumber(data.external.cluster_capacity.result.cpu_capacity) / 2)
     cpu_reservation_mhz    = var.region_quota_cpu_reservation_mhz
-    memory_limit_mib       = tostring(tonumber(data.external.cluster_capacity.result.mem_capacity) / 2)
+    memory_limit_mib       = tostring(floor((tonumber(data.external.cluster_capacity.result.mem_capacity) * 0.953674) / 2))
     memory_reservation_mib = var.region_quota_mem_reservation_mb
   }
   region_vm_class_ids = [
@@ -55,7 +55,7 @@ resource "vcfa_org_region_quota" "region_quota" {
   ]
   region_storage_policy {
     region_storage_policy_id = data.vcfa_region_storage_policy.region-sc.id
-    storage_limit_mib        = tostring(tonumber(data.external.cluster_capacity.result.vsan_capacity) / 2)
+    storage_limit_mib        = tostring(floor((tonumber(data.external.cluster_capacity.result.vsan_capacity) * 0.953674)/ 2))
   }
 }
 
