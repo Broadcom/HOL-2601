@@ -352,7 +352,7 @@ resource "vcfa_content_library" "tenant_cl" {
   depends_on = [
     null_resource.tenant_ready
   ]
-  org_id      = data.vcfa_org.tenant_org.id
+  org_id      = vcfa_org.tenant_org.id
   name        = var.vcfa_tenant_org_content_library_name
   description = var.vcfa_tenant_org_content_library_description
   storage_class_ids = [
