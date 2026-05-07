@@ -11,3 +11,7 @@ data "local_file" "org_api_token_file" {
 locals {
   token = jsondecode(data.local_file.org_api_token_file.content)
 }
+
+output "vra_org_api_token" {
+  value = local.token
+}
