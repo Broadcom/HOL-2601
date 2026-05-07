@@ -40,7 +40,8 @@ terraform {
 
 
 locals {
-  password = sensitive(trimspace(file(var.password_file_path)))
+#   password = sensitive(trimspace(file(var.password_file_path)))
+    password = trimspace(file(var.password_file_path))
 }
 
 provider "vcfa" {

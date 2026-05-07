@@ -119,3 +119,4 @@ output "cluster_total_cores" {
 output "cluster_total_hosts" {
   value = tonumber(data.external.cluster_capacity.result.total_hosts)
 }
+
