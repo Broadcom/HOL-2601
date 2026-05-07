@@ -39,7 +39,7 @@ jq -n \
   --arg cpu_capacity "$cpu_capacity" \
   --arg mem_capacity "$mem_capacity" \
   --arg vsan_capacity "$vsan_capacity" \
-    --arg total_cores "$total_cores" \
+  --arg total_cores "$total_cores" \
   '{
     total_hosts: $total_hosts,
     cpu_capacity: $cpu_capacity,
