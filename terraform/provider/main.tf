@@ -359,21 +359,16 @@ resource "vcfa_content_library" "tenant_cl" {
     data.vcfa_storage_class.sc.id
   ]
 }
+resource "vra_integration" "gitlab" {
+  depends_on = [
+    null_resource.tenant_ready
+  ]
 
-# resource "vra_integration" "gitlab" {
-#   depends_on = [
-#     null_resource.tenant_ready
-#   ]
-
-#   name        = var.gitlab_integration_name
-#   description = var.gitlab_integration_description
-#   integration_type = "GITLAB"
-#   integration_properties = {
-#     url: "https://${var.gitlab_integration_url}",
-#      project = var.gitlab_integration_project,
-#      branch = var.gitlab_integration_branch,
-#      token_type = "PERSONAL_ACCESS_TOKEN", 
-#   }}
-#   private_key = local.gitlab_token
-# }
-
+  name        = var.gitlab_integration_name
+  description = var.gitlab_integration_description
+  integration_type = "com.gitlab.saas"
+  integration_properties = {
+    url: "https://${var.gitlab_integration_url}",
+     privateKey = file(var.gitlab_token_file_path) 
+  }
+}
