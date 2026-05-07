@@ -85,8 +85,3 @@ vcfo_orchestrator_password = ""
 vcfo_orchestrator_url = "o11n-01a.site-a.vcf.lab"
 vcfo_orchestrator_username = "root"
 vcfa_orchestrator_rights_bundle = "Orchestrator Rights Bundle"
-
-# VRA PROVIDER
-
-vra_url = "vcfa-a.site-a.vcf.lab"
-vra_insecure = true
