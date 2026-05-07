@@ -304,6 +304,12 @@ resource "vcfa_api_token" "org_api_token" {
 locals {
   org_token_file = jsondecode(data.local_file.org_token_file.content)
 }
+
+output "org_api_token_file" {
+  depends_on = [ data.local_file.org_token_file ]
+  value = data.local_file.org_token_file.filename
+}
+
 output "org_api_token" {
   depends_on = [ data.local_file.org_token_file ]
   value = local.org_token_file

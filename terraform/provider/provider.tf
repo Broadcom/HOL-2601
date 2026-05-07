@@ -7,6 +7,10 @@ terraform {
             source = "vmware/vcfa"
             version = "~> 1.0.0"
         }
+        vra = {
+            source = "vmware/vra"
+            version = "~> 0.13"
+        }
         kubernetes = {
             source = "hashicorp/kubernetes"
             version = "~> 2.0.0"
