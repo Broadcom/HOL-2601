@@ -1,8 +1,3 @@
-variable "password_file_path" {
-  type        = string
-  description = "The path to the file containing the password for the VCF Automation API"
-  default     = "/home/holuser/creds.txt"
-}
 variable "vra_url" {
   type        = string
   description = "The VCF Automation URL"
