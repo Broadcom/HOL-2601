@@ -5,7 +5,7 @@ data "terraform_remote_state" "vcfa" {
     }
 }
 data "local_file" "org_api_token_file" {
-  filename = data.terraform_remote_state.vcfa.outputs.org_api_token_file.filename
+  filename = data.terraform_remote_state.vcfa.outputs.org_api_token_file
 }
 
 locals {
