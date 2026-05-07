@@ -7,10 +7,6 @@ terraform {
             source = "vmware/vcfa"
             version = "~> 1.0.0"
         }
-        vra = {
-            source = "vmware/vra"
-            version = "~> 0.13"
-        }
         kubernetes = {
             source = "hashicorp/kubernetes"
             version = "~> 2.0.0"
@@ -57,6 +53,9 @@ provider "vcfa" {
     logging_file            = var.vcfa_log_file
 }
 
+locals {
+  org_token_file = jsondecode(data.local_file.org_token_file.content)
+}
 
 provider "vsphere" {
   user           = var.wld_vcenter_username
@@ -75,13 +74,6 @@ provider "nsxt" {
   max_retries    = 4
 }
 
-provider "vra" {
-    alias = "hol-all-apps"
-    refresh_token = local.org_token_file.refresh_token
-    url          = format("https://%s", var.vra_url)
-    insecure     = var.vra_insecure
-
-}
 
 provider "external" {
 
