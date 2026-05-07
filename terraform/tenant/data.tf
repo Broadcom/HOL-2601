@@ -1,11 +1,11 @@
 data "terraform_remote_state" "vcfa" {
     backend = "local"
     config = {
-        path = "../provider/terraform.tfstate"
+        path = "${path.cwd}/provider/terraform.tfstate"
     }
 }
 data "local_file" "org_api_token_file" {
-  filename = data.terraform_remote_state.vcfa.outputs.org_api_token_file.file_name
+  filename = data.terraform_remote_state.vcfa.outputs.org_api_token_file.filename
 }
 
 locals {
