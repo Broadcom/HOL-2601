@@ -49,11 +49,6 @@ provider "vcfa" {
     logging                 = true
     logging_file            = var.vcfa_log_file
 }
-
-locals {
-  org_token_file = jsondecode(data.local_file.org_token_file.content)
-}
-
 provider "vsphere" {
   user           = var.wld_vcenter_username
   password       = local.password

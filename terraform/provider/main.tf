@@ -306,7 +306,7 @@ locals {
 }
 output "org_api_token" {
   depends_on = [ data.local_file.org_token_file ]
-  value = local.org_token_file.refresh_token
+  value = local.org_token_file
 }
 
 resource "vcfa_org_ldap" "rainpole-io" {
