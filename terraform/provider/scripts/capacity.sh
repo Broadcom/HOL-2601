@@ -11,16 +11,12 @@ DATACENTER="dc-a"
 CLUSTER="cluster-wld01-01a"
 DATASTORE="vsan-wld01-01a"
 
-govc find "/${DATACENTER}" -type c -name "$CLUSTER" | head -n 1
 CLUSTER_PATH="$(govc find "/${DATACENTER}" -type c -name "$CLUSTER" | head -n 1)"
 
 if [[ -z $CLUSTER_PATH ]]; then
   echo "Cluster not found: $CLUSTER in datacenter: $DATACENTER"
   exit 1
 fi
-
-govc object.collect "$CLUSTER_PATH" summary.totalCpu summary.totalMemory summary.numHosts summary.numCpuCores
-govc datastore.info "$DATASTORE"
 
 json="$(govc object.collect -json "$CLUSTER_PATH" summary.totalCpu summary.totalMemory summary.numHosts summary.numCpuCores)"
 ds_json="$(govc datastore.info -json "$DATASTORE")"
