@@ -21,7 +21,7 @@ project_users_group = ""
 # namespace_storage_class_name = "vSAN Default Storage Policy"
 # namespace_zone = "z-wld-a"
 
-namespace_class_cpu_limit = "10"
+namespace_class_cpu_limit = ""
 namespace_class_cpu_reservation = ""
 namespace_class_memory_limit = ""
 namespace_class_memory_reservation = ""
