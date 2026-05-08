@@ -45,6 +45,14 @@ variable "project_name" {
   default     = "apps-project"
 }
 
+variable "project_admins_group" {
+  type        = string
+}
+
+variable "project_users_group" {
+  type        = string
+  
+}
 variable "namespace_name" {
   type        = string
   description = "The name of the Supervisor Namespace"
@@ -89,7 +97,6 @@ variable "namespace_class_memory_limit" {
 variable "namespace_class_memory_reservation" {
   type        = string
 }
-
 variable "namespace_zone" {
   type        = string
   default     = "z-wld-a"

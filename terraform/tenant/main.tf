@@ -49,7 +49,7 @@ output "project_roles" {
 
 resource "vcfa_supervisor_namespace" "supervisor_namespace" {
   depends_on = [
-    kubernetes_manifest.supervisor_namespace_class_config
+    kubernetes_manifest.project
   ]
 
   name_prefix  = var.namespace_name
