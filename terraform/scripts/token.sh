@@ -12,17 +12,16 @@ fi
 TOKEN=$(echo "$INPUT" | jq -r '.token')
 URL=$(echo "$INPUT" | jq -r '.url')
 
-response=$(curl -sk -X POST \
- "https://$URL/oauth/provider/token" \
- -H "Accept: application/json" \
- -H "Content-Type: application/x-www-form-urlencoded" \
- --data-urlencode "grant_type=refresh_token" \
- --data-urlencode "refresh_token=$TOKEN")
+response=$(curl -sk --fail-with-body -X POST \
+  "https://$URL/oauth/provider/token" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  --data-urlencode "grant_type=refresh_token" \
+  --data-urlencode "refresh_token=$TOKEN")
 
-echo "TOKEN RESPONSE"
 echo "$response"
 
-access_token=$(echo "$response" | jq -r '.access_token // empty')
+access_token=$(echo "$response" | jq -er '.access_token')
 
 if [ -z "$access_token" ]; then
     echo "$response" >&2
