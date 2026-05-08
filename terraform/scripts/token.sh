@@ -15,7 +15,7 @@ response=$(curl -sk -X POST \
 -H "Accept: application/json" \
 -H "Content-Type: application/x-www-form-urlencoded" \
 --data-urlencode "grant_type=refresh_token" \
---data-urlencode "refresh_token=$TOKENß")
+--data-urlencode "refresh_token=$TOKEN")
 
 access_token=$(echo "response" | jq -r '.access_token // empty')
 
