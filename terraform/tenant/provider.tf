@@ -36,10 +36,10 @@ locals {
     password = trimspace(file(var.password_file_path))
 }
 provider "vra" {
-    alias = "hol-all-apps"
-    refresh_token = local.token.refresh_token
-    url          = format("https://%s", var.vra_url)
-    insecure     = var.vra_insecure
+    organization            = var.vcfa_org
+    refresh_token           = local.token.refresh_token
+    url                     = format("https://%s", var.vra_url)
+    insecure                = var.vra_insecure
 }
 
 provider "vcfa" {

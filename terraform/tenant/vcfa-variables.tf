@@ -36,5 +36,11 @@ variable "vcfa_org" {
 variable "vcfa_log_file" {
   type        = string
   description = "The VCF Automation log file path"
-  default     = "system"
+  default     = "all-apps"
+}
+
+variable "project_name" {
+  type        = string
+  description = "Project Name"
+  default     = "dev-project"
 }
