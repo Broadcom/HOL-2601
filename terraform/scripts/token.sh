@@ -20,8 +20,12 @@ response=$(curl -sk -X POST \
 access_token=$(echo "response" | jq -r '.access_token // empty')
 
 if [ -z "$access_token" ]; then
-echo "$response" >&2
-exit 1
+    echo "$response" >&2
+    exit 1
 fi
 
-jq -n --arg access_token "$access_token" '{access_token:$access_token}'
+jq -n \
+    --arg access_token "$access_token" \
+    '{
+        access_token: $access_token
+    }'
