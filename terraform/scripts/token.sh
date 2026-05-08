@@ -11,11 +11,11 @@ TOKEN=$(echo "$INPUT" | jq -r '.token')
 URL=$(echo "$INPUT" | jq -r '.url')
 
 response=$(curl -sk -X POST \
-"${$URL}/oauth/provider/token" \
+"$URL/oauth/provider/token" \
 -H "Accept: application/json" \
 -H "Content-Type: application/x-www-form-urlencoded" \
 --data-urlencode "grant_type=refresh_token" \
---data-urlencode "refresh_token=${$TOKEN}")
+--data-urlencode "refresh_token=$TOKENß")
 
 access_token=$(echo "response" | jq -r '.access_token // empty')
 
