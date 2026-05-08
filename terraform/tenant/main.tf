@@ -58,6 +58,7 @@ resource "vcfa_supervisor_namespace" "supervisor_namespace" {
   description  = ""
   region_name  = var.namespace_region
   vpc_name     = var.namespace_vpc
+  
 
   storage_classes_initial_class_config_overrides {
     limit = var.namespace_class_storage_class_limit
