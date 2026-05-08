@@ -1,4 +1,4 @@
-vra_url = "vcfa-a.site-a.vcf.lab"
+vra_url = "auto-a.site-a.vcf.lab"
 vra_insecure = true
 
 vcfa_url = "auto-a.site-a.vcf.lab"
