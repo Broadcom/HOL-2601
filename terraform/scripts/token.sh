@@ -22,7 +22,8 @@ response=$(curl -sk -X POST \
 
 echo "TOKEN RESPONSE"
 echo "$RESPONSE"
-access_token=$(echo "response" | jq -r '.access_token // empty')
+
+access_token=$(echo "$response" | jq -r '.access_token // empty')
 
 if [ -z "$access_token" ]; then
     echo "$response" >&2
