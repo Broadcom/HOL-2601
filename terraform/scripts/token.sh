@@ -1,3 +1,5 @@
+#! /usr/bin/env bash
+
 set -euo pipefail
 
 INPUT="$(cat)"
@@ -9,9 +11,6 @@ fi
 
 TOKEN=$(echo "$INPUT" | jq -r '.token')
 URL=$(echo "$INPUT" | jq -r '.url')
-
-echo $TOKEN
-echo $URL
 
 response=$(curl -sk -X POST \
  "https://$URL/oauth/provider/token" \
@@ -30,4 +29,4 @@ if [ -z "$access_token" ]; then
     exit 1
 fi
 
-jq -n --arg access_token "$access_token" '{access_token: $access_token}'
+jq -n --arg access_token "$access_token" '{access_token:$access_token}'
