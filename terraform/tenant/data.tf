@@ -49,24 +49,24 @@ data "external" "vcfa_org_token" {
   program = [
     "/bin/bash",
     <<-EOT
-      set -euo pipefail
+set -euo pipefail
 
-      response=$(curl -sk -X POST \
-        "${format("https://%s", var.vra_url)}/oauth/provider/token" \
-        -H "Accept: application/json" \
-        -H "Content-Type: application/x-www-form-urlencoded" \
-        --data-urlencode "grant_type=refresh_token" \
-        --data-urlencode "refresh_token=${local.token.refresh_token}")
+response=$(curl -sk -X POST \
+  "${format("https://%s", var.vra_url)}/oauth/provider/token" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  --data-urlencode "grant_type=refresh_token" \
+  --data-urlencode "refresh_token=${local.token.refresh_token}")
 
-      access_token=$(echo "$response" | jq -r '.access_token // empty')
+access_token=$(echo "$response" | jq -r '.access_token // empty')
 
-      if [ -z "$access_token" ]; then
-        echo "$response" >&2
-        exit 1
-      fi
+if [ -z "$access_token" ]; then
+  echo "$response" >&2
+  exit 1
+fi
 
-      jq -n --arg access_token "$access_token" '{access_token:$access_token}'
-    EOT
+jq -n --arg access_token "$access_token" '{access_token:$access_token}'
+EOT
   ]
 }
 
