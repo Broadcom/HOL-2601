@@ -21,7 +21,7 @@ response=$(curl -sk -X POST \
 --data-urlencode "refresh_token=$TOKEN")
 
 echo "TOKEN RESPONSE"
-echo "$RESPONSE"
+echo "$response"
 
 access_token=$(echo "$response" | jq -r '.access_token // empty')
 
