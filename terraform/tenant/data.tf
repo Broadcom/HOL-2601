@@ -52,7 +52,7 @@ data "external" "vcfa_org_token" {
       set -euo pipefail
 
       response=$(curl -sk -X POST \
-        "${var.vcfa_url}/oauth/provider/token" \
+        "${format("https://%s", var.vra_url)}/oauth/provider/token" \
         -H "Accept: application/json" \
         -H "Content-Type: application/x-www-form-urlencoded" \
         --data-urlencode "grant_type=refresh_token" \
