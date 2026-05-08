@@ -73,7 +73,7 @@ data "kubernetes_resource" "namespace_class_large" {
 data "external" "vcfa_org_token" {
   program = [
     "/bin/bash",
-    "${oath.cwd}/scripts/token.sh"
+    "${path.cwd}/scripts/token.sh"
   ]
 
   query = {
