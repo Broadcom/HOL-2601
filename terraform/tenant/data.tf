@@ -56,7 +56,7 @@ data "external" "vcfa_org_token" {
         -H "Accept: application/json" \
         -H "Content-Type: application/x-www-form-urlencoded" \
         --data-urlencode "grant_type=refresh_token" \
-        --data-urlencode "refresh_token=${local.token}")
+        --data-urlencode "refresh_token=${local.token.refresh_token}")
 
       access_token=$(echo "response" | jq -r '.access_token // empty')
 
