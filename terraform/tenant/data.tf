@@ -58,7 +58,7 @@ data "external" "vcfa_org_token" {
         --data-urlencode "grant_type=refresh_token" \
         --data-urlencode "refresh_token=${local.token.refresh_token}")
 
-      access_token=$(echo "response" | jq -r '.access_token // empty')
+      access_token=$(echo "$response" | jq -r '.access_token // empty')
 
       if [ -z "$access_token" ]; then
         echo "$response" >&2
