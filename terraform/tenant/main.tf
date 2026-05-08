@@ -6,7 +6,7 @@ resource "kubernetes_manifest" "project" {
       "name" = var.project_name
     }
     "spec" = {
-      "description" = "Project [${var.project_name}]"
+      "description" = "Project ${var.project_name}"
     }
   }
 }
@@ -46,3 +46,29 @@ output "project_roles" {
 #     ]
 #   }
 # }
+
+resource "vcfa_supervisor_namespace" "supervisor_namespace" {
+  depends_on = [
+    kubernetes_manifest.supervisor_namespace_class_config
+  ]
+
+  name_prefix  = var.namespace_name
+  project_name = var.project_name
+  class_name   = var.namespace_class
+  description  = ""
+  region_name  = var.namespace_region
+  vpc_name     = var.namespace_vpc
+
+  storage_classes_initial_class_config_overrides {
+    limit = var.namespace_class_storage_class_limit
+    name  = var.namespace_storage_class_name
+  }
+
+  zones_initial_class_config_overrides {
+    cpu_limit          = var.namespace_class_cpu_limit
+    cpu_reservation    = var.namespace_class_cpu_reservation
+    memory_limit       = var.namespace_class_memory_limit
+    memory_reservation = var.namespace_class_memory_reservation
+    name               = var.namespace_zone
+  }
+}

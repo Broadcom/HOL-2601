@@ -44,3 +44,52 @@ variable "project_name" {
   description = "Project Name"
   default     = "apps-project"
 }
+
+variable "namespace_name" {
+  type        = string
+  description = "The name of the Supervisor Namespace"
+  default     = "apps-project"
+}
+
+variable "namespace_class" {
+  type        = string
+  description = "The Supervisor Namespace Class"
+  default     = "small"
+}
+variable "namespace_region" {
+  type        = string
+  description = "The region where the Supervisor Namespace resides"
+  default     = "region-a"
+}
+variable "namespace_vpc" {
+  type        = string
+  description = "The Supervisor Namespace VPC"
+  default     = "region-a-default-vpc"
+}
+variable "namespace_class_storage_class_limit" {
+  type        = string
+  description = "The Supervisor Namespace Storage Class Limit"
+
+}
+variable "namespace_storage_class_name" {
+  type        = string
+  description = "The Supervisor Namespace Storage Class Name"
+}
+variable "namespace_class_cpu_limit" {
+  type        = string
+  description = "The Supervisor Namespace Class CPU limit"
+}
+
+variable "namespace_class_cpu_reservation" {
+  type        = string
+}
+variable "namespace_class_memory_limit" {
+  type        = string
+}
+variable "namespace_class_memory_reservation" {
+  type        = string
+}
+
+variable "namespace_zone" {
+  type        = string
+}
