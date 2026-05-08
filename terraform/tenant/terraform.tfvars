@@ -8,3 +8,5 @@ vcfa_password = ""
 vcfa_username = "admin"
 vcfa_org = "hol-all-apps"
 vcfa_log_file = "vcfa.log"
+
+project_name = "apps-project"

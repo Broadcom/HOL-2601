@@ -42,5 +42,5 @@ variable "vcfa_log_file" {
 variable "project_name" {
   type        = string
   description = "Project Name"
-  default     = "dev-project"
+  default     = "apps-project"
 }
