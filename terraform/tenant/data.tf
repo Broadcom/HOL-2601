@@ -45,6 +45,34 @@ data "kubernetes_resource" "namespace_class_large" {
   }
 }
 
+data "external" "vcfa_org_token" {
+  program = [
+    "/bin/bash",
+    <<-EOT
+      set -euo pipefail
+
+      response=$(curl -sk -X POST \
+        "${var.vcfa_url}/oauth/provider/token" \
+        -H "Accept: application/json" \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        --data-urlencode "grant_type=refresh_token" \
+        --data-urlencode "refresh_token=${local.token}")
+
+      access_token=$(echo "response" | jq -r '.access_token // empty')
+
+      if [ -z "$access_token" ]; then
+        echo "$response" >&2
+        exit 1
+      fi
+
+      jq -n --arg access_token "$access_token" '{access_token:$access_token}'
+    EOT
+  ]
+}
+
+output "org_bearer_token" {
+  value = data.external.vcfa_org_token.result.access_token
+}
 # output "namespace_class_small" {
 #   value = data.kubernetes_resource.supervisor_namespace_class_config
 # }
