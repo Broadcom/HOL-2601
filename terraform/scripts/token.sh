@@ -14,11 +14,11 @@ echo $TOKEN
 echo $URL
 
 response=$(curl -sk -X POST \
-"https://$URL/oauth/provider/token" \
--H "Accept: application/json" \
--H "Content-Type: application/x-www-form-urlencoded" \
---data-urlencode "grant_type=refresh_token" \
---data-urlencode "refresh_token=$TOKEN")
+ "https://$URL/oauth/provider/token" \
+ -H "Accept: application/json" \
+ -H "Content-Type: application/x-www-form-urlencoded" \
+ --data-urlencode "grant_type=refresh_token" \
+ --data-urlencode "refresh_token=$TOKEN")
 
 echo "TOKEN RESPONSE"
 echo "$response"
@@ -30,8 +30,4 @@ if [ -z "$access_token" ]; then
     exit 1
 fi
 
-jq -n \
-    --arg access_token "$access_token" \
-    '{
-        access_token: $access_token
-    }'
+jq -n --arg access_token "$access_token" '{access_token: $access_token}'
