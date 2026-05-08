@@ -51,12 +51,15 @@ variable "project_admins_group" {
 
 variable "project_users_group" {
   type        = string
-  
+
 }
 variable "namespace_name" {
   type        = string
   description = "The name of the Supervisor Namespace"
   default     = "apps-project"
+}
+variable "namespace_description" {
+  type        = string
 }
 
 variable "namespace_class" {
@@ -87,7 +90,6 @@ variable "namespace_class_cpu_limit" {
   type        = string
   description = "The Supervisor Namespace Class CPU limit"
 }
-
 variable "namespace_class_cpu_reservation" {
   type        = string
 }

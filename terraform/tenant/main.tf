@@ -47,29 +47,29 @@ output "project_roles" {
 #   }
 # }
 
-resource "vcfa_supervisor_namespace" "project_namespace" {
-  depends_on = [
-    kubernetes_manifest.project
-  ]
+# resource "vcfa_supervisor_namespace" "project_namespace" {
+#   depends_on = [
+#     kubernetes_manifest.project
+#   ]
 
-  name_prefix  = var.namespace_name
-  project_name = var.project_name
-  class_name   = var.namespace_class
-  description  = ""
-  region_name  = var.namespace_region
-  vpc_name     = var.namespace_vpc
+#   name_prefix  = var.namespace_name
+#   project_name = var.project_name
+#   class_name   = var.namespace_class
+#   description  = var.namespace_description
+#   region_name  = var.namespace_region
+#   vpc_name     = var.namespace_vpc
 
 
-  storage_classes_initial_class_config_overrides {
-    limit = var.namespace_class_storage_class_limit
-    name  = var.namespace_storage_class_name
-  }
+#   storage_classes_initial_class_config_overrides {
+#     limit = var.namespace_class_storage_class_limit
+#     name  = var.namespace_storage_class_name
+#   }
 
-  zones_initial_class_config_overrides {
-    cpu_limit          = var.namespace_class_cpu_limit
-    cpu_reservation    = var.namespace_class_cpu_reservation
-    memory_limit       = var.namespace_class_memory_limit
-    memory_reservation = var.namespace_class_memory_reservation
-    name               = var.namespace_zone
-  }
-}
+#   zones_initial_class_config_overrides {
+#     cpu_limit          = var.namespace_class_cpu_limit
+#     cpu_reservation    = var.namespace_class_cpu_reservation
+#     memory_limit       = var.namespace_class_memory_limit
+#     memory_reservation = var.namespace_class_memory_reservation
+#     name               = var.namespace_zone
+#   }
+# }
