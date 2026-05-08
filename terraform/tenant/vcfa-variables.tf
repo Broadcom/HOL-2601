@@ -92,4 +92,5 @@ variable "namespace_class_memory_reservation" {
 
 variable "namespace_zone" {
   type        = string
+  default     = "z-wld-a"
 }
