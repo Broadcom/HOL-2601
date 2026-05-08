@@ -81,6 +81,7 @@ data "external" "vcfa_org_token" {
     token = local.token.refresh_token
   }
 }
+
 output "org_bearer_token" {
   value = data.external.vcfa_org_token.result.access_token
 }
