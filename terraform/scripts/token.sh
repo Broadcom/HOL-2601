@@ -10,13 +10,18 @@ fi
 TOKEN=$(echo "$INPUT" | jq -r '.token')
 URL=$(echo "$INPUT" | jq -r '.url')
 
+echo $TOKEN
+echo $URL
+
 response=$(curl -sk -X POST \
-"$URL/oauth/provider/token" \
+"https://$URL/oauth/provider/token" \
 -H "Accept: application/json" \
 -H "Content-Type: application/x-www-form-urlencoded" \
 --data-urlencode "grant_type=refresh_token" \
 --data-urlencode "refresh_token=$TOKEN")
 
+echo "TOKEN RESPONSE"
+echo "$RESPONSE"
 access_token=$(echo "response" | jq -r '.access_token // empty')
 
 if [ -z "$access_token" ]; then

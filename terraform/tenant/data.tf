@@ -77,7 +77,7 @@ data "external" "vcfa_org_token" {
   ]
 
   query = {
-    url = format("https://%s", var.vra_url)
+    url = var.vra_url
     token = local.token.refresh_token
   }
 }
