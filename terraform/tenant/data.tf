@@ -70,7 +70,7 @@ data "kubernetes_resource" "namespace_class_large" {
 #   ]
 # }
 
-data "external" "vcfa_org_token" {
+data "external" "vcfa_org_bearer_token" {
   program = [
     "/bin/bash",
     "${path.cwd}/scripts/token.sh"
@@ -83,7 +83,7 @@ data "external" "vcfa_org_token" {
 }
 
 output "org_bearer_token" {
-  value = data.external.vcfa_org_token.result.access_token
+  value = data.external.vcfa_org_bearer_token.result.access_token
 }
 # output "namespace_class_small" {
 #   value = data.kubernetes_resource.supervisor_namespace_class_config
