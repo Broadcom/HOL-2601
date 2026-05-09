@@ -24,7 +24,7 @@ output "project_roles" {
 resource "null_resource" "vcfa_bearer_token" {
 
   provisioner "local-exec" {
-    intepreter = [ "/bin/bash", "-c" ]
+    interpreter = [ "/bin/bash", "-c" ]
     quiet = false
     
     command = <<EOT
