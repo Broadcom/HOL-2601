@@ -21,7 +21,7 @@ response=$(curl -sk --fail-with-body -X POST \
 
 echo "$response"
 
-access_token="$(echo "$response" | jq -er '.access_token')"
+access_token="$(echo "$response" | jq -r '.access_token // empty')"
 
 if [ -z "$access_token" ]; then
     echo "$response" >&2
