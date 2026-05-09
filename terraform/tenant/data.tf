@@ -75,7 +75,6 @@ data "external" "vcfa_org_bearer_token" {
     "/bin/bash",
     "${path.cwd}/scripts/token.sh"
   ]
-
   query = {
     url = var.vra_url
     token = local.token.refresh_token

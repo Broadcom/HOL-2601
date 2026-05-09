@@ -30,4 +30,8 @@ if [ -z "$access_token" ]; then
     exit 1
 fi
 
-jq -n --arg access_token "$access_token" '{access_token: $access_token}'
+jq -n \ 
+  --arg access_token "$access_token" \
+  '{
+    access_token: $access_token
+  }'
