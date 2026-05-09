@@ -4,6 +4,8 @@ set -euo pipefail
 
 INPUT="$(cat)"
 
+echo "$INPUT"
+
 if [[ -z "$INPUT" ]]; then
   echo "No input provided"
   exit 1
