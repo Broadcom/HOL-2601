@@ -4,22 +4,20 @@ set -euo pipefail
 
 INPUT="$(cat)"
 
-echo "$INPUT"
-
 if [[ -z "$INPUT" ]]; then
   echo "No input provided"
   exit 1
 fi
 
-TOKEN=$(echo "$INPUT" | jq -r '.token')
-URL=$(echo "$INPUT" | jq -r '.url')
+token=$(echo "$INPUT" | jq -r '.token')
+url=$(echo "$INPUT" | jq -r '.url')
 
 response=$(curl -sk --fail-with-body -X POST \
-    "https://$URL/oauth/provider/token" \
+    "https://${url}/oauth/provider/token" \
     -H "Accept: application/json" \
     -H "Content-Type: application/x-www-form-urlencoded" \
     --data-urlencode "grant_type=refresh_token" \
-    --data-urlencode "refresh_token=$TOKEN")
+    --data-urlencode "refresh_token=${token}")
 
 access_token="$(echo "$response" | jq -r '.access_token // empty')"
 
