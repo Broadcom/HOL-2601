@@ -16,6 +16,7 @@ data "kubernetes_resources" "project_roles" {
   kind        = "ProjectRole"
 }
 
+
 output "project_roles" {
   value = data.kubernetes_resources.project_roles
 }
