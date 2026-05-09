@@ -21,6 +21,29 @@ output "project_roles" {
   value = data.kubernetes_resources.project_roles
 }
 
+resource "null_resource" "vcfa_bearer_token" {
+
+  provisioner "local-exec" {
+    intepreter = [ "/bin/bash", "-c" ]
+    quiet = false
+    
+    command = <<EOT
+set -euo pipefail
+
+response=$(curl -sk --fail-with-body -X POST \
+  "${format("https://%s", var.vra_url)}/oauth/provider/token" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  --data-urlencode "grant_type=refresh_token" \
+  --data-urlencode "refresh_token=${local.token.refresh_token}")
+  
+  access_token=$(echo $response | jq -r '.access_token // empty')
+  
+  echo "$access_token" > ${path.cwd}/scripts/bearer.txt
+  EOT
+  }
+}
+
 # resource "kubernetes_manifest" "project_role_bindings" {
 #   count = length(var.users)
 #   depends_on = [
