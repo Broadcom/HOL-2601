@@ -44,6 +44,7 @@ response=$(curl -sk --fail-with-body -X POST \
   }
 }
 
+
 # resource "kubernetes_manifest" "project_role_bindings" {
 #   count = length(var.users)
 #   depends_on = [
