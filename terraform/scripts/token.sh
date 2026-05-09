@@ -11,8 +11,8 @@ if [[ -z "$INPUT" ]]; then
   exit 1
 fi
 
-TOKEN=$(echo "$INPUT" | jq -r '.token')
-URL=$(echo "$INPUT" | jq -r '.url')
+TOKEN="$(echo "$INPUT" | jq -r '.token')"
+URL="$(echo "$INPUT" | jq -r '.url')"
 
 response=$(curl -sk --fail-with-body -X POST \
   "https://$URL/oauth/provider/token" \
