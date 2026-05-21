@@ -2,6 +2,7 @@
 import datetime
 import os
 import sys
+import subprocess
 from pyVim import connect
 from pyVmomi import vim
 import logging
