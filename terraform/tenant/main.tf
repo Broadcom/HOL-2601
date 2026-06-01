@@ -55,8 +55,8 @@ response=$(curl -sk --fil-with-body -X POST \
   "${format("https://%s", var.vra_url)}/cloudapi/1.0.0/groups" \
   -H "Accept: application/json" \
   -H "Authorization: bearer ${local.bearer_token}" \
-  -H "Content-Type: application/json" 
-  
+  -H "Content-Type: application/json" \
+  )
   EOT
   }
 }
