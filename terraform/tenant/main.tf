@@ -34,6 +34,7 @@ response=$(curl -sk --fail-with-body -X POST \
   "${format("https://%s", var.vra_url)}/oauth/provider/token" \
   -H "Accept: application/json" \
   -H "Content-Type: application/x-www-form-urlencoded" \
+  -H "Content-Type: application/json" \
   --data-urlencode "grant_type=refresh_token" \
   --data-urlencode "refresh_token=${local.token.refresh_token}")
   
@@ -50,14 +51,17 @@ resource "null_resource" "vcfa_access_control_group" {
     quiet = false
     
     command = <<EOT
+set -euo pipefail
 
 response=$(curl -sk --fail-with-body -X POST \
   "${format("https://%s", var.vra_url)}/cloudapi/1.0.0/groups" \
   -H "Accept: application/json" \
   -H "Authorization: bearer ${local.bearer_token}" \
-  -H "Content-Type: application/json" \
-  )
+  -H "Content-Type: application/json")
+  
+echo "$response"
   EOT
+
   }
 }
 
