@@ -44,6 +44,21 @@ response=$(curl -sk --fail-with-body -X POST \
   }
 }
 
+resource "null_resource" "vcfa_access_control_group" {
+    provisioner "local-exec" {
+    interpreter = [ "/bin/bash", "-c" ]
+    quiet = false
+    
+    command = <<EOT
+
+response=$(curl -sk --fil-with-body -X POST \
+  "${format("https://%s", var.vra_url)}/cloudapi/1.0.0/groups" \
+  -H "Accept: application/json" \
+  -H "Authorization: bearer ${local.bearer_token}
+
+  EOT
+  }
+}
 
 # resource "kubernetes_manifest" "project_role_bindings" {
 #   count = length(var.users)
