@@ -90,12 +90,10 @@ resource "vcfa_ip_space" "ipspace" {
   name                          = "${var.vcfa_tenant_org}-ipspace"
   description                   = "${var.vcfa_tenant_org} IP Space"
   region_id                     = vcfa_region.region.id
-  external_scope                = "0.0.0.0/0"
   default_quota_max_subnet_size = var.ipspace_max_subnet_size
   default_quota_max_cidr_count  = var.ipspace_max_cidr_count
   default_quota_max_ip_count    = var.ipspace_max_ip_count
-
-  internal_scope {
+  cidr_blocks {
     name = "scope1"
     cidr = var.ipspace_scope_cidr1
   }
@@ -107,6 +105,7 @@ resource "vcfa_provider_gateway" "provider-gw" {
   region_id        = vcfa_region.region.id
   tier0_gateway_id = data.vcfa_tier0_gateway.t0-gw.id
   ip_space_ids     = [vcfa_ip_space.ipspace.id]
+  inbound_remote_networks = ["0.0.0.0/0"]
 }
 
 # Create VCFA Regional Networking

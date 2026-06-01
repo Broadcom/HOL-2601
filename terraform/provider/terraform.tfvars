@@ -23,7 +23,7 @@ nsx_edge_cluster_name = "edgecl-wld-a"
 ipspace_max_subnet_size = 24
 ipspace_max_cidr_count = 10
 ipspace_max_ip_count = 100
-ipspace_scope_cidr1 = "10.0.0.0/8"
+ipspace_scope_cidr1 = "10.5.0.0/16"
 
 supervisor_name = "supervisor"
 region_name = "region-a"
