@@ -55,8 +55,9 @@ set -euo pipefail
 
 response=$(curl -sk --fail-with-body -X GET \
   "${format("https://%s", var.vra_url)}/cloudapi/1.0.0/groups" \
+  -H "X-VMWARE-CLOUD_TENANT-CONTEXT: ${var.vcfa_org}" \
   -H "Accept: application/json;version=9.0.0" \
-  -H "Authorization: bearer ${local.bearer_token}" \
+  -H "Authorization: Bearer ${local.bearer_token}" \
   -H "Content-Type: application/json")
   
 echo "$response"
