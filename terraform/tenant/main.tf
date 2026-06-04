@@ -65,7 +65,7 @@ response=$(curl -sk --fail-with-body -X POST \
 #   EOT
 
 #   }
-}
+#}
 
 # resource "kubernetes_manifest" "project_role_bindings" {
 #   count = length(var.users)
