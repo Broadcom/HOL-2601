@@ -34,7 +34,7 @@ resource "vcfa_org_settings" "org_settings" {
   org_id                           = vcfa_org.tenant_org.id
   can_create_subscribed_libraries  = true
   quarantine_content_library_items = false
-  can_subscribe_to_third_party_libraries = false
+  # can_subscribe_to_third_party_libraries = false
 }
 
 resource "vcfa_org_region_quota" "region_quota" {
