@@ -34,6 +34,7 @@ resource "vcfa_org_settings" "org_settings" {
   org_id                           = vcfa_org.tenant_org.id
   can_create_subscribed_libraries  = false
   quarantine_content_library_items = false
+  can_subscribe_to_third_party_libraries = false
 }
 
 resource "vcfa_org_region_quota" "region_quota" {
@@ -112,7 +113,7 @@ resource "vcfa_provider_gateway" "provider-gw" {
 resource "vcfa_org_regional_networking" "regional-network" {
   name = "${var.vcfa_tenant_org}-regional-network"
   org_id = vcfa_org_networking.network.id
-    provider_gateway_id = vcfa_provider_gateway.provider-gw.id
+  provider_gateway_id = vcfa_provider_gateway.provider-gw.id
   region_id           = vcfa_region.region.id
 
   edge_cluster_id = data.vcfa_edge_cluster.edge-cluster.id
