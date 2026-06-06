@@ -94,6 +94,7 @@ resource "vcfa_ip_space" "ipspace" {
   default_quota_max_subnet_size = var.ipspace_max_subnet_size
   default_quota_max_cidr_count  = var.ipspace_max_cidr_count
   default_quota_max_ip_count    = var.ipspace_max_ip_count
+  
   internal_scope {
     name = "scope1"
     cidr = var.ipspace_scope_cidr1
