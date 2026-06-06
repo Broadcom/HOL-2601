@@ -106,7 +106,6 @@ resource "vcfa_provider_gateway" "provider-gw" {
   region_id        = vcfa_region.region.id
   tier0_gateway_id = data.vcfa_tier0_gateway.t0-gw.id
   ip_space_ids     = [vcfa_ip_space.ipspace.id]
-  inbound_remote_networks = ["0.0.0.0/0"]
 }
 
 # Create VCFA Regional Networking
