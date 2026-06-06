@@ -34,7 +34,6 @@ resource "vcfa_org_settings" "org_settings" {
   org_id                           = vcfa_org.tenant_org.id
   can_create_subscribed_libraries  = true
   quarantine_content_library_items = false
-  can_subscribe_to_third_party_libraries = true
 }
 
 resource "vcfa_org_region_quota" "region_quota" {
@@ -91,10 +90,11 @@ resource "vcfa_ip_space" "ipspace" {
   name                          = "${var.vcfa_tenant_org}-ipspace"
   description                   = "${var.vcfa_tenant_org} IP Space"
   region_id                     = vcfa_region.region.id
+  external_scope                = "0.0.0.0/0"
   default_quota_max_subnet_size = var.ipspace_max_subnet_size
   default_quota_max_cidr_count  = var.ipspace_max_cidr_count
   default_quota_max_ip_count    = var.ipspace_max_ip_count
-  cidr_blocks {
+  internal_scope {
     name = "scope1"
     cidr = var.ipspace_scope_cidr1
   }
