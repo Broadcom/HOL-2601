@@ -1,4 +1,4 @@
-# final.py - version v1.6 - 05-February 2024
+# final.py - version v1.7 - 2026-06-29
 import sys
 import lsfunctions as lsf
 import os
@@ -71,7 +71,7 @@ if lsf.LMC:
         lsf.write_vpodprogress('Running VKS PVC Fix', 'GOOD-2', color=color)
         lsf.write_output(f"TASK: Running VKS PVC Fix", logfile=lsf.logfile)
         try:
-            lsf.ssh(f'bash /home/holuser/labfiles/pvc_fix.sh', 'holuser@console', pwd)
+            lsf.run_command('bash /vpodrepo/2026-labs/2601/labfiles/pvc_fix.sh')
         except Exception as e:
             lsf.write_output(f'INFO: {e}', logfile=lsf.logfile)
             print(f'INFO: {e}')
