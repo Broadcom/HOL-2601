@@ -246,8 +246,6 @@ function Remove-Role {
 ########################################################################
 ## FUNCTIONS BEFORE THIS LINE
 ########################################################################
-$modules = @("VCF.PowerCLI", "VMware.vSphere.SsoAdmin")
-
 $PasswordFiles = @(
     "/home/holuser/creds.txt",
     "/home/holuser/Desktop/PASSWORD.txt"
@@ -271,6 +269,7 @@ if (-not $Password) {
     exit 1
 }
 
+
 $vcFqdn = "vc-wld01-a.site-a.vcf.lab"
 $vcUsername = "administrator@wld.sso"
 
@@ -279,6 +278,10 @@ $users = @(
     @{username="rogueadmin"; domain="wld.sso"; password=$Password; firstname="rogue"; lastname="admin"; description="Created By Script"; roleName="Admin"; EntityName="dc-a"; EntityType="Datacenter"}
     @{username="rogueuser"; domain="wld.sso"; password=$Password; firstname="rogue"; lastname="user"; description="Created By Script"; roleName="TrustedAdmin"; EntityName="dc-a"; EntityType="Datacenter"}
 )
+
+
+
+$modules = @("VCF.PowerCLI", "VMware.vSphere.SsoAdmin")
 
 Write-Info "Importing PowerCLI Modules"
 
@@ -292,7 +295,38 @@ foreach ($module in $modules) {
     Write-Info "Module '$module' imported."
 }
 
+Connect-SsoDomain -vc $vcFqdn -username $vcUsername -password $Password
+Connect-VCenter -vc $vcFqdn -username $vcUsername -password $Password
 
+New-Role -RoleName "Hol_Auditor" -Privileges @("System.Anonymous", "System.Read", "System.View", "Namespaces.Observe","Namespaces.ListAccess", "Namespaces.View") 
+
+foreach ($user in $Users) {
+    New-SsoUser -Username $user.username -Domain $user.domain -Password $user.password -Firstname $user.firstname -Lastname $user.lastname -Description $user.description 
+    Set-Permission -Username $user.username -Domain $user.domain -RoleName $user.roleName -EntityName $user.EntityName -EntityType $user.EntityType -Propagate:$true 
+}
+
+Disconnect-VIServer -Confirm:$false
+Disconnect-SsoAdminServer -Server $vcFqdn
+
+Start-Sleep -Seconds 10
+
+foreach ($user in $Users) {
+    $DomainUsername = $user.username+"@"+$user.domain 
+    
+    for ($i = 1; $i -lt 3; $i++) {
+        Write-Info "Attempting to connect to vCenter with '$DomainUsername' and incorrect password. Attempt $($i+1) of 3."
+        $randomPassword = New-RandomPassword -Length 12
+        Connect-VCenter -vc $vcFqdn -username $DomainUsername -password $randomPassword
+        Start-Sleep -Seconds 5
+
+    }
+    Connect-VCenter -vc $vcFqdn -username $DomainUsername -password $Password
+
+    Disconnect-VIServer -Confirm:$false
+    
+}
+
+Start-Sleep -Seconds 10
 
 Connect-SsoDomain -vc $vcFqdn -username $vcUsername -password $Password
 Connect-VCenter -vc $vcFqdn -username $vcUsername -password $Password

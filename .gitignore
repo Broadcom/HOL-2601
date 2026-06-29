@@ -1,2 +1,4 @@
 lsfunctions.py
 .DS_Store
+terraform/provider/.terraform.lock.hcl
+terraform/provider/.terraform/*
